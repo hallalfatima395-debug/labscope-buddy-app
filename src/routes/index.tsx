@@ -1,4 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { useAuth, dashboardPathForRole } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -11,20 +13,21 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { session, profile, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loading) return;
+    if (!session || !profile || profile.statut !== "accepte") {
+      void navigate({ to: "/login" });
+    } else {
+      void navigate({ to: dashboardPathForRole(profile.role) });
+    }
+  }, [loading, session, profile, navigate]);
+
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-6">
-      <div className="max-w-xl text-center">
-        <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
-          Lab management
-        </p>
-        <h1 className="mt-3 text-5xl font-bold tracking-tight text-foreground">
-          LabScope
-        </h1>
-        <p className="mt-4 text-base text-muted-foreground">
-          Backend connected. Profiles table ready for admins, directors,
-          teachers, and PhD students.
-        </p>
-      </div>
+    <main className="flex min-h-screen items-center justify-center bg-background">
+      <p className="text-sm text-muted-foreground">Chargement…</p>
     </main>
   );
 }

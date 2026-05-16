@@ -9,38 +9,114 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardDoctorantRouteImport } from './routes/dashboard.doctorant'
+import { Route as DashboardDirecteurRouteImport } from './routes/dashboard.directeur'
+import { Route as DashboardChercheurRouteImport } from './routes/dashboard.chercheur'
+import { Route as DashboardAdminRouteImport } from './routes/dashboard.admin'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardDoctorantRoute = DashboardDoctorantRouteImport.update({
+  id: '/dashboard/doctorant',
+  path: '/dashboard/doctorant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardDirecteurRoute = DashboardDirecteurRouteImport.update({
+  id: '/dashboard/directeur',
+  path: '/dashboard/directeur',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardChercheurRoute = DashboardChercheurRouteImport.update({
+  id: '/dashboard/chercheur',
+  path: '/dashboard/chercheur',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAdminRoute = DashboardAdminRouteImport.update({
+  id: '/dashboard/admin',
+  path: '/dashboard/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
+  '/dashboard/chercheur': typeof DashboardChercheurRoute
+  '/dashboard/directeur': typeof DashboardDirecteurRoute
+  '/dashboard/doctorant': typeof DashboardDoctorantRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
+  '/dashboard/chercheur': typeof DashboardChercheurRoute
+  '/dashboard/directeur': typeof DashboardDirecteurRoute
+  '/dashboard/doctorant': typeof DashboardDoctorantRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
+  '/dashboard/chercheur': typeof DashboardChercheurRoute
+  '/dashboard/directeur': typeof DashboardDirecteurRoute
+  '/dashboard/doctorant': typeof DashboardDoctorantRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/dashboard/admin'
+    | '/dashboard/chercheur'
+    | '/dashboard/directeur'
+    | '/dashboard/doctorant'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/dashboard/admin'
+    | '/dashboard/chercheur'
+    | '/dashboard/directeur'
+    | '/dashboard/doctorant'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/dashboard/admin'
+    | '/dashboard/chercheur'
+    | '/dashboard/directeur'
+    | '/dashboard/doctorant'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  DashboardAdminRoute: typeof DashboardAdminRoute
+  DashboardChercheurRoute: typeof DashboardChercheurRoute
+  DashboardDirecteurRoute: typeof DashboardDirecteurRoute
+  DashboardDoctorantRoute: typeof DashboardDoctorantRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +124,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/doctorant': {
+      id: '/dashboard/doctorant'
+      path: '/dashboard/doctorant'
+      fullPath: '/dashboard/doctorant'
+      preLoaderRoute: typeof DashboardDoctorantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/directeur': {
+      id: '/dashboard/directeur'
+      path: '/dashboard/directeur'
+      fullPath: '/dashboard/directeur'
+      preLoaderRoute: typeof DashboardDirecteurRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/chercheur': {
+      id: '/dashboard/chercheur'
+      path: '/dashboard/chercheur'
+      fullPath: '/dashboard/chercheur'
+      preLoaderRoute: typeof DashboardChercheurRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/admin': {
+      id: '/dashboard/admin'
+      path: '/dashboard/admin'
+      fullPath: '/dashboard/admin'
+      preLoaderRoute: typeof DashboardAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
+  DashboardAdminRoute: DashboardAdminRoute,
+  DashboardChercheurRoute: DashboardChercheurRoute,
+  DashboardDirecteurRoute: DashboardDirecteurRoute,
+  DashboardDoctorantRoute: DashboardDoctorantRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
