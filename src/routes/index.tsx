@@ -2,25 +2,29 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "LabScope — Lab management platform" },
+      { name: "description", content: "LabScope: manage your lab members, roles, and approvals." },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-background px-6">
+      <div className="max-w-xl text-center">
+        <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
+          Lab management
+        </p>
+        <h1 className="mt-3 text-5xl font-bold tracking-tight text-foreground">
+          LabScope
+        </h1>
+        <p className="mt-4 text-base text-muted-foreground">
+          Backend connected. Profiles table ready for admins, directors,
+          teachers, and PhD students.
+        </p>
+      </div>
+    </main>
+  );
 }
