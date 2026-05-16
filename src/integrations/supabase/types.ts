@@ -14,6 +14,181 @@ export type Database = {
   }
   public: {
     Tables: {
+      bilans: {
+        Row: {
+          activites: string | null
+          annee: number
+          communications: string | null
+          created_at: string
+          encadrements: string | null
+          id: string
+          is_submitted: boolean
+          membre_id: string
+          projets: string | null
+          publications_annee: string | null
+          submitted_at: string | null
+        }
+        Insert: {
+          activites?: string | null
+          annee: number
+          communications?: string | null
+          created_at?: string
+          encadrements?: string | null
+          id?: string
+          is_submitted?: boolean
+          membre_id: string
+          projets?: string | null
+          publications_annee?: string | null
+          submitted_at?: string | null
+        }
+        Update: {
+          activites?: string | null
+          annee?: number
+          communications?: string | null
+          created_at?: string
+          encadrements?: string | null
+          id?: string
+          is_submitted?: boolean
+          membre_id?: string
+          projets?: string | null
+          publications_annee?: string | null
+          submitted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bilans_membre_id_fkey"
+            columns: ["membre_id"]
+            isOneToOne: false
+            referencedRelation: "membres"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      equipes: {
+        Row: {
+          created_at: string
+          id: string
+          laboratoire_id: string
+          nom: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          laboratoire_id: string
+          nom: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          laboratoire_id?: string
+          nom?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equipes_laboratoire_id_fkey"
+            columns: ["laboratoire_id"]
+            isOneToOne: false
+            referencedRelation: "laboratoires"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      laboratoires: {
+        Row: {
+          created_at: string
+          date_creation: string | null
+          directeur_id: string | null
+          faculte: string | null
+          id: string
+          nom_ar: string | null
+          nom_fr: string
+        }
+        Insert: {
+          created_at?: string
+          date_creation?: string | null
+          directeur_id?: string | null
+          faculte?: string | null
+          id?: string
+          nom_ar?: string | null
+          nom_fr: string
+        }
+        Update: {
+          created_at?: string
+          date_creation?: string | null
+          directeur_id?: string | null
+          faculte?: string | null
+          id?: string
+          nom_ar?: string | null
+          nom_fr?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "laboratoires_directeur_id_fkey"
+            columns: ["directeur_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      membres: {
+        Row: {
+          created_at: string
+          directeur_these: string | null
+          equipe_id: string | null
+          grade: string | null
+          id: string
+          laboratoire_id: string | null
+          profile_id: string
+          specialite: string | null
+          sujet_these: string | null
+        }
+        Insert: {
+          created_at?: string
+          directeur_these?: string | null
+          equipe_id?: string | null
+          grade?: string | null
+          id?: string
+          laboratoire_id?: string | null
+          profile_id: string
+          specialite?: string | null
+          sujet_these?: string | null
+        }
+        Update: {
+          created_at?: string
+          directeur_these?: string | null
+          equipe_id?: string | null
+          grade?: string | null
+          id?: string
+          laboratoire_id?: string | null
+          profile_id?: string
+          specialite?: string | null
+          sujet_these?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "membres_equipe_id_fkey"
+            columns: ["equipe_id"]
+            isOneToOne: false
+            referencedRelation: "equipes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "membres_laboratoire_id_fkey"
+            columns: ["laboratoire_id"]
+            isOneToOne: false
+            referencedRelation: "laboratoires"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "membres_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -43,6 +218,112 @@ export type Database = {
           statut?: string | null
         }
         Relationships: []
+      }
+      projets: {
+        Row: {
+          created_at: string
+          date_debut: string | null
+          date_fin: string | null
+          description: string | null
+          equipe_id: string | null
+          id: string
+          laboratoire_id: string | null
+          titre: string
+        }
+        Insert: {
+          created_at?: string
+          date_debut?: string | null
+          date_fin?: string | null
+          description?: string | null
+          equipe_id?: string | null
+          id?: string
+          laboratoire_id?: string | null
+          titre: string
+        }
+        Update: {
+          created_at?: string
+          date_debut?: string | null
+          date_fin?: string | null
+          description?: string | null
+          equipe_id?: string | null
+          id?: string
+          laboratoire_id?: string | null
+          titre?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projets_equipe_id_fkey"
+            columns: ["equipe_id"]
+            isOneToOne: false
+            referencedRelation: "equipes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projets_laboratoire_id_fkey"
+            columns: ["laboratoire_id"]
+            isOneToOne: false
+            referencedRelation: "laboratoires"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      publications: {
+        Row: {
+          annee: number | null
+          auteurs: string | null
+          created_at: string
+          equipe_id: string | null
+          id: string
+          laboratoire_id: string | null
+          membre_id: string | null
+          titre: string
+          type: string | null
+        }
+        Insert: {
+          annee?: number | null
+          auteurs?: string | null
+          created_at?: string
+          equipe_id?: string | null
+          id?: string
+          laboratoire_id?: string | null
+          membre_id?: string | null
+          titre: string
+          type?: string | null
+        }
+        Update: {
+          annee?: number | null
+          auteurs?: string | null
+          created_at?: string
+          equipe_id?: string | null
+          id?: string
+          laboratoire_id?: string | null
+          membre_id?: string | null
+          titre?: string
+          type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "publications_equipe_id_fkey"
+            columns: ["equipe_id"]
+            isOneToOne: false
+            referencedRelation: "equipes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "publications_laboratoire_id_fkey"
+            columns: ["laboratoire_id"]
+            isOneToOne: false
+            referencedRelation: "laboratoires"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "publications_membre_id_fkey"
+            columns: ["membre_id"]
+            isOneToOne: false
+            referencedRelation: "membres"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
