@@ -171,3 +171,80 @@
     font-family: var(--font-arabic);
   }
 }
+
+/* ============================================================
+   Global brand override
+   Force off-white backgrounds, dark-navy chrome, teal accents
+   across all pages and components.
+   ============================================================ */
+@layer base {
+  html, body {
+    background-color: #FAF9F6 !important;
+  }
+
+  /* Neutralize all white / light-gray backgrounds */
+  .bg-white,
+  .bg-gray-50,
+  .bg-gray-100,
+  .bg-slate-50,
+  .bg-slate-100,
+  .bg-neutral-50,
+  .bg-neutral-100,
+  .bg-zinc-50,
+  .bg-zinc-100,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-background,
+  .bg-card,
+  .bg-popover,
+  .bg-muted,
+  .bg-secondary {
+    background-color: #FAF9F6 !important;
+  }
+
+  /* Navbar / sidebar / any dark chrome → deep navy */
+  header.sticky,
+  nav[data-sidebar],
+  aside[data-sidebar],
+  [data-sidebar="sidebar"],
+  [data-sidebar="menu"],
+  .bg-sidebar,
+  .bg-navy,
+  .bg-slate-900,
+  .bg-slate-800,
+  .bg-gray-900,
+  .bg-neutral-900,
+  .bg-zinc-900 {
+    background-color: #0F2333 !important;
+    color: #ffffff !important;
+  }
+
+  /* Primary buttons + main icons → teal */
+  button.bg-primary,
+  .bg-primary,
+  .bg-teal,
+  [data-variant="default"].btn,
+  button[type="submit"]:not([data-variant]):not(.bg-transparent):not(.bg-terracotta):not(.bg-destructive) {
+    background-color: #2DD4BF !important;
+    color: #ffffff !important;
+  }
+
+  .text-primary,
+  .text-teal {
+    color: #2DD4BF !important;
+  }
+
+  /* Lucide icons inherit currentColor — push main icons to teal
+     except when they're inside a dark chrome surface (kept white). */
+  main svg.lucide,
+  section svg.lucide,
+  button svg.lucide {
+    color: #2DD4BF;
+  }
+  header svg.lucide,
+  [data-sidebar] svg.lucide,
+  .bg-navy svg.lucide,
+  .bg-sidebar svg.lucide {
+    color: #ffffff !important;
+  }
+}
