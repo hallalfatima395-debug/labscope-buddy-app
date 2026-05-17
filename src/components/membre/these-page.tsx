@@ -49,7 +49,7 @@ export function ThesePage() {
   return (
     <div className="space-y-4 max-w-3xl">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Ma thèse</h2>
+        <h2 className="font-display text-3xl font-semibold" style={{ color: "var(--navy)" }}>Ma thèse</h2>
         <Button onClick={() => setOpen(true)}><Pencil className="h-4 w-4" /> Modifier</Button>
       </div>
       <Card>

@@ -86,7 +86,7 @@ export function PublicationsPage() {
   return (
     <div className="space-y-4 max-w-5xl">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Mes publications</h2>
+        <h2 className="font-display text-3xl font-semibold" style={{ color: "var(--navy)" }}>Mes publications</h2>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button onClick={openAdd}><Plus className="h-4 w-4" /> Ajouter</Button>
