@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DashboardDoctorantRouteImport } from './routes/dashboard.doctorant'
 import { Route as DashboardDirecteurRouteImport } from './routes/dashboard.directeur'
 import { Route as DashboardAdminRouteImport } from './routes/dashboard.admin'
 import { Route as DashboardDirecteurIndexRouteImport } from './routes/dashboard.directeur.index'
@@ -34,11 +33,6 @@ const LoginRoute = LoginRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardDoctorantRoute = DashboardDoctorantRouteImport.update({
-  id: '/dashboard/doctorant',
-  path: '/dashboard/doctorant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardDirecteurRoute = DashboardDirecteurRouteImport.update({
@@ -119,7 +113,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
   '/dashboard/directeur': typeof DashboardDirecteurRouteWithChildren
-  '/dashboard/doctorant': typeof DashboardDoctorantRoute
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
@@ -135,7 +128,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/dashboard/doctorant': typeof DashboardDoctorantRoute
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
@@ -154,7 +146,6 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
   '/dashboard/directeur': typeof DashboardDirecteurRouteWithChildren
-  '/dashboard/doctorant': typeof DashboardDoctorantRoute
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
@@ -174,7 +165,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard/admin'
     | '/dashboard/directeur'
-    | '/dashboard/doctorant'
     | '/dashboard/admin/bilans'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
@@ -190,7 +180,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
-    | '/dashboard/doctorant'
     | '/dashboard/admin/bilans'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
@@ -208,7 +197,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/dashboard/admin'
     | '/dashboard/directeur'
-    | '/dashboard/doctorant'
     | '/dashboard/admin/bilans'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
@@ -227,7 +215,6 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   DashboardAdminRoute: typeof DashboardAdminRouteWithChildren
   DashboardDirecteurRoute: typeof DashboardDirecteurRouteWithChildren
-  DashboardDoctorantRoute: typeof DashboardDoctorantRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -244,13 +231,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/doctorant': {
-      id: '/dashboard/doctorant'
-      path: '/dashboard/doctorant'
-      fullPath: '/dashboard/doctorant'
-      preLoaderRoute: typeof DashboardDoctorantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/directeur': {
@@ -393,7 +373,6 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   DashboardAdminRoute: DashboardAdminRouteWithChildren,
   DashboardDirecteurRoute: DashboardDirecteurRouteWithChildren,
-  DashboardDoctorantRoute: DashboardDoctorantRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
