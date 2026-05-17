@@ -8,6 +8,7 @@ import {
   Mail,
   Clock,
   ArrowRight,
+  Phone,
 } from "lucide-react";
 import udlLogo from "@/assets/udl-logo.png";
 import heroImg from "@/assets/lab-hero.jpeg";
@@ -74,10 +75,11 @@ const T = {
       title: "Contactez-nous",
       nom: "Nom", prenom: "Prénom", email: "Email", message: "Message",
       send: "Envoyer le message",
-      address: "Adresse", emailLabel: "Email", hours: "Horaires",
+      address: "Adresse", emailLabel: "Email", hours: "Horaires", phone: "Téléphone",
       addressLines: ["Université Djillali Liabès", "BP 89, Sidi Bel Abbès 22000, Algérie"],
       emailLines: ["vicerectoarat.pgrs@univ-sba.dz"],
       hoursLines: ["Dimanche – Jeudi", "08h00 – 16h30"],
+      phoneLines: ["+213 (0) 48 74 91 36"],
     },
     footer: "© 2025 — Université Djillali Liabès",
   },
@@ -107,10 +109,11 @@ const T = {
       title: "اتصل بنا",
       nom: "اللقب", prenom: "الاسم", email: "البريد الإلكتروني", message: "الرسالة",
       send: "إرسال الرسالة",
-      address: "العنوان", emailLabel: "البريد الإلكتروني", hours: "أوقات العمل",
+      address: "العنوان", emailLabel: "البريد الإلكتروني", hours: "أوقات العمل", phone: "الهاتف",
       addressLines: ["جامعة جيلالي اليابس", "ص.ب 89، سيدي بلعباس 22000، الجزائر"],
       emailLines: ["vicerectoarat.pgrs@univ-sba.dz"],
       hoursLines: ["الأحد – الخميس", "08:00 – 16:30"],
+      phoneLines: ["+213 (0) 48 74 91 36"],
     },
     footer: "© 2025 — جامعة جيلالي اليابس",
   },
@@ -324,7 +327,7 @@ function Landing() {
               </Button>
           </form>
 
-          <div className="mx-auto mt-8 grid max-w-5xl gap-4 md:grid-cols-3">
+          <div className="mx-auto mt-8 grid max-w-5xl gap-4 md:grid-cols-2 lg:grid-cols-4">
             <InfoCard
               Icon={MapPin}
               title={t.contact.address}
@@ -341,6 +344,15 @@ function Landing() {
               fg="var(--navy)"
               iconBg="var(--teal)"
               iconFg="var(--teal-foreground)"
+            />
+            <InfoCard
+              Icon={Phone}
+              title={t.contact.phone}
+              lines={t.contact.phoneLines}
+              bg="color-mix(in oklab, var(--navy) 8%, white)"
+              fg="var(--navy)"
+              iconBg="var(--navy)"
+              iconFg="white"
             />
             <InfoCard
               Icon={Clock}
