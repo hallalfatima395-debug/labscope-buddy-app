@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import udlLogo from "@/assets/udl-logo.png";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -76,8 +77,9 @@ function LoginPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl">LabScope</CardTitle>
+        <CardHeader className="items-center text-center">
+          <img src={udlLogo} alt="UDL" className="mx-auto mb-3 h-16 w-auto" />
+          <CardTitle className="font-display text-3xl">LabScope</CardTitle>
           <CardDescription>Connectez-vous à votre compte.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -104,7 +106,12 @@ function LoginPage() {
                 autoComplete="current-password"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={submitting}>
+            <Button
+              type="submit"
+              className="w-full rounded-full"
+              style={{ backgroundColor: "var(--teal)", color: "var(--teal-foreground)" }}
+              disabled={submitting}
+            >
               {submitting ? "Connexion…" : "Se connecter"}
             </Button>
           </form>
