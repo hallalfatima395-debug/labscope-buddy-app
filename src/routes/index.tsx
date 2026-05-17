@@ -341,9 +341,10 @@ function Landing() {
               Icon={MapPin}
               title={t.contact.address}
               lines={t.contact.addressLines}
-              bg="var(--navy)"
-              fg="white"
-              iconBg="rgba(255,255,255,0.15)"
+              bg="white"
+              fg="#000000"
+              iconBg="rgba(0,0,0,0.08)"
+              iconFg="#000000"
             />
             <InfoCard
               Icon={Mail}
