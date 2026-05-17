@@ -134,6 +134,7 @@ export type Database = {
       membres: {
         Row: {
           created_at: string
+          date_debut_these: string | null
           directeur_these: string | null
           equipe_id: string | null
           grade: string | null
@@ -141,10 +142,12 @@ export type Database = {
           laboratoire_id: string | null
           profile_id: string
           specialite: string | null
+          statut_these: string | null
           sujet_these: string | null
         }
         Insert: {
           created_at?: string
+          date_debut_these?: string | null
           directeur_these?: string | null
           equipe_id?: string | null
           grade?: string | null
@@ -152,10 +155,12 @@ export type Database = {
           laboratoire_id?: string | null
           profile_id: string
           specialite?: string | null
+          statut_these?: string | null
           sujet_these?: string | null
         }
         Update: {
           created_at?: string
+          date_debut_these?: string | null
           directeur_these?: string | null
           equipe_id?: string | null
           grade?: string | null
@@ -163,6 +168,7 @@ export type Database = {
           laboratoire_id?: string | null
           profile_id?: string
           specialite?: string | null
+          statut_these?: string | null
           sujet_these?: string | null
         }
         Relationships: [
