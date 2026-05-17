@@ -94,7 +94,7 @@
 
   /* Brand tokens */
   --teal: oklch(0.77 0.13 180);             /* #2DD4BF */
-  --teal-foreground: oklch(0.18 0.04 235);
+  --teal-foreground: oklch(0.99 0 0);
   --terracotta: oklch(0.61 0.13 42);        /* #C4714A */
   --terracotta-foreground: oklch(0.99 0 0);
   --navy: oklch(0.22 0.04 235);             /* #0F2333 dark navy */
@@ -126,7 +126,7 @@
   --popover: oklch(0.22 0.04 235);
   --popover-foreground: oklch(0.98 0 0);
   --primary: oklch(0.77 0.13 180);
-  --primary-foreground: oklch(0.18 0.04 235);
+  --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.28 0.04 250);
   --secondary-foreground: oklch(0.98 0 0);
   --muted: oklch(0.28 0.04 250);
