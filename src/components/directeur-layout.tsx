@@ -74,10 +74,11 @@ export function DirecteurLayout({ children }: { children: ReactNode }) {
         </Sidebar>
 
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-14 flex items-center justify-between border-b border-border px-4">
-            <div className="flex items-center gap-2">
+          <header className="relative h-16 flex items-center justify-between border-b border-border bg-card px-6">
+            <span className="absolute inset-x-0 top-0 h-[3px]" style={{ backgroundColor: "var(--teal)" }} />
+            <div className="flex items-center gap-3">
               <SidebarTrigger />
-              <h1 className="text-lg font-semibold">Espace Directeur</h1>
+              <h1 className="font-display text-2xl font-semibold" style={{ color: "var(--navy)" }}>Espace Directeur</h1>
             </div>
             <Button variant="outline" size="sm" onClick={handleSignOut}>
               Déconnexion
