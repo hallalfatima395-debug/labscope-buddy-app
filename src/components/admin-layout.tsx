@@ -40,7 +40,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       <div className="min-h-screen flex w-full bg-background">
         <Sidebar collapsible="icon">
           <SidebarHeader className="px-4 py-4">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground">LabScope</p>
+            <p className="text-xs uppercase tracking-widest text-sidebar-foreground/60">LabScope</p>
             <p className="text-sm font-semibold">Admin</p>
           </SidebarHeader>
           <SidebarContent>
@@ -67,7 +67,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-          <SidebarFooter className="px-4 py-3 text-xs text-muted-foreground">
+          <SidebarFooter className="px-4 py-3 text-xs text-sidebar-foreground/70">
             {profile?.prenom} {profile?.nom}
           </SidebarFooter>
         </Sidebar>
