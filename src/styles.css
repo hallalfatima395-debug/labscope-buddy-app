@@ -112,8 +112,8 @@
   --sidebar-foreground: oklch(0.99 0 0);
   --sidebar-primary: oklch(0.77 0.13 180);          /* teal */
   --sidebar-primary-foreground: oklch(0.18 0.04 235);
-  --sidebar-accent: oklch(0.28 0.04 235);
-  --sidebar-accent-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.77 0.13 180);            /* teal active highlight */
+  --sidebar-accent-foreground: oklch(0.18 0.04 235);
   --sidebar-border: oklch(0.32 0.04 235);
   --sidebar-ring: oklch(0.77 0.13 180);
 }
