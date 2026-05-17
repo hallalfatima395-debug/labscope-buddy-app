@@ -240,6 +240,15 @@ function Landing() {
             >
               {t.hero.cta} <ArrowRight className={`h-4 w-4 ${isAr ? "rotate-180" : ""}`} />
             </button>
+            <InscriptionModal defaultTab="inscription">
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-lg shadow-black/20 transition hover:brightness-110"
+                style={{ backgroundColor: "var(--terracotta)", color: "white" }}
+              >
+                {t.nav.register} <ArrowRight className={`h-4 w-4 ${isAr ? "rotate-180" : ""}`} />
+              </button>
+            </InscriptionModal>
             <a
               href="#services"
               className="inline-flex items-center gap-2 rounded-full border-2 border-white/80 bg-transparent px-7 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-navy"
