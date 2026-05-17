@@ -38,6 +38,10 @@
   --color-teal-foreground: var(--teal-foreground);
   --color-terracotta: var(--terracotta);
   --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-green: var(--green);
+  --color-green-foreground: var(--green-foreground);
+  --color-success: var(--green);
+  --color-success-foreground: var(--green-foreground);
   --color-navy: var(--navy);
   --color-navy-foreground: var(--navy-foreground);
   --color-slate-deep: var(--slate-deep);
@@ -97,6 +101,8 @@
   --teal-foreground: oklch(0.99 0 0);
   --terracotta: oklch(0.61 0.13 42);        /* #C4714A */
   --terracotta-foreground: oklch(0.99 0 0);
+  --green: oklch(0.62 0.17 145);            /* #2E9D5B vert nature */
+  --green-foreground: oklch(0.99 0 0);
   --navy: oklch(0.22 0.04 235);             /* #0F2333 dark navy */
   --navy-foreground: oklch(0.99 0 0);
   --slate-deep: oklch(0.28 0.04 250);       /* #1E293B */
