@@ -1,0 +1,1 @@
+ALTER TABLE public.bilans ADD COLUMN IF NOT EXISTS avancement_these text;

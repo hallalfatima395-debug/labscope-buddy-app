@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           activites: string | null
           annee: number
+          avancement_these: string | null
           communications: string | null
           created_at: string
           encadrements: string | null
@@ -31,6 +32,7 @@ export type Database = {
         Insert: {
           activites?: string | null
           annee: number
+          avancement_these?: string | null
           communications?: string | null
           created_at?: string
           encadrements?: string | null
@@ -44,6 +46,7 @@ export type Database = {
         Update: {
           activites?: string | null
           annee?: number
+          avancement_these?: string | null
           communications?: string | null
           created_at?: string
           encadrements?: string | null
