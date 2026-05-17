@@ -15,6 +15,7 @@ import { useAuth, dashboardPathForRole } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { InscriptionModal } from "@/components/inscription-modal";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
@@ -186,20 +187,24 @@ function Landing() {
                 AR
               </button>
             </div>
-            <Link
-              to="/login"
-              className="hidden rounded-full px-5 py-2 text-sm font-semibold shadow-sm transition hover:brightness-110 sm:inline-block"
-              style={{ backgroundColor: "var(--teal)", color: "var(--teal-foreground)" }}
-            >
-              {t.nav.login}
-            </Link>
-            <Link
-              to="/login"
-              className="hidden rounded-full border-2 bg-transparent px-5 py-2 text-sm font-semibold transition hover:bg-terracotta hover:text-white sm:inline-block"
-              style={{ borderColor: "var(--terracotta)", color: "var(--terracotta)" }}
-            >
-              {t.nav.register}
-            </Link>
+            <InscriptionModal defaultTab="connexion">
+              <button
+                type="button"
+                className="hidden rounded-full px-5 py-2 text-sm font-semibold shadow-sm transition hover:brightness-110 sm:inline-block"
+                style={{ backgroundColor: "var(--teal)", color: "var(--teal-foreground)" }}
+              >
+                {t.nav.login}
+              </button>
+            </InscriptionModal>
+            <InscriptionModal defaultTab="inscription">
+              <button
+                type="button"
+                className="hidden rounded-full border-2 bg-transparent px-5 py-2 text-sm font-semibold transition hover:bg-terracotta hover:text-white sm:inline-block"
+                style={{ borderColor: "var(--terracotta)", color: "var(--terracotta)" }}
+              >
+                {t.nav.register}
+              </button>
+            </InscriptionModal>
           </div>
         </div>
       </header>
