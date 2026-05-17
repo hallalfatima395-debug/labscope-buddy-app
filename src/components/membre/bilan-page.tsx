@@ -82,7 +82,7 @@ export function BilanPage({ includeThese = false }: { includeThese?: boolean }) 
   return (
     <div className="space-y-4 max-w-3xl">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Mon bilan</h2>
+        <h2 className="font-display text-3xl font-semibold" style={{ color: "var(--navy)" }}>Mon bilan</h2>
         <div className="flex items-center gap-2">
           <Label>Année</Label>
           <Input type="number" className="w-28" value={annee} onChange={(e) => setAnnee(Number(e.target.value) || new Date().getFullYear())} />
