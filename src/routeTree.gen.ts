@@ -13,7 +13,6 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardDoctorantRouteImport } from './routes/dashboard.doctorant'
 import { Route as DashboardDirecteurRouteImport } from './routes/dashboard.directeur'
-import { Route as DashboardChercheurRouteImport } from './routes/dashboard.chercheur'
 import { Route as DashboardAdminRouteImport } from './routes/dashboard.admin'
 import { Route as DashboardDirecteurIndexRouteImport } from './routes/dashboard.directeur.index'
 import { Route as DashboardAdminIndexRouteImport } from './routes/dashboard.admin.index'
@@ -45,11 +44,6 @@ const DashboardDoctorantRoute = DashboardDoctorantRouteImport.update({
 const DashboardDirecteurRoute = DashboardDirecteurRouteImport.update({
   id: '/dashboard/directeur',
   path: '/dashboard/directeur',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardChercheurRoute = DashboardChercheurRouteImport.update({
-  id: '/dashboard/chercheur',
-  path: '/dashboard/chercheur',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardAdminRoute = DashboardAdminRouteImport.update({
@@ -124,7 +118,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
-  '/dashboard/chercheur': typeof DashboardChercheurRoute
   '/dashboard/directeur': typeof DashboardDirecteurRouteWithChildren
   '/dashboard/doctorant': typeof DashboardDoctorantRoute
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
@@ -142,7 +135,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/dashboard/chercheur': typeof DashboardChercheurRoute
   '/dashboard/doctorant': typeof DashboardDoctorantRoute
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
@@ -161,7 +153,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
-  '/dashboard/chercheur': typeof DashboardChercheurRoute
   '/dashboard/directeur': typeof DashboardDirecteurRouteWithChildren
   '/dashboard/doctorant': typeof DashboardDoctorantRoute
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
@@ -182,7 +173,6 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard/admin'
-    | '/dashboard/chercheur'
     | '/dashboard/directeur'
     | '/dashboard/doctorant'
     | '/dashboard/admin/bilans'
@@ -200,7 +190,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
-    | '/dashboard/chercheur'
     | '/dashboard/doctorant'
     | '/dashboard/admin/bilans'
     | '/dashboard/admin/doctorants'
@@ -218,7 +207,6 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard/admin'
-    | '/dashboard/chercheur'
     | '/dashboard/directeur'
     | '/dashboard/doctorant'
     | '/dashboard/admin/bilans'
@@ -238,7 +226,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   DashboardAdminRoute: typeof DashboardAdminRouteWithChildren
-  DashboardChercheurRoute: typeof DashboardChercheurRoute
   DashboardDirecteurRoute: typeof DashboardDirecteurRouteWithChildren
   DashboardDoctorantRoute: typeof DashboardDoctorantRoute
 }
@@ -271,13 +258,6 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/directeur'
       fullPath: '/dashboard/directeur'
       preLoaderRoute: typeof DashboardDirecteurRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/chercheur': {
-      id: '/dashboard/chercheur'
-      path: '/dashboard/chercheur'
-      fullPath: '/dashboard/chercheur'
-      preLoaderRoute: typeof DashboardChercheurRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/admin': {
@@ -412,7 +392,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   DashboardAdminRoute: DashboardAdminRouteWithChildren,
-  DashboardChercheurRoute: DashboardChercheurRoute,
   DashboardDirecteurRoute: DashboardDirecteurRouteWithChildren,
   DashboardDoctorantRoute: DashboardDoctorantRoute,
 }
