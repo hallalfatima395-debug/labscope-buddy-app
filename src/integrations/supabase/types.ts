@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           activites: string | null
           annee: number
+          avancement_these: string | null
           communications: string | null
           created_at: string
           encadrements: string | null
@@ -31,6 +32,7 @@ export type Database = {
         Insert: {
           activites?: string | null
           annee: number
+          avancement_these?: string | null
           communications?: string | null
           created_at?: string
           encadrements?: string | null
@@ -44,6 +46,7 @@ export type Database = {
         Update: {
           activites?: string | null
           annee?: number
+          avancement_these?: string | null
           communications?: string | null
           created_at?: string
           encadrements?: string | null
@@ -134,6 +137,7 @@ export type Database = {
       membres: {
         Row: {
           created_at: string
+          date_debut_these: string | null
           directeur_these: string | null
           equipe_id: string | null
           grade: string | null
@@ -141,10 +145,12 @@ export type Database = {
           laboratoire_id: string | null
           profile_id: string
           specialite: string | null
+          statut_these: string | null
           sujet_these: string | null
         }
         Insert: {
           created_at?: string
+          date_debut_these?: string | null
           directeur_these?: string | null
           equipe_id?: string | null
           grade?: string | null
@@ -152,10 +158,12 @@ export type Database = {
           laboratoire_id?: string | null
           profile_id: string
           specialite?: string | null
+          statut_these?: string | null
           sujet_these?: string | null
         }
         Update: {
           created_at?: string
+          date_debut_these?: string | null
           directeur_these?: string | null
           equipe_id?: string | null
           grade?: string | null
@@ -163,6 +171,7 @@ export type Database = {
           laboratoire_id?: string | null
           profile_id?: string
           specialite?: string | null
+          statut_these?: string | null
           sujet_these?: string | null
         }
         Relationships: [
