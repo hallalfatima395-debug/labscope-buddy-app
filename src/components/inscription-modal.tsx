@@ -2,13 +2,13 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, dashboardPathForRole, type Profile } from "@/hooks/use-auth";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { GraduationCap, BookOpen, Building2, ArrowLeft } from "lucide-react";
+import { GraduationCap, BookOpen, Building2, ArrowLeft, FlaskConical } from "lucide-react";
 import { toast } from "sonner";
 
 type SignupRole = "enseignant" | "doctorant" | "directeur";
@@ -46,29 +46,51 @@ export function InscriptionModal({ children, defaultTab = "inscription" }: { chi
   return (
     <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (o) setTab(defaultTab); }}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="font-display text-2xl">Espace LabScope</DialogTitle>
-        </DialogHeader>
-        <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)} className="mt-2">
-          <TabsList className="grid w-full grid-cols-2 rounded-full">
-            <TabsTrigger value="connexion" className="rounded-full">Connexion</TabsTrigger>
-            <TabsTrigger value="inscription" className="rounded-full">Inscription</TabsTrigger>
-          </TabsList>
+      <DialogContent
+        className="max-w-2xl max-h-[90vh] overflow-hidden p-0 gap-0 border-0"
+        style={{ backgroundColor: "#FFFFFF" }}
+      >
+        {/* Deep slate header banner */}
+        <div
+          className="flex items-center gap-4 px-6 py-5"
+          style={{ backgroundColor: "#0F2E2A", color: "#FFFFFF" }}
+        >
+          <div
+            className="flex h-12 w-12 items-center justify-center rounded-full"
+            style={{ backgroundColor: "rgba(255,255,255,0.12)" }}
+          >
+            <FlaskConical className="h-6 w-6" style={{ color: "#FFFFFF" }} />
+          </div>
+          <div className="leading-tight">
+            <p className="font-display text-xl font-semibold" style={{ color: "#FFFFFF" }}>LabScope</p>
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)" }}>Espace authentification</p>
+          </div>
+        </div>
 
-          <TabsContent value="connexion" className="pt-4">
-            <LoginForm
-              onSuccess={(path) => {
-                setOpen(false);
-                void navigate({ to: path });
-              }}
-            />
-          </TabsContent>
+        <div className="max-h-[calc(90vh-92px)] overflow-y-auto px-6 pb-6 pt-5" style={{ backgroundColor: "#FFFFFF" }}>
+          <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)}>
+            <TabsList
+              className="grid w-full grid-cols-2 rounded-full p-1"
+              style={{ backgroundColor: "#F4F1EC" }}
+            >
+              <TabsTrigger value="connexion" className="rounded-full text-sm font-semibold">Connexion</TabsTrigger>
+              <TabsTrigger value="inscription" className="rounded-full text-sm font-semibold">Inscription</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="inscription" className="pt-4">
-            <InscriptionFlow onDone={() => setOpen(false)} />
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="connexion" className="pt-5">
+              <LoginForm
+                onSuccess={(path) => {
+                  setOpen(false);
+                  void navigate({ to: path });
+                }}
+              />
+            </TabsContent>
+
+            <TabsContent value="inscription" className="pt-5">
+              <InscriptionFlow onDone={() => setOpen(false)} />
+            </TabsContent>
+          </Tabs>
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -101,14 +123,19 @@ function LoginForm({ onSuccess }: { onSuccess: (path: string) => void }) {
   return (
     <form onSubmit={submit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="lemail">Email</Label>
-        <Input id="lemail" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Label htmlFor="lemail" style={{ color: "#1F2937" }}>Email</Label>
+        <Input id="lemail" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", color: "#1F2937" }} />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="lpw">Mot de passe</Label>
-        <Input id="lpw" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Label htmlFor="lpw" style={{ color: "#1F2937" }}>Mot de passe</Label>
+        <Input id="lpw" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", color: "#1F2937" }} />
       </div>
-      <Button type="submit" className="w-full" disabled={busy}>
+      <Button
+        type="submit"
+        className="w-full rounded-full py-6 text-sm font-semibold"
+        disabled={busy}
+        style={{ backgroundColor: "#78350F", color: "#FFFFFF", borderColor: "#78350F" }}
+      >
         {busy ? "Connexion…" : "Se connecter"}
       </Button>
     </form>
@@ -121,7 +148,7 @@ function InscriptionFlow({ onDone }: { onDone: () => void }) {
   if (!role) {
     return (
       <div className="space-y-3">
-        <p className="text-sm text-muted-foreground">Choisissez votre profil :</p>
+        <p className="text-sm" style={{ color: "#4B5563" }}>Choisissez votre profil :</p>
         <div className="grid gap-3 sm:grid-cols-3">
           <RoleCard icon={<GraduationCap className="h-6 w-6" />} title="Enseignant-Chercheur" onClick={() => setRole("enseignant")} />
           <RoleCard icon={<BookOpen className="h-6 w-6" />} title="Doctorant" onClick={() => setRole("doctorant")} />
@@ -139,11 +166,13 @@ function RoleCard({ icon, title, onClick }: { icon: ReactNode; title: string; on
     <button
       type="button"
       onClick={onClick}
-      className="group flex flex-col items-start gap-3 rounded-2xl border bg-card p-4 text-left transition hover:border-teal hover:shadow-md"
-      style={{ borderColor: "color-mix(in oklab, var(--teal) 20%, transparent)" }}
+      className="group flex flex-col items-start gap-3 rounded-2xl border p-4 text-left transition hover:shadow-md"
+      style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", color: "#1F2937" }}
+      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#78350F")}
+      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#E5E7EB")}
     >
-      <span className="rounded-full p-2" style={{ backgroundColor: "color-mix(in oklab, var(--teal) 18%, white)", color: "var(--navy)" }}>{icon}</span>
-      <span className="text-sm font-semibold">{title}</span>
+      <span className="rounded-full p-2" style={{ backgroundColor: "rgba(120,53,15,0.10)", color: "#78350F" }}>{icon}</span>
+      <span className="text-sm font-semibold" style={{ color: "#0F2E2A" }}>{title}</span>
     </button>
   );
 }
@@ -205,7 +234,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <button type="button" onClick={onBack} className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground">
+      <button type="button" onClick={onBack} className="inline-flex items-center gap-1 text-xs font-medium" style={{ color: "#78350F" }}>
         <ArrowLeft className="h-3 w-3" /> Changer de profil
       </button>
 
@@ -265,7 +294,12 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
         </div>
       )}
 
-      <Button type="submit" className="w-full" disabled={busy}>
+      <Button
+        type="submit"
+        className="w-full rounded-full py-6 text-sm font-semibold"
+        disabled={busy}
+        style={{ backgroundColor: "#78350F", color: "#FFFFFF", borderColor: "#78350F" }}
+      >
         {busy ? "Inscription…" : "S'inscrire"}
       </Button>
     </form>
@@ -275,7 +309,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
 function Field({ label, children, className = "" }: { label: string; children: ReactNode; className?: string }) {
   return (
     <div className={`space-y-1.5 ${className}`}>
-      <Label className="text-xs font-medium">{label}</Label>
+      <Label className="text-xs font-medium" style={{ color: "#1F2937" }}>{label}</Label>
       {children}
     </div>
   );
