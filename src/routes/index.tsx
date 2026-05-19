@@ -246,6 +246,15 @@ function Landing() {
             >
               {t.hero.more}
             </a>
+            <InscriptionModal defaultTab="inscription">
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-lg shadow-black/20 transition hover:brightness-110"
+                style={{ backgroundColor: "#78350F", color: "#FFFFFF" }}
+              >
+                {t.nav.register}
+              </button>
+            </InscriptionModal>
           </div>
         </div>
       </section>
