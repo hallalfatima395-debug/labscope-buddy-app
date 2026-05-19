@@ -327,55 +327,54 @@ function Landing() {
               </Button>
           </form>
 
-          <div className="mx-auto mt-8 grid max-w-5xl gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto mt-8 grid max-w-5xl gap-4 md:grid-cols-3">
             <InfoCard
               Icon={MapPin}
               title={t.contact.address}
               lines={t.contact.addressLines}
-              bg="#FFFFFF"
-              fg="#064E3B"
-              iconBg="rgba(6,78,59,0.10)"
-              iconFg="#064E3B"
+              bg="#0F2E2A"
+              fg="#FFFFFF"
+              iconBg="rgba(255,255,255,0.12)"
+              iconFg="#FFFFFF"
             />
             <InfoCard
               Icon={Mail}
               title={t.contact.emailLabel}
               lines={t.contact.emailLines}
-              bg="#FFFFFF"
+              bg="#E6F4EC"
               fg="#064E3B"
-              iconBg="rgba(217,119,6,0.12)"
-              iconFg="#D97706"
-            />
-            <InfoCard
-              Icon={Phone}
-              title={t.contact.phone}
-              lines={t.contact.phoneLines}
-              bg="#FFFFFF"
-              fg="#064E3B"
-              iconBg="rgba(6,78,59,0.10)"
+              iconBg="rgba(6,78,59,0.12)"
               iconFg="#064E3B"
             />
             <InfoCard
               Icon={Clock}
               title={t.contact.hours}
               lines={t.contact.hoursLines}
-              bg="#FFFFFF"
-              fg="#064E3B"
-              iconBg="rgba(217,119,6,0.12)"
-              iconFg="#D97706"
+              bg="#FBEDE4"
+              fg="#7A3E1D"
+              iconBg="rgba(122,62,29,0.12)"
+              iconFg="#7A3E1D"
             />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer style={{ backgroundColor: "#064E3B", color: "white" }}>
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row sm:px-6 lg:px-8">
+      <footer style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB" }}>
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <img src={udlLogo} alt="UDL" className="h-10 w-auto" />
-            <p className="font-display text-lg">LabScope</p>
+            <img src={udlLogo} alt="UDL" className="h-9 w-auto" />
+            <p className="font-display text-lg" style={{ color: "#064E3B" }}>LabScope</p>
+            <p className="text-xs" style={{ color: "#6B7280" }}>{t.footer}</p>
           </div>
-          <p className="text-xs text-white/70">{t.footer}</p>
+          <div className="flex items-center gap-6 text-xs font-medium">
+            <a href="#" style={{ color: "#064E3B" }} className="hover:underline">
+              {isAr ? "سياسة الخصوصية" : "Politique de confidentialité"}
+            </a>
+            <a href="#" style={{ color: "#064E3B" }} className="hover:underline">
+              {isAr ? "إشعارات قانونية" : "Mentions légales"}
+            </a>
+          </div>
         </div>
       </footer>
     </div>
