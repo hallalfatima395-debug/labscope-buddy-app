@@ -174,15 +174,16 @@
 
 /* ============================================================
    Global brand override
-   Force off-white backgrounds, dark-navy chrome, teal accents
-   across all pages and components.
+   White chrome, Deep Emerald text, Warm Amber primary actions.
+   Applied globally across landing, login, and all dashboards.
    ============================================================ */
 @layer base {
   html, body {
-    background-color: #FAF9F6 !important;
+    background-color: #FAFAF7 !important;
+    color: #064E3B;
   }
 
-  /* Neutralize all white / light-gray backgrounds */
+  /* Surfaces → near-white */
   .bg-white,
   .bg-gray-50,
   .bg-gray-100,
@@ -199,10 +200,10 @@
   .bg-popover,
   .bg-muted,
   .bg-secondary {
-    background-color: #FAF9F6 !important;
+    background-color: #FFFFFF !important;
   }
 
-  /* Navbar / sidebar / any dark chrome → deep navy */
+  /* Navbar / sidebar / any chrome → solid white so the white logo blends */
   header.sticky,
   nav[data-sidebar],
   aside[data-sidebar],
@@ -215,36 +216,94 @@
   .bg-gray-900,
   .bg-neutral-900,
   .bg-zinc-900 {
-    background-color: #0F2333 !important;
-    color: #ffffff !important;
+    background-color: #FFFFFF !important;
+    color: #064E3B !important;
+    border-color: rgba(6, 78, 59, 0.08) !important;
   }
 
-  /* Primary buttons + main icons → teal */
+  /* Text, headings, navigation → Deep Emerald */
+  h1, h2, h3, h4, h5, h6,
+  nav a, header a, aside a,
+  [data-sidebar] a, [data-sidebar] button,
+  .text-foreground, .text-navy, .text-slate-900, .text-slate-800, .text-gray-900 {
+    color: #064E3B !important;
+  }
+
+  /* Primary buttons + active states + CTAs → Warm Amber Gold */
   button.bg-primary,
   .bg-primary,
   .bg-teal,
+  .bg-terracotta,
+  [data-state="active"],
+  [data-active="true"],
   [data-variant="default"].btn,
   button[type="submit"]:not([data-variant]):not(.bg-transparent):not(.bg-terracotta):not(.bg-destructive) {
-    background-color: #2DD4BF !important;
-    color: #ffffff !important;
+    background-color: #D97706 !important;
+    color: #FFFFFF !important;
+    border-color: #D97706 !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  button.bg-primary:hover,
+  .bg-primary:hover,
+  .bg-teal:hover,
+  .bg-terracotta:hover,
+  button[type="submit"]:hover {
+    background-color: #B45309 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px -12px rgba(217, 119, 6, 0.55);
   }
 
   .text-primary,
-  .text-teal {
-    color: #2DD4BF !important;
+  .text-teal,
+  .text-terracotta {
+    color: #D97706 !important;
   }
 
-  /* Lucide icons inherit currentColor — push main icons to teal
-     except when they're inside a dark chrome surface (kept white). */
+  /* Icons: amber accent in content areas, emerald in chrome */
   main svg.lucide,
   section svg.lucide,
   button svg.lucide {
-    color: #2DD4BF;
+    color: #D97706;
   }
   header svg.lucide,
   [data-sidebar] svg.lucide,
-  .bg-navy svg.lucide,
-  .bg-sidebar svg.lucide {
-    color: #ffffff !important;
+  nav svg.lucide {
+    color: #064E3B !important;
+  }
+
+  /* Bigger navbar logo so it reads as a brand mark */
+  header img[alt*="logo" i],
+  header img[src*="logo" i],
+  nav img[alt*="logo" i],
+  nav img[src*="logo" i] {
+    height: 64px !important;
+    width: auto !important;
+  }
+
+  /* Premium micro-interactions */
+  a, button {
+    transition: color 0.18s ease, background-color 0.18s ease,
+                transform 0.18s ease, box-shadow 0.18s ease,
+                opacity 0.18s ease;
+  }
+  a:hover { opacity: 0.85; }
+
+  /* Smooth fade-in for dashboard cards and content cards */
+  main .rounded-2xl,
+  main .rounded-xl,
+  main [class*="Card"],
+  section .rounded-2xl,
+  section .rounded-xl {
+    animation: lovable-card-in 0.5s ease-out both;
+  }
+  main .rounded-2xl:hover,
+  main .rounded-xl:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px -24px rgba(6, 78, 59, 0.25);
+  }
+
+  @keyframes lovable-card-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 }
