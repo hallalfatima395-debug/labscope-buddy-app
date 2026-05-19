@@ -179,8 +179,8 @@
    ============================================================ */
 @layer base {
   html, body {
-    background-color: #FAFAF7 !important;
-    color: #064E3B;
+    background-color: #F8FAFC !important;
+    color: #0F172A;
   }
 
   /* Surfaces → near-white */
@@ -203,8 +203,14 @@
     background-color: #FFFFFF !important;
   }
 
-  /* Navbar / sidebar / any chrome → solid white so the white logo blends */
-  header.sticky,
+  /* Top navbar stays white so the white UDL logo blends */
+  header.sticky {
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+  }
+
+  /* Sidebars → Deep Slate Blue with crisp white text */
   nav[data-sidebar],
   aside[data-sidebar],
   [data-sidebar="sidebar"],
@@ -216,31 +222,48 @@
   .bg-gray-900,
   .bg-neutral-900,
   .bg-zinc-900 {
-    background-color: #FFFFFF !important;
-    color: #064E3B !important;
-    border-color: rgba(6, 78, 59, 0.08) !important;
+    background-color: #0F172A !important;
+    color: #FFFFFF !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  [data-sidebar] a,
+  [data-sidebar] button,
+  [data-sidebar] span,
+  [data-sidebar] p {
+    color: #FFFFFF !important;
+  }
+  [data-sidebar] a:hover,
+  [data-sidebar] button:hover {
+    background-color: rgba(13, 148, 136, 0.12) !important;
+    color: #FFFFFF !important;
+  }
+  [data-sidebar] [data-active="true"],
+  [data-sidebar] [aria-current="page"],
+  [data-sidebar] a.active,
+  [data-sidebar] [data-state="active"] {
+    background-color: #0D9488 !important;
+    color: #FFFFFF !important;
+    border-color: #0D9488 !important;
   }
 
-  /* Text, headings, navigation → Deep Emerald */
+  /* Text, headings, navigation → Deep Charcoal Slate */
   h1, h2, h3, h4, h5, h6,
-  nav a, header a, aside a,
-  [data-sidebar] a, [data-sidebar] button,
+  header a, header nav a,
   .text-foreground, .text-navy, .text-slate-900, .text-slate-800, .text-gray-900 {
-    color: #064E3B !important;
+    color: #0F172A !important;
   }
 
-  /* Primary buttons + active states + CTAs → Warm Amber Gold */
+  /* Primary buttons + active states + CTAs → Vibrant Teal */
   button.bg-primary,
   .bg-primary,
   .bg-teal,
   .bg-terracotta,
-  [data-state="active"],
-  [data-active="true"],
+  [data-state="active"]:not([role="tab"]),
   [data-variant="default"].btn,
   button[type="submit"]:not([data-variant]):not(.bg-transparent):not(.bg-terracotta):not(.bg-destructive) {
-    background-color: #D97706 !important;
+    background-color: #0D9488 !important;
     color: #FFFFFF !important;
-    border-color: #D97706 !important;
+    border-color: #0D9488 !important;
     transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
   }
   button.bg-primary:hover,
@@ -248,27 +271,42 @@
   .bg-teal:hover,
   .bg-terracotta:hover,
   button[type="submit"]:hover {
-    background-color: #B45309 !important;
+    background-color: #0B7A70 !important;
     transform: translateY(-1px);
-    box-shadow: 0 10px 24px -12px rgba(217, 119, 6, 0.55);
+    box-shadow: 0 10px 24px -12px rgba(13, 148, 136, 0.55);
   }
 
   .text-primary,
   .text-teal,
   .text-terracotta {
-    color: #D97706 !important;
+    color: #0D9488 !important;
   }
 
-  /* Icons: amber accent in content areas, emerald in chrome */
+  /* Icons: teal accent in content areas, slate in chrome */
   main svg.lucide,
   section svg.lucide,
   button svg.lucide {
-    color: #D97706;
+    color: #0D9488;
   }
   header svg.lucide,
-  [data-sidebar] svg.lucide,
   nav svg.lucide {
-    color: #064E3B !important;
+    color: #0F172A !important;
+  }
+  [data-sidebar] svg.lucide {
+    color: #FFFFFF !important;
+  }
+  [data-sidebar] [data-active="true"] svg.lucide,
+  [data-sidebar] [aria-current="page"] svg.lucide {
+    color: #FFFFFF !important;
+  }
+
+  /* Premium SaaS metrics/data cards: white with thin teal top accent + soft shadow */
+  main .rounded-2xl,
+  main .rounded-xl,
+  main [class*="Card"] {
+    background-color: #FFFFFF !important;
+    border-top: 2px solid #0D9488 !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px -12px rgba(15, 23, 42, 0.10) !important;
   }
 
   /* ==== Auth modal scoped overrides (Connexion / Inscription only) ==== */
@@ -288,13 +326,13 @@
   }
   [role="dialog"][data-auth-modal] button[type="submit"],
   [role="dialog"][data-auth-modal] [data-state="active"][role="tab"] {
-    background-color: #854D0E !important;
+    background-color: #0D9488 !important;
     color: #FFFFFF !important;
-    border-color: #854D0E !important;
+    border-color: #0D9488 !important;
   }
   [role="dialog"][data-auth-modal] button[type="submit"]:hover {
-    background-color: #6B3D0A !important;
-    box-shadow: 0 10px 24px -12px rgba(133, 77, 14, 0.55) !important;
+    background-color: #0B7A70 !important;
+    box-shadow: 0 10px 24px -12px rgba(13, 148, 136, 0.55) !important;
   }
 
   /* Bigger navbar logo so it reads as a brand mark */
@@ -325,7 +363,7 @@
   main .rounded-2xl:hover,
   main .rounded-xl:hover {
     transform: translateY(-2px);
-    box-shadow: 0 18px 40px -24px rgba(6, 78, 59, 0.25);
+    box-shadow: 0 18px 40px -24px rgba(13, 148, 136, 0.30) !important;
   }
 
   @keyframes lovable-card-in {
@@ -347,7 +385,7 @@
     color: #FFFFFF !important;
   }
   .hero-outline:hover {
-    color: #064E3B !important;
+    color: #0F172A !important;
   }
 
   /* Logo blends natively into the white navbar (no awkward border/bg) */
