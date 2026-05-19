@@ -160,7 +160,7 @@ function Landing() {
               <p
                 key={`${lang}-${subIdx}`}
                 className="text-[11px] font-medium transition-opacity duration-500 sm:text-xs"
-                style={{ color: "var(--teal)" }}
+                style={{ color: "#064E3B" }}
               >
                 {subtitles[subIdx]}
               </p>
@@ -168,24 +168,24 @@ function Landing() {
           </div>
 
           <nav className="hidden items-center gap-8 md:flex">
-            <a href="#accueil" className="text-sm font-semibold text-foreground/80 transition-colors hover:text-teal">{t.nav.home}</a>
-            <a href="#services" className="text-sm font-semibold text-foreground/80 transition-colors hover:text-teal">{t.nav.services}</a>
-            <a href="#contact" className="text-sm font-semibold text-foreground/80 transition-colors hover:text-teal">{t.nav.contact}</a>
+            <a href="#accueil" className="text-sm font-semibold transition-colors" style={{ color: "#064E3B" }}>{t.nav.home}</a>
+            <a href="#services" className="text-sm font-semibold transition-colors" style={{ color: "#064E3B" }}>{t.nav.services}</a>
+            <a href="#contact" className="text-sm font-semibold transition-colors" style={{ color: "#064E3B" }}>{t.nav.contact}</a>
           </nav>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center rounded-full border p-0.5 text-xs font-semibold" style={{ borderColor: "rgba(15,35,51,0.15)", backgroundColor: "#FFFFFF" }}>
+            <div className="flex items-center rounded-full border p-0.5 text-xs font-semibold" style={{ borderColor: "rgba(6,78,59,0.25)", backgroundColor: "#FFFFFF" }}>
               <button
                 onClick={() => setLang("fr")}
                 className="rounded-full px-3 py-1 transition"
-                style={lang === "fr" ? { backgroundColor: "var(--navy)", color: "#FFFFFF" } : { color: "var(--navy)" }}
+                style={lang === "fr" ? { backgroundColor: "#D97706", color: "#FFFFFF" } : { color: "#064E3B" }}
               >
                 FR
               </button>
               <button
                 onClick={() => setLang("ar")}
                 className="rounded-full px-3 py-1 transition"
-                style={lang === "ar" ? { backgroundColor: "var(--navy)", color: "#FFFFFF" } : { color: "var(--navy)" }}
+                style={lang === "ar" ? { backgroundColor: "#D97706", color: "#FFFFFF" } : { color: "#064E3B" }}
               >
                 AR
               </button>
@@ -194,7 +194,7 @@ function Landing() {
               <button
                 type="button"
                 className="hidden rounded-full px-5 py-2 text-sm font-semibold shadow-sm transition hover:brightness-110 sm:inline-block"
-                style={{ backgroundColor: "var(--teal)", color: "var(--teal-foreground)" }}
+                style={{ backgroundColor: "#D97706", color: "#FFFFFF" }}
               >
                 {t.nav.login}
               </button>
@@ -202,8 +202,8 @@ function Landing() {
             <InscriptionModal defaultTab="inscription">
               <button
                 type="button"
-                className="hidden rounded-full border-2 bg-transparent px-5 py-2 text-sm font-semibold transition hover:bg-terracotta hover:text-white sm:inline-block"
-                style={{ borderColor: "var(--terracotta)", color: "var(--terracotta)" }}
+                className="hidden rounded-full border-2 bg-transparent px-5 py-2 text-sm font-semibold transition hover:bg-[#D97706] hover:text-white sm:inline-block"
+                style={{ borderColor: "#D97706", color: "#D97706" }}
               >
                 {t.nav.register}
               </button>
@@ -225,7 +225,7 @@ function Landing() {
           />
         </div>
         <div className="mx-auto flex min-h-[78vh] max-w-7xl flex-col items-start justify-center px-4 py-24 sm:px-6 lg:px-8">
-          <p className="mb-4 inline-block rounded-full border px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--teal)", borderColor: "rgba(45,212,191,0.55)" }}>
+          <p className="mb-4 inline-block rounded-full border px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#FFFFFF", borderColor: "rgba(255,255,255,0.55)" }}>
             {t.hero.eyebrow}
           </p>
           <h1 className="hero-title max-w-4xl font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
@@ -236,13 +236,13 @@ function Landing() {
             <button
               onClick={handleStart}
               className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-lg shadow-black/20 transition hover:brightness-110"
-              style={{ backgroundColor: "var(--teal)", color: "var(--teal-foreground)" }}
+              style={{ backgroundColor: "#D97706", color: "#FFFFFF" }}
             >
               {t.hero.cta} <ArrowRight className={`h-4 w-4 ${isAr ? "rotate-180" : ""}`} />
             </button>
             <a
               href="#services"
-              className="hero-outline inline-flex items-center gap-2 rounded-full border-2 border-white bg-transparent px-7 py-3 text-sm font-semibold transition hover:bg-white hover:text-navy"
+              className="hero-outline inline-flex items-center gap-2 rounded-full border-2 border-white bg-transparent px-7 py-3 text-sm font-semibold transition hover:bg-white hover:text-[#064E3B]"
             >
               {t.hero.more}
             </a>
@@ -254,7 +254,7 @@ function Landing() {
       <section id="services" className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.25em]" style={{ color: "var(--teal)" }}>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.25em]" style={{ color: "#D97706" }}>
               {t.services.eyebrow}
             </p>
             <h2 className="mt-4 font-display text-4xl font-semibold sm:text-5xl">{t.services.title}</h2>
@@ -268,19 +268,19 @@ function Landing() {
               <article
                 key={item.title}
                 className="group relative overflow-hidden rounded-2xl border bg-card p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-                style={{ borderColor: "rgba(45,212,191,0.2)" }}
+                style={{ borderColor: "rgba(6,78,59,0.15)" }}
               >
                 <span
                   className="absolute inset-x-0 top-0 h-1"
-                  style={{ background: "linear-gradient(90deg, var(--teal), var(--terracotta))" }}
+                  style={{ background: "linear-gradient(90deg, #064E3B, #D97706)" }}
                 />
                 <div
                   className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl"
-                  style={{ backgroundColor: "color-mix(in oklab, var(--teal) 18%, transparent)", color: "var(--navy)" }}
+                  style={{ backgroundColor: "rgba(6,78,59,0.10)", color: "#064E3B" }}
                 >
                   <Icon className="h-7 w-7" />
                 </div>
-                <h3 className="font-display text-2xl font-semibold">{item.title}</h3>
+                <h3 className="font-display text-2xl font-semibold" style={{ color: "#064E3B" }}>{item.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
               </article>
               );
@@ -290,16 +290,16 @@ function Landing() {
       </section>
 
       {/* Contact */}
-        <section id="contact" className="border-t py-24" style={{ backgroundColor: "color-mix(in oklab, var(--terracotta) 5%, var(--background))" }}>
+        <section id="contact" className="border-t py-24" style={{ backgroundColor: "#FAFAF7", borderColor: "rgba(6,78,59,0.10)" }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.25em]" style={{ color: "var(--terracotta)" }}>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.25em]" style={{ color: "#D97706" }}>
               {t.contact.eyebrow}
             </p>
-            <h2 className="mt-4 font-display text-4xl font-semibold sm:text-5xl">{t.contact.title}</h2>
+            <h2 className="mt-4 font-display text-4xl font-semibold sm:text-5xl" style={{ color: "#064E3B" }}>{t.contact.title}</h2>
           </div>
 
-        <form onSubmit={handleContact} className="mx-auto mt-14 grid max-w-3xl gap-4 rounded-2xl border bg-card p-8 shadow-sm" style={{ borderColor: "rgba(45,212,191,0.2)" }}>
+          <form onSubmit={handleContact} className="mx-auto mt-14 grid max-w-3xl gap-4 rounded-2xl border bg-card p-8 shadow-sm" style={{ borderColor: "rgba(6,78,59,0.15)" }}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.contact.nom}</label>
@@ -321,7 +321,7 @@ function Landing() {
               <Button
                 type="submit"
                 className="mt-2 w-full rounded-full py-6 text-sm font-semibold"
-                style={{ backgroundColor: "var(--teal)", color: "var(--teal-foreground)" }}
+                style={{ backgroundColor: "#D97706", color: "#FFFFFF" }}
               >
                 {t.contact.send}
               </Button>
@@ -332,36 +332,44 @@ function Landing() {
               Icon={MapPin}
               title={t.contact.address}
               lines={t.contact.addressLines}
-              bg="color-mix(in oklab, var(--teal) 12%, white)"
-              fg="var(--navy)"
+              bg="#FFFFFF"
+              fg="#064E3B"
+              iconBg="rgba(6,78,59,0.10)"
+              iconFg="#064E3B"
             />
             <InfoCard
               Icon={Mail}
               title={t.contact.emailLabel}
               lines={t.contact.emailLines}
-              bg="color-mix(in oklab, var(--terracotta) 12%, white)"
-              fg="var(--navy)"
+              bg="#FFFFFF"
+              fg="#064E3B"
+              iconBg="rgba(217,119,6,0.12)"
+              iconFg="#D97706"
             />
             <InfoCard
               Icon={Phone}
               title={t.contact.phone}
               lines={t.contact.phoneLines}
-              bg="color-mix(in oklab, var(--teal) 12%, white)"
-              fg="var(--navy)"
+              bg="#FFFFFF"
+              fg="#064E3B"
+              iconBg="rgba(6,78,59,0.10)"
+              iconFg="#064E3B"
             />
             <InfoCard
               Icon={Clock}
               title={t.contact.hours}
               lines={t.contact.hoursLines}
-              bg="color-mix(in oklab, var(--terracotta) 12%, white)"
-              fg="var(--navy)"
+              bg="#FFFFFF"
+              fg="#064E3B"
+              iconBg="rgba(217,119,6,0.12)"
+              iconFg="#D97706"
             />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer style={{ backgroundColor: "var(--navy)", color: "white" }}>
+      <footer style={{ backgroundColor: "#064E3B", color: "white" }}>
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <img src={udlLogo} alt="UDL" className="h-10 w-auto" />
