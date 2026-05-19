@@ -194,7 +194,7 @@ function Landing() {
               <button
                 type="button"
                 className="hidden rounded-full px-5 py-2 text-sm font-semibold shadow-sm transition hover:brightness-110 sm:inline-block"
-                style={{ backgroundColor: "var(--teal)", color: "var(--teal-foreground)" }}
+                style={{ backgroundColor: "#D97706", color: "#FFFFFF" }}
               >
                 {t.nav.login}
               </button>
@@ -202,8 +202,8 @@ function Landing() {
             <InscriptionModal defaultTab="inscription">
               <button
                 type="button"
-                className="hidden rounded-full border-2 bg-transparent px-5 py-2 text-sm font-semibold transition hover:bg-terracotta hover:text-white sm:inline-block"
-                style={{ borderColor: "var(--terracotta)", color: "var(--terracotta)" }}
+                className="hidden rounded-full border-2 bg-transparent px-5 py-2 text-sm font-semibold transition hover:bg-[#D97706] hover:text-white sm:inline-block"
+                style={{ borderColor: "#D97706", color: "#D97706" }}
               >
                 {t.nav.register}
               </button>
@@ -228,30 +228,21 @@ function Landing() {
           <p className="mb-4 inline-block rounded-full border px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--teal)", borderColor: "color-mix(in oklab, var(--teal) 50%, transparent)" }}>
             {t.hero.eyebrow}
           </p>
-          <h1 className="max-w-4xl font-display text-4xl font-semibold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
-            {t.hero.titleA} <span style={{ color: "var(--teal)" }}>{t.hero.titleB}</span> {t.hero.titleC}
+          <h1 className="hero-title max-w-4xl font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
+            {t.hero.titleA} {t.hero.titleB} {t.hero.titleC}
           </h1>
-          <p className="mt-6 max-w-2xl text-base text-white/85 sm:text-lg">{t.hero.desc}</p>
+          <p className="hero-desc mt-6 max-w-2xl text-base sm:text-lg">{t.hero.desc}</p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <button
               onClick={handleStart}
               className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-lg shadow-black/20 transition hover:brightness-110"
-              style={{ backgroundColor: "var(--teal)", color: "var(--teal-foreground)" }}
+              style={{ backgroundColor: "#D97706", color: "#FFFFFF" }}
             >
               {t.hero.cta} <ArrowRight className={`h-4 w-4 ${isAr ? "rotate-180" : ""}`} />
             </button>
-            <InscriptionModal defaultTab="inscription">
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-lg shadow-black/20 transition hover:brightness-110"
-                style={{ backgroundColor: "var(--terracotta)", color: "white" }}
-              >
-                {t.nav.register} <ArrowRight className={`h-4 w-4 ${isAr ? "rotate-180" : ""}`} />
-              </button>
-            </InscriptionModal>
             <a
               href="#services"
-              className="inline-flex items-center gap-2 rounded-full border-2 border-white/80 bg-transparent px-7 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-navy"
+              className="hero-outline inline-flex items-center gap-2 rounded-full border-2 border-white bg-transparent px-7 py-3 text-sm font-semibold transition hover:bg-white hover:text-[#064E3B]"
             >
               {t.hero.more}
             </a>
