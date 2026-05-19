@@ -47,6 +47,7 @@ export function InscriptionModal({ children, defaultTab = "inscription" }: { chi
     <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (o) setTab(defaultTab); }}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
+        data-auth-modal
         className="max-w-2xl max-h-[90vh] overflow-hidden p-0 gap-0 border-0"
         style={{ backgroundColor: "#FFFFFF" }}
       >
