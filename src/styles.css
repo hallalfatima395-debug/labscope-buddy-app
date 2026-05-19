@@ -307,3 +307,28 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 }
+
+/* Hero overrides — keep title/desc/outline button WHITE over dark hero image */
+@layer base {
+  .hero-title,
+  .hero-title * {
+    color: #FFFFFF !important;
+  }
+  .hero-desc {
+    color: rgba(255, 255, 255, 0.88) !important;
+  }
+  .hero-outline {
+    color: #FFFFFF !important;
+  }
+  .hero-outline:hover {
+    color: #064E3B !important;
+  }
+
+  /* Logo blends natively into the white navbar (no awkward border/bg) */
+  header img[alt*="logo" i],
+  nav img[alt*="logo" i] {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
