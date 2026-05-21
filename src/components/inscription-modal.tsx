@@ -51,31 +51,40 @@ export function InscriptionModal({ children, defaultTab = "inscription" }: { chi
         className="max-w-2xl max-h-[90vh] overflow-hidden p-0 gap-0 border-0"
         style={{ backgroundColor: "#FFFFFF" }}
       >
-        {/* Deep slate header banner */}
         <div
           className="flex items-center gap-4 px-6 py-5"
-          style={{ backgroundColor: "#0F2E2A", color: "#FFFFFF" }}
+          style={{ backgroundColor: "#0F172A", color: "#FFFFFF" }}
         >
           <div
             className="flex h-12 w-12 items-center justify-center rounded-full"
-            style={{ backgroundColor: "rgba(255,255,255,0.12)" }}
+            style={{ backgroundColor: "#2DD4BF" }}
           >
-            <FlaskConical className="h-6 w-6" style={{ color: "#FFFFFF" }} />
+            <FlaskConical className="h-6 w-6" style={{ color: "#0F172A" }} />
           </div>
           <div className="leading-tight">
             <p className="font-display text-xl font-semibold" style={{ color: "#FFFFFF" }}>LabScope</p>
-            <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)" }}>Espace authentification</p>
+            <p className="text-xs" style={{ color: "#5EEAD4" }}>Université Djillali Liabès — Sidi Bel Abbès</p>
           </div>
         </div>
 
         <div className="max-h-[calc(90vh-92px)] overflow-y-auto px-6 pb-6 pt-5" style={{ backgroundColor: "#FFFFFF" }}>
           <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)}>
             <TabsList
-              className="grid w-full grid-cols-2 rounded-full p-1"
-              style={{ backgroundColor: "#F4F1EC" }}
+              className="grid w-full grid-cols-2 rounded-none border-b bg-transparent p-0 h-auto"
+              style={{ borderColor: "#E5E7EB" }}
             >
-              <TabsTrigger value="connexion" className="rounded-full text-sm font-semibold">Connexion</TabsTrigger>
-              <TabsTrigger value="inscription" className="rounded-full text-sm font-semibold">Inscription</TabsTrigger>
+              <TabsTrigger
+                value="connexion"
+                className="rounded-none border-b-2 border-transparent bg-transparent py-3 text-sm font-semibold uppercase tracking-wide text-slate-500 data-[state=active]:border-[#0D9488] data-[state=active]:bg-transparent data-[state=active]:text-[#0D9488] data-[state=active]:shadow-none"
+              >
+                Connexion
+              </TabsTrigger>
+              <TabsTrigger
+                value="inscription"
+                className="rounded-none border-b-2 border-transparent bg-transparent py-3 text-sm font-semibold uppercase tracking-wide text-slate-500 data-[state=active]:border-[#0D9488] data-[state=active]:bg-transparent data-[state=active]:text-[#0D9488] data-[state=active]:shadow-none"
+              >
+                Inscription
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="connexion" className="pt-5">
@@ -124,20 +133,20 @@ function LoginForm({ onSuccess }: { onSuccess: (path: string) => void }) {
   return (
     <form onSubmit={submit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="lemail" style={{ color: "#1F2937" }}>Email</Label>
-        <Input id="lemail" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", color: "#1F2937" }} />
+        <Label htmlFor="lemail" className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#475569" }}>Email</Label>
+        <Input id="lemail" type="email" required placeholder="votre@email.com" value={email} onChange={(e) => setEmail(e.target.value)} style={{ backgroundColor: "#FFFFFF", borderColor: "#E2E8F0", color: "#0F172A" }} />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="lpw" style={{ color: "#1F2937" }}>Mot de passe</Label>
-        <Input id="lpw" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", color: "#1F2937" }} />
+        <Label htmlFor="lpw" className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#475569" }}>Mot de passe</Label>
+        <Input id="lpw" type="password" required placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} style={{ backgroundColor: "#FFFFFF", borderColor: "#E2E8F0", color: "#0F172A" }} />
       </div>
       <Button
         type="submit"
-        className="w-full rounded-full py-6 text-sm font-semibold"
+        className="w-full rounded-full py-6 text-sm font-semibold hover:opacity-90"
         disabled={busy}
-        style={{ backgroundColor: "#78350F", color: "#FFFFFF", borderColor: "#78350F" }}
+        style={{ backgroundColor: "#2DD4BF", color: "#0F172A", borderColor: "#2DD4BF" }}
       >
-        {busy ? "Connexion…" : "Se connecter"}
+        {busy ? "Connexion…" : "Se connecter →"}
       </Button>
     </form>
   );
@@ -149,7 +158,7 @@ function InscriptionFlow({ onDone }: { onDone: () => void }) {
   if (!role) {
     return (
       <div className="space-y-3">
-        <p className="text-sm" style={{ color: "#4B5563" }}>Choisissez votre profil :</p>
+        <p className="text-sm" style={{ color: "#475569" }}>Choisissez votre profil :</p>
         <div className="grid gap-3 sm:grid-cols-3">
           <RoleCard icon={<GraduationCap className="h-6 w-6" />} title="Enseignant-Chercheur" onClick={() => setRole("enseignant")} />
           <RoleCard icon={<BookOpen className="h-6 w-6" />} title="Doctorant" onClick={() => setRole("doctorant")} />
@@ -168,12 +177,12 @@ function RoleCard({ icon, title, onClick }: { icon: ReactNode; title: string; on
       type="button"
       onClick={onClick}
       className="group flex flex-col items-start gap-3 rounded-2xl border p-4 text-left transition hover:shadow-md"
-      style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", color: "#1F2937" }}
-      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#78350F")}
-      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#E5E7EB")}
+      style={{ backgroundColor: "#FFFFFF", borderColor: "#E2E8F0", color: "#0F172A" }}
+      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0D9488")}
+      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#E2E8F0")}
     >
-      <span className="rounded-full p-2" style={{ backgroundColor: "rgba(120,53,15,0.10)", color: "#78350F" }}>{icon}</span>
-      <span className="text-sm font-semibold" style={{ color: "#0F2E2A" }}>{title}</span>
+      <span className="rounded-full p-2" style={{ backgroundColor: "rgba(13,148,136,0.10)", color: "#0D9488" }}>{icon}</span>
+      <span className="text-sm font-semibold" style={{ color: "#0F172A" }}>{title}</span>
     </button>
   );
 }
@@ -235,7 +244,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <button type="button" onClick={onBack} className="inline-flex items-center gap-1 text-xs font-medium" style={{ color: "#78350F" }}>
+      <button type="button" onClick={onBack} className="inline-flex items-center gap-1 text-xs font-medium" style={{ color: "#0D9488" }}>
         <ArrowLeft className="h-3 w-3" /> Changer de profil
       </button>
 
@@ -297,11 +306,11 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
 
       <Button
         type="submit"
-        className="w-full rounded-full py-6 text-sm font-semibold"
+        className="w-full rounded-full py-6 text-sm font-semibold hover:opacity-90"
         disabled={busy}
-        style={{ backgroundColor: "#78350F", color: "#FFFFFF", borderColor: "#78350F" }}
+        style={{ backgroundColor: "#2DD4BF", color: "#0F172A", borderColor: "#2DD4BF" }}
       >
-        {busy ? "Inscription…" : "S'inscrire"}
+        {busy ? "Inscription…" : "S'inscrire →"}
       </Button>
     </form>
   );
@@ -310,7 +319,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
 function Field({ label, children, className = "" }: { label: string; children: ReactNode; className?: string }) {
   return (
     <div className={`space-y-1.5 ${className}`}>
-      <Label className="text-xs font-medium" style={{ color: "#1F2937" }}>{label}</Label>
+      <Label className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#475569" }}>{label}</Label>
       {children}
     </div>
   );
