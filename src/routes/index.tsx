@@ -235,7 +235,7 @@ function Landing() {
             }}
           />
         </div>
-        <div className={`mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-center px-6 py-20 sm:px-8 lg:px-12 ${isAr ? "items-end text-right" : "items-start text-left"}`}>
+        <div className={`mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-20 sm:px-8 lg:px-12 ${isAr ? "items-end text-right" : "items-start text-left"}`}>
           <p className="mb-4 inline-block rounded-full border px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: "#F1F5F9", borderColor: "rgba(241,245,249,0.45)" }}>
             {t.hero.eyebrow}
           </p>
