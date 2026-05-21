@@ -411,3 +411,53 @@
     box-shadow: none !important;
   }
 }
+
+/* ============================================================
+   Soft Pastel Pink accent — subtle, premium, used sparingly
+   alongside the primary Teal. Card glows, gentle borders,
+   light decorative washes.
+   ============================================================ */
+@layer base {
+  :root {
+    --rose-pastel: #FDF2F8;       /* lightest wash */
+    --rose-pastel-2: #FCE7F3;     /* soft tint */
+    --rose-border: rgba(244, 114, 182, 0.18);
+    --rose-glow: rgba(252, 231, 243, 0.55);
+  }
+
+  /* Card surfaces: keep white, add a barely-there rose glow + dual accent border */
+  main .rounded-2xl,
+  main .rounded-xl,
+  main [class*="Card"] {
+    background-image:
+      radial-gradient(120% 80% at 100% 0%, var(--rose-glow) 0%, transparent 55%) !important;
+    border-right: 1px solid var(--rose-border) !important;
+    border-bottom: 1px solid var(--rose-border) !important;
+  }
+  main .rounded-2xl:hover,
+  main .rounded-xl:hover {
+    box-shadow:
+      0 18px 40px -24px rgba(13, 148, 136, 0.30),
+      0 12px 32px -20px rgba(244, 114, 182, 0.28) !important;
+  }
+
+  /* Soft decorative section wash (opt-in via class) */
+  .rose-wash {
+    background:
+      linear-gradient(135deg, var(--rose-pastel) 0%, #FFFFFF 60%) !important;
+  }
+
+  /* Auth modal: faint rose vignette inside the white body */
+  [role="dialog"][data-auth-modal] [role="tabpanel"] {
+    background-image:
+      radial-gradient(140% 90% at 100% 0%, var(--rose-glow) 0%, transparent 60%) !important;
+  }
+
+  /* Inputs: gentle rose focus ring to pair with teal primary */
+  [role="dialog"][data-auth-modal] input:focus,
+  [role="dialog"][data-auth-modal] textarea:focus {
+    border-color: #F9A8D4 !important;
+    box-shadow: 0 0 0 3px rgba(252, 231, 243, 0.6) !important;
+    outline: none !important;
+  }
+}
