@@ -229,7 +229,7 @@ function Landing() {
         <div className="absolute inset-0 -z-10">
           <img src={heroImg} alt="Laboratoires de recherche UDL" className="h-full w-full object-cover" />
           <div
-            className="absolute inset-1 bg-black/50"
+            className="absolute inset-0 bg-black/50"
             style={{
               backgroundColor: "rgba(15, 23, 42, 0.65)",
             }}
