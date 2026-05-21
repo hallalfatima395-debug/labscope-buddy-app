@@ -373,17 +373,17 @@
   }
 }
 
-/* Hero overrides — keep title/desc/outline button WHITE over dark hero image */
+/* Hero overrides — soft off-white over dark hero image */
 @layer base {
   .hero-title,
   .hero-title * {
-    color: #FFFFFF !important;
+    color: #F1F5F9 !important;
   }
   .hero-desc {
-    color: rgba(255, 255, 255, 0.88) !important;
+    color: #E2E8F0 !important;
   }
   .hero-outline {
-    color: #FFFFFF !important;
+    color: #F1F5F9 !important;
   }
   .hero-outline:hover {
     color: #0F172A !important;

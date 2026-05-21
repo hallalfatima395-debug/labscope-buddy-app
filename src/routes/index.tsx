@@ -235,25 +235,26 @@ function Landing() {
             }}
           />
         </div>
-        <div className="mx-auto flex min-h-[78vh] max-w-7xl flex-col items-start justify-center px-4 py-24 sm:px-6 lg:px-8">
-          <p className="mb-4 inline-block rounded-full border px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#FFFFFF", borderColor: "rgba(255,255,255,0.55)" }}>
+        <div className="mx-auto flex min-h-[78vh] max-w-7xl flex-col items-center justify-center px-4 py-24 text-center sm:px-6 lg:px-8">
+          <p className="mb-4 inline-block rounded-full border px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#F1F5F9", borderColor: "rgba(241,245,249,0.55)" }}>
             {t.hero.eyebrow}
           </p>
-          <h1 className="hero-title max-w-5xl font-sans text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+          <h1 className="hero-title max-w-5xl font-sans text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
             {t.hero.titleA} {t.hero.titleB} {t.hero.titleC}
           </h1>
           <p className="hero-desc mt-6 max-w-2xl text-lg font-medium sm:text-xl">{t.hero.desc}</p>
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <button
               onClick={handleStart}
               className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-lg shadow-black/20 transition hover:brightness-110"
-              style={{ backgroundColor: "#0D9488", color: "#FFFFFF" }}
+              style={{ backgroundColor: "#0D9488", color: "#F1F5F9" }}
             >
               {t.hero.cta} <ArrowRight className={`h-4 w-4 ${isAr ? "rotate-180" : ""}`} />
             </button>
             <a
               href="#services"
-              className="hero-outline inline-flex items-center gap-2 rounded-full border-2 border-white bg-transparent px-7 py-3 text-sm font-semibold transition hover:bg-white hover:text-[#0F172A]"
+              className="hero-outline inline-flex items-center gap-2 rounded-full border-2 border-[#E2E8F0] bg-transparent px-7 py-3 text-sm font-semibold transition hover:bg-[#E2E8F0] hover:text-[#0F172A]"
+              style={{ color: "#F1F5F9" }}
             >
               {t.hero.more}
             </a>
