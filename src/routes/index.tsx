@@ -123,7 +123,19 @@ function Landing() {
   const { session, profile } = useAuth();
   const navigate = useNavigate();
   const [subIdx, setSubIdx] = useState(0);
-  const [lang, setLang] = useState<"fr" | "ar">("fr");
+  const [lang, setLang] = useState<"fr" | "ar">(() => {
+    if (typeof window === "undefined") return "fr";
+    const stored = window.localStorage.getItem("labscope-lang");
+    return stored === "ar" || stored === "fr" ? stored : "fr";
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("labscope-lang", lang);
+      document.documentElement.setAttribute("lang", lang);
+      document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+    }
+  }, [lang]);
 
   useEffect(() => {
     const t = setInterval(() => setSubIdx((i) => (i + 1) % SUBTITLES.length), 3500);
@@ -160,7 +172,7 @@ function Landing() {
               <p
                 key={`${lang}-${subIdx}`}
                 className="text-[11px] font-medium transition-opacity duration-500 sm:text-xs"
-                style={{ color: "#064E3B" }}
+                style={{ color: "#0F172A" }}
               >
                 {subtitles[subIdx]}
               </p>
@@ -168,24 +180,24 @@ function Landing() {
           </div>
 
           <nav className="hidden items-center gap-8 md:flex">
-            <a href="#accueil" className="text-sm font-semibold transition-colors" style={{ color: "#064E3B" }}>{t.nav.home}</a>
-            <a href="#services" className="text-sm font-semibold transition-colors" style={{ color: "#064E3B" }}>{t.nav.services}</a>
-            <a href="#contact" className="text-sm font-semibold transition-colors" style={{ color: "#064E3B" }}>{t.nav.contact}</a>
+            <a href="#accueil" className="text-sm font-semibold transition-colors" style={{ color: "#1E293B" }}>{t.nav.home}</a>
+            <a href="#services" className="text-sm font-semibold transition-colors" style={{ color: "#1E293B" }}>{t.nav.services}</a>
+            <a href="#contact" className="text-sm font-semibold transition-colors" style={{ color: "#1E293B" }}>{t.nav.contact}</a>
           </nav>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center rounded-full border p-0.5 text-xs font-semibold" style={{ borderColor: "rgba(6,78,59,0.25)", backgroundColor: "#FFFFFF" }}>
+            <div className="flex items-center rounded-full border p-0.5 text-xs font-semibold" style={{ borderColor: "rgba(15,23,42,0.18)", backgroundColor: "#FFFFFF" }}>
               <button
                 onClick={() => setLang("fr")}
                 className="rounded-full px-3 py-1 transition"
-                style={lang === "fr" ? { backgroundColor: "#D97706", color: "#FFFFFF" } : { color: "#064E3B" }}
+                style={lang === "fr" ? { backgroundColor: "#0D9488", color: "#FFFFFF" } : { color: "#1E293B" }}
               >
                 FR
               </button>
               <button
                 onClick={() => setLang("ar")}
                 className="rounded-full px-3 py-1 transition"
-                style={lang === "ar" ? { backgroundColor: "#D97706", color: "#FFFFFF" } : { color: "#064E3B" }}
+                style={lang === "ar" ? { backgroundColor: "#0D9488", color: "#FFFFFF" } : { color: "#1E293B" }}
               >
                 AR
               </button>
@@ -194,7 +206,7 @@ function Landing() {
               <button
                 type="button"
                 className="hidden rounded-full px-5 py-2 text-sm font-semibold shadow-sm transition hover:brightness-110 sm:inline-block"
-                style={{ backgroundColor: "#D97706", color: "#FFFFFF" }}
+                style={{ backgroundColor: "#0D9488", color: "#FFFFFF" }}
               >
                 {t.nav.login}
               </button>
@@ -202,8 +214,8 @@ function Landing() {
             <InscriptionModal defaultTab="inscription">
               <button
                 type="button"
-                className="hidden rounded-full border-2 bg-transparent px-5 py-2 text-sm font-semibold transition hover:bg-[#D97706] hover:text-white sm:inline-block"
-                style={{ borderColor: "#D97706", color: "#D97706" }}
+                className="hidden rounded-full border-2 bg-transparent px-5 py-2 text-sm font-semibold transition hover:bg-[#0D9488] hover:text-white sm:inline-block"
+                style={{ borderColor: "#0D9488", color: "#0D9488" }}
               >
                 {t.nav.register}
               </button>
@@ -228,33 +240,24 @@ function Landing() {
           <p className="mb-4 inline-block rounded-full border px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "#FFFFFF", borderColor: "rgba(255,255,255,0.55)" }}>
             {t.hero.eyebrow}
           </p>
-          <h1 className="hero-title max-w-4xl font-display text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
+          <h1 className="hero-title max-w-5xl font-sans text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
             {t.hero.titleA} {t.hero.titleB} {t.hero.titleC}
           </h1>
-          <p className="hero-desc mt-6 max-w-2xl text-base sm:text-lg">{t.hero.desc}</p>
+          <p className="hero-desc mt-6 max-w-2xl text-lg font-medium sm:text-xl">{t.hero.desc}</p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <button
               onClick={handleStart}
               className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-lg shadow-black/20 transition hover:brightness-110"
-              style={{ backgroundColor: "#D97706", color: "#FFFFFF" }}
+              style={{ backgroundColor: "#0D9488", color: "#FFFFFF" }}
             >
               {t.hero.cta} <ArrowRight className={`h-4 w-4 ${isAr ? "rotate-180" : ""}`} />
             </button>
             <a
               href="#services"
-              className="hero-outline inline-flex items-center gap-2 rounded-full border-2 border-white bg-transparent px-7 py-3 text-sm font-semibold transition hover:bg-white hover:text-[#064E3B]"
+              className="hero-outline inline-flex items-center gap-2 rounded-full border-2 border-white bg-transparent px-7 py-3 text-sm font-semibold transition hover:bg-white hover:text-[#0F172A]"
             >
               {t.hero.more}
             </a>
-            <InscriptionModal defaultTab="inscription">
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-lg shadow-black/20 transition hover:brightness-110"
-                style={{ backgroundColor: "#78350F", color: "#FFFFFF" }}
-              >
-                {t.nav.register}
-              </button>
-            </InscriptionModal>
           </div>
         </div>
       </section>
@@ -263,11 +266,10 @@ function Landing() {
       <section id="services" className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.25em]" style={{ color: "#D97706" }}>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.25em]" style={{ color: "#0D9488" }}>
               {t.services.eyebrow}
             </p>
             <h2 className="mt-4 font-display text-4xl font-semibold sm:text-5xl">{t.services.title}</h2>
-            <p className="mt-4 text-base text-muted-foreground">{t.services.sub}</p>
           </div>
 
           <div className="mt-14 grid gap-6 md:grid-cols-3">
@@ -277,20 +279,20 @@ function Landing() {
               <article
                 key={item.title}
                 className="group relative overflow-hidden rounded-2xl border bg-card p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-                style={{ borderColor: "rgba(6,78,59,0.15)" }}
+                style={{ borderColor: "rgba(15,23,42,0.10)" }}
               >
                 <span
                   className="absolute inset-x-0 top-0 h-1"
-                  style={{ background: "linear-gradient(90deg, #064E3B, #D97706)" }}
+                  style={{ background: "linear-gradient(90deg, #0D9488, #0F172A)" }}
                 />
                 <div
                   className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl"
-                  style={{ backgroundColor: "rgba(6,78,59,0.10)", color: "#064E3B" }}
+                  style={{ backgroundColor: "rgba(13,148,136,0.10)", color: "#0D9488" }}
                 >
                   <Icon className="h-7 w-7" />
                 </div>
-                <h3 className="font-display text-2xl font-semibold" style={{ color: "#064E3B" }}>{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
+                <h3 className="font-display text-2xl font-semibold" style={{ color: "#0F172A" }}>{item.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed" style={{ color: "#475569" }}>{item.desc}</p>
               </article>
               );
             })}
@@ -299,16 +301,16 @@ function Landing() {
       </section>
 
       {/* Contact */}
-        <section id="contact" className="border-t py-24" style={{ backgroundColor: "#FAFAF7", borderColor: "rgba(6,78,59,0.10)" }}>
+        <section id="contact" className="border-t py-24" style={{ backgroundColor: "#F8FAFC", borderColor: "rgba(15,23,42,0.08)" }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.25em]" style={{ color: "#D97706" }}>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.25em]" style={{ color: "#0D9488" }}>
               {t.contact.eyebrow}
             </p>
-            <h2 className="mt-4 font-display text-4xl font-semibold sm:text-5xl" style={{ color: "#064E3B" }}>{t.contact.title}</h2>
+            <h2 className="mt-4 font-display text-4xl font-semibold sm:text-5xl" style={{ color: "#0F172A" }}>{t.contact.title}</h2>
           </div>
 
-          <form onSubmit={handleContact} className="mx-auto mt-14 grid max-w-3xl gap-4 rounded-2xl border bg-card p-8 shadow-sm" style={{ borderColor: "rgba(6,78,59,0.15)" }}>
+          <form onSubmit={handleContact} className="mx-auto mt-14 grid max-w-3xl gap-4 rounded-2xl border bg-card p-8 shadow-sm" style={{ borderColor: "rgba(15,23,42,0.10)" }}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.contact.nom}</label>
@@ -330,7 +332,7 @@ function Landing() {
               <Button
                 type="submit"
                 className="mt-2 w-full rounded-full py-6 text-sm font-semibold"
-                style={{ backgroundColor: "#D97706", color: "#FFFFFF" }}
+                style={{ backgroundColor: "#0D9488", color: "#FFFFFF" }}
               >
                 {t.contact.send}
               </Button>
@@ -341,7 +343,7 @@ function Landing() {
               Icon={MapPin}
               title={t.contact.address}
               lines={t.contact.addressLines}
-              bg="#0F2E2A"
+              bg="#0F172A"
               fg="#FFFFFF"
               iconBg="rgba(255,255,255,0.12)"
               iconFg="#FFFFFF"
@@ -350,19 +352,19 @@ function Landing() {
               Icon={Mail}
               title={t.contact.emailLabel}
               lines={t.contact.emailLines}
-              bg="#E6F4EC"
-              fg="#064E3B"
-              iconBg="rgba(6,78,59,0.12)"
-              iconFg="#064E3B"
+              bg="#ECFDF5"
+              fg="#0F172A"
+              iconBg="rgba(13,148,136,0.14)"
+              iconFg="#0D9488"
             />
             <InfoCard
               Icon={Clock}
               title={t.contact.hours}
               lines={t.contact.hoursLines}
-              bg="#FBEDE4"
-              fg="#7A3E1D"
-              iconBg="rgba(122,62,29,0.12)"
-              iconFg="#7A3E1D"
+              bg="#F1F5F9"
+              fg="#0F172A"
+              iconBg="rgba(15,23,42,0.10)"
+              iconFg="#0F172A"
             />
           </div>
         </div>
@@ -373,14 +375,14 @@ function Landing() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <img src={udlLogo} alt="UDL" className="h-9 w-auto" />
-            <p className="font-display text-lg" style={{ color: "#064E3B" }}>LabScope</p>
+            <p className="font-display text-lg" style={{ color: "#0F172A" }}>LabScope</p>
             <p className="text-xs" style={{ color: "#6B7280" }}>{t.footer}</p>
           </div>
           <div className="flex items-center gap-6 text-xs font-medium">
-            <a href="#" style={{ color: "#064E3B" }} className="hover:underline">
+            <a href="#" style={{ color: "#1E293B" }} className="hover:underline">
               {isAr ? "سياسة الخصوصية" : "Politique de confidentialité"}
             </a>
-            <a href="#" style={{ color: "#064E3B" }} className="hover:underline">
+            <a href="#" style={{ color: "#1E293B" }} className="hover:underline">
               {isAr ? "إشعارات قانونية" : "Mentions légales"}
             </a>
           </div>
