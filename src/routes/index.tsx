@@ -229,10 +229,9 @@ function Landing() {
         <div className="absolute inset-0 -z-10">
           <img src={heroImg} alt="Laboratoires de recherche UDL" className="h-full w-full object-cover" />
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 bg-black/50"
             style={{
-              background:
-                "linear-gradient(120deg, color-mix(in oklab, var(--navy) 88%, transparent) 0%, color-mix(in oklab, var(--navy) 60%, transparent) 100%)",
+              backgroundColor: "rgba(15, 23, 42, 0.65)",
             }}
           />
         </div>
