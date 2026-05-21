@@ -314,6 +314,15 @@
   [role="dialog"][data-auth-modal] {
     background-color: #FFFFFF !important;
   }
+  [role="dialog"][data-auth-modal] [role="tabpanel"],
+  [role="dialog"][data-auth-modal] [role="tablist"],
+  [role="dialog"][data-auth-modal] form,
+  [role="dialog"][data-auth-modal] form > div,
+  [role="dialog"][data-auth-modal] .space-y-4,
+  [role="dialog"][data-auth-modal] .space-y-2 {
+    background-color: #FFFFFF !important;
+    background-image: none !important;
+  }
   [role="dialog"][data-auth-modal] input,
   [role="dialog"][data-auth-modal] textarea,
   [role="dialog"][data-auth-modal] [data-slot="select-trigger"],
