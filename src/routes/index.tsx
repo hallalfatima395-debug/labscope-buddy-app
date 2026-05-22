@@ -397,12 +397,12 @@ function Landing() {
             <p className="text-xs" style={{ color: "#6B7280" }}>{t.footer}</p>
           </div>
           <div className="flex items-center gap-6 text-xs font-medium">
-            <a href="#" style={{ color: "#1E293B" }} className="hover:underline">
+            <Link to="/politique-confidentialite" style={{ color: "#1E293B" }} className="hover:underline">
               {isAr ? "سياسة الخصوصية" : "Politique de confidentialité"}
-            </a>
-            <a href="#" style={{ color: "#1E293B" }} className="hover:underline">
+            </Link>
+            <Link to="/mentions-legales" style={{ color: "#1E293B" }} className="hover:underline">
               {isAr ? "إشعارات قانونية" : "Mentions légales"}
-            </a>
+            </Link>
           </div>
         </div>
       </footer>

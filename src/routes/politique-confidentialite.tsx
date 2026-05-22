@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Shield, UserCheck, Lock, Eye, Trash2, Cookie } from "lucide-react";
+import { Shield, UserCheck, Lock, Eye, Trash2, Cookie, Mail } from "lucide-react";
 import udlLogo from "@/assets/udl-logo.png";
 
 export const Route = createFileRoute("/politique-confidentialite")({

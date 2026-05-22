@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PolitiqueConfidentialiteRouteImport } from './routes/politique-confidentialite'
+import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardDoctorantRouteImport } from './routes/dashboard.doctorant'
@@ -35,6 +37,17 @@ import { Route as DashboardAdminEquipesRouteImport } from './routes/dashboard.ad
 import { Route as DashboardAdminDoctorantsRouteImport } from './routes/dashboard.admin.doctorants'
 import { Route as DashboardAdminBilansRouteImport } from './routes/dashboard.admin.bilans'
 
+const PolitiqueConfidentialiteRoute =
+  PolitiqueConfidentialiteRouteImport.update({
+    id: '/politique-confidentialite',
+    path: '/politique-confidentialite',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -173,6 +186,8 @@ const DashboardAdminBilansRoute = DashboardAdminBilansRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
+  '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
   '/dashboard/chercheur': typeof DashboardChercheurRouteWithChildren
   '/dashboard/directeur': typeof DashboardDirecteurRouteWithChildren
@@ -200,6 +215,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
+  '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
@@ -224,6 +241,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
+  '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
   '/dashboard/chercheur': typeof DashboardChercheurRouteWithChildren
   '/dashboard/directeur': typeof DashboardDirecteurRouteWithChildren
@@ -253,6 +272,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/mentions-legales'
+    | '/politique-confidentialite'
     | '/dashboard/admin'
     | '/dashboard/chercheur'
     | '/dashboard/directeur'
@@ -280,6 +301,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/mentions-legales'
+    | '/politique-confidentialite'
     | '/dashboard/admin/bilans'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
@@ -303,6 +326,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/login'
+    | '/mentions-legales'
+    | '/politique-confidentialite'
     | '/dashboard/admin'
     | '/dashboard/chercheur'
     | '/dashboard/directeur'
@@ -331,6 +356,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
+  MentionsLegalesRoute: typeof MentionsLegalesRoute
+  PolitiqueConfidentialiteRoute: typeof PolitiqueConfidentialiteRoute
   DashboardAdminRoute: typeof DashboardAdminRouteWithChildren
   DashboardChercheurRoute: typeof DashboardChercheurRouteWithChildren
   DashboardDirecteurRoute: typeof DashboardDirecteurRouteWithChildren
@@ -339,6 +366,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/politique-confidentialite': {
+      id: '/politique-confidentialite'
+      path: '/politique-confidentialite'
+      fullPath: '/politique-confidentialite'
+      preLoaderRoute: typeof PolitiqueConfidentialiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mentions-legales': {
+      id: '/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof MentionsLegalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -595,6 +636,8 @@ const DashboardDoctorantRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
+  MentionsLegalesRoute: MentionsLegalesRoute,
+  PolitiqueConfidentialiteRoute: PolitiqueConfidentialiteRoute,
   DashboardAdminRoute: DashboardAdminRouteWithChildren,
   DashboardChercheurRoute: DashboardChercheurRouteWithChildren,
   DashboardDirecteurRoute: DashboardDirecteurRouteWithChildren,
