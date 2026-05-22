@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, BookOpen, GraduationCap, ClipboardList, LogOut, MessageSquare, UserPlus } from "lucide-react";
+import { LayoutDashboard, Users, BookOpen, GraduationCap, ClipboardList, LogOut, MessageSquare } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -24,7 +24,6 @@ const items = [
   { title: "Doctorants", url: "/dashboard/admin/doctorants", icon: GraduationCap },
   { title: "Bilans", url: "/dashboard/admin/bilans", icon: ClipboardList },
   { title: "Messages", url: "/dashboard/admin/messages", icon: MessageSquare },
-  { title: "Demandes d'inscription", url: "/dashboard/admin/inscriptions", icon: UserPlus },
 ] as const;
 
 export function AdminLayout({ children }: { children: ReactNode }) {
