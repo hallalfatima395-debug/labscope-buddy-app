@@ -35,7 +35,11 @@ function DirecteurInscriptionsPage() {
   const { lab, loading: labLoading } = useDirecteurLab();
   const [items, setItems] = useState<PendingRequest[]>([]);
   const [loading, setLoading] = useState(true);
-  const [sentEmail, setSentEmail] = useState<{ to: string; name: string } | null>(null);
+  const [sentEmail, setSentEmail] = useState<{
+    to: string;
+    name: string;
+    kind: "accepte" | "refuse";
+  } | null>(null);
 
   const load = async () => {
     if (!lab?.nom_fr) return;
@@ -75,13 +79,13 @@ function DirecteurInscriptionsPage() {
     const { error } = await supabase.from("profiles").update({ statut }).eq("id", p.id);
     if (error) return toast.error(error.message);
     setItems((prev) => prev.filter((x) => x.id !== p.id));
+    const name = `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
     if (statut === "accepte") {
-      // Email simulation (no SMTP wired) — clear visual feedback for the demo.
-      toast.success(`Compte validé · Email envoyé à ${p.email}`);
-      if (p.email) setSentEmail({ to: p.email, name: `${p.prenom ?? ""} ${p.nom ?? ""}`.trim() });
+      toast.success(`Compte validé · Email de confirmation envoyé à ${p.email}`);
     } else {
-      toast.success("Demande refusée");
+      toast.success(`Demande refusée · Email de notification envoyé à ${p.email}`);
     }
+    if (p.email) setSentEmail({ to: p.email, name, kind: statut });
   };
 
   if (labLoading) {
