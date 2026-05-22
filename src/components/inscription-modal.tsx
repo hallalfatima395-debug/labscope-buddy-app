@@ -240,11 +240,6 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
       });
       if (error || !data.user) return toast.error(error?.message ?? "Inscription impossible");
 
-      const { error: pErr } = await supabase.from("profiles").upsert({
-        id: data.user.id, email: f.email, nom: f.nom, prenom: f.prenom, role, statut: "en_attente",
-      });
-      if (pErr) return toast.error(pErr.message);
-
       await supabase.auth.signOut();
       toast.success("Inscription réussie ! Veuillez attendre une notification d'acceptation.");
       onDone();
