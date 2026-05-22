@@ -217,6 +217,17 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
 
     setBusy(true);
     try {
+      const labName =
+        role === "directeur" ? f.lab_fr.trim() : f.laboratoire.trim();
+      if (labName) {
+        const { data: exists, error: chkErr } = await supabase.rpc(
+          "has_existing_lab_request" as never,
+          { p_email: f.email, p_lab: labName } as never,
+        );
+        if (chkErr) return toast.error(chkErr.message);
+        if (exists) return toast.error("Vous avez déjà soumis une demande pour ce laboratoire");
+      }
+
       const meta: Record<string, unknown> = { nom: f.nom, prenom: f.prenom, role, date_naissance: f.dob };
       if (role === "enseignant") Object.assign(meta, { grade: f.grade, specialite: f.specialite, laboratoire: f.laboratoire });
       if (role === "doctorant") Object.assign(meta, { sujet_these: f.sujet_these, directeur_these: f.directeur_these, laboratoire: f.laboratoire });
