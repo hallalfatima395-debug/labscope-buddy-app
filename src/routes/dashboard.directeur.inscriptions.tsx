@@ -172,8 +172,13 @@ function DirecteurInscriptionsPage() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Mail className="h-5 w-5" style={{ color: "var(--teal, #0D9488)" }} />
-              Email de confirmation envoyé
+              <Mail
+                className="h-5 w-5"
+                style={{ color: sentEmail?.kind === "refuse" ? "#dc2626" : "var(--teal, #0D9488)" }}
+              />
+              {sentEmail?.kind === "refuse"
+                ? "Email de refus envoyé"
+                : "Email de confirmation envoyé"}
             </DialogTitle>
             <DialogDescription>
               Simulation d'envoi — aperçu du message transmis à l'utilisateur.
@@ -184,15 +189,26 @@ function DirecteurInscriptionsPage() {
               <span className="font-semibold">À :</span> {sentEmail?.to}
             </p>
             <p>
-              <span className="font-semibold">Objet :</span> Votre inscription au laboratoire a été acceptée
+              <span className="font-semibold">Objet :</span>{" "}
+              {sentEmail?.kind === "refuse"
+                ? "Suite à votre demande d'inscription au laboratoire"
+                : "Votre inscription au laboratoire a été acceptée"}
             </p>
             <hr className="my-2" />
             <p>Bonjour {sentEmail?.name || ""},</p>
-            <p>
-              Félicitations, votre demande d'inscription au laboratoire{" "}
-              <span className="font-medium">{lab.nom_fr}</span> a été acceptée par le directeur. Vous
-              pouvez désormais vous connecter à votre espace.
-            </p>
+            {sentEmail?.kind === "refuse" ? (
+              <p>
+                Nous regrettons de vous informer que votre demande d'inscription au laboratoire{" "}
+                <span className="font-medium">{lab.nom_fr}</span> n'a pas été retenue par le
+                directeur. Merci pour votre intérêt.
+              </p>
+            ) : (
+              <p>
+                Félicitations, votre demande d'inscription au laboratoire{" "}
+                <span className="font-medium">{lab.nom_fr}</span> a été acceptée par le directeur.
+                Vous pouvez désormais vous connecter à votre espace.
+              </p>
+            )}
             <p className="text-muted-foreground">— L'équipe LabScope</p>
           </div>
           <DialogFooter>
