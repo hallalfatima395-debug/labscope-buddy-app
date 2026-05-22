@@ -369,6 +369,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_existing_lab_request: {
+        Args: { p_email: string; p_lab: string }
+        Returns: boolean
+      }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
