@@ -34,7 +34,6 @@ import { Route as DashboardChercheurPublicationsRouteImport } from './routes/das
 import { Route as DashboardChercheurBilanRouteImport } from './routes/dashboard.chercheur.bilan'
 import { Route as DashboardAdminPublicationsRouteImport } from './routes/dashboard.admin.publications'
 import { Route as DashboardAdminMessagesRouteImport } from './routes/dashboard.admin.messages'
-import { Route as DashboardAdminInscriptionsRouteImport } from './routes/dashboard.admin.inscriptions'
 import { Route as DashboardAdminEquipesRouteImport } from './routes/dashboard.admin.equipes'
 import { Route as DashboardAdminDoctorantsRouteImport } from './routes/dashboard.admin.doctorants'
 import { Route as DashboardAdminBilansRouteImport } from './routes/dashboard.admin.bilans'
@@ -174,12 +173,6 @@ const DashboardAdminMessagesRoute = DashboardAdminMessagesRouteImport.update({
   path: '/messages',
   getParentRoute: () => DashboardAdminRoute,
 } as any)
-const DashboardAdminInscriptionsRoute =
-  DashboardAdminInscriptionsRouteImport.update({
-    id: '/inscriptions',
-    path: '/inscriptions',
-    getParentRoute: () => DashboardAdminRoute,
-  } as any)
 const DashboardAdminEquipesRoute = DashboardAdminEquipesRouteImport.update({
   id: '/equipes',
   path: '/equipes',
@@ -209,7 +202,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
-  '/dashboard/admin/inscriptions': typeof DashboardAdminInscriptionsRoute
   '/dashboard/admin/messages': typeof DashboardAdminMessagesRoute
   '/dashboard/admin/publications': typeof DashboardAdminPublicationsRoute
   '/dashboard/chercheur/bilan': typeof DashboardChercheurBilanRoute
@@ -236,7 +228,6 @@ export interface FileRoutesByTo {
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
-  '/dashboard/admin/inscriptions': typeof DashboardAdminInscriptionsRoute
   '/dashboard/admin/messages': typeof DashboardAdminMessagesRoute
   '/dashboard/admin/publications': typeof DashboardAdminPublicationsRoute
   '/dashboard/chercheur/bilan': typeof DashboardChercheurBilanRoute
@@ -268,7 +259,6 @@ export interface FileRoutesById {
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
-  '/dashboard/admin/inscriptions': typeof DashboardAdminInscriptionsRoute
   '/dashboard/admin/messages': typeof DashboardAdminMessagesRoute
   '/dashboard/admin/publications': typeof DashboardAdminPublicationsRoute
   '/dashboard/chercheur/bilan': typeof DashboardChercheurBilanRoute
@@ -301,7 +291,6 @@ export interface FileRouteTypes {
     | '/dashboard/admin/bilans'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
-    | '/dashboard/admin/inscriptions'
     | '/dashboard/admin/messages'
     | '/dashboard/admin/publications'
     | '/dashboard/chercheur/bilan'
@@ -328,7 +317,6 @@ export interface FileRouteTypes {
     | '/dashboard/admin/bilans'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
-    | '/dashboard/admin/inscriptions'
     | '/dashboard/admin/messages'
     | '/dashboard/admin/publications'
     | '/dashboard/chercheur/bilan'
@@ -359,7 +347,6 @@ export interface FileRouteTypes {
     | '/dashboard/admin/bilans'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
-    | '/dashboard/admin/inscriptions'
     | '/dashboard/admin/messages'
     | '/dashboard/admin/publications'
     | '/dashboard/chercheur/bilan'
@@ -567,13 +554,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAdminMessagesRouteImport
       parentRoute: typeof DashboardAdminRoute
     }
-    '/dashboard/admin/inscriptions': {
-      id: '/dashboard/admin/inscriptions'
-      path: '/inscriptions'
-      fullPath: '/dashboard/admin/inscriptions'
-      preLoaderRoute: typeof DashboardAdminInscriptionsRouteImport
-      parentRoute: typeof DashboardAdminRoute
-    }
     '/dashboard/admin/equipes': {
       id: '/dashboard/admin/equipes'
       path: '/equipes'
@@ -602,7 +582,6 @@ interface DashboardAdminRouteChildren {
   DashboardAdminBilansRoute: typeof DashboardAdminBilansRoute
   DashboardAdminDoctorantsRoute: typeof DashboardAdminDoctorantsRoute
   DashboardAdminEquipesRoute: typeof DashboardAdminEquipesRoute
-  DashboardAdminInscriptionsRoute: typeof DashboardAdminInscriptionsRoute
   DashboardAdminMessagesRoute: typeof DashboardAdminMessagesRoute
   DashboardAdminPublicationsRoute: typeof DashboardAdminPublicationsRoute
   DashboardAdminIndexRoute: typeof DashboardAdminIndexRoute
@@ -612,7 +591,6 @@ const DashboardAdminRouteChildren: DashboardAdminRouteChildren = {
   DashboardAdminBilansRoute: DashboardAdminBilansRoute,
   DashboardAdminDoctorantsRoute: DashboardAdminDoctorantsRoute,
   DashboardAdminEquipesRoute: DashboardAdminEquipesRoute,
-  DashboardAdminInscriptionsRoute: DashboardAdminInscriptionsRoute,
   DashboardAdminMessagesRoute: DashboardAdminMessagesRoute,
   DashboardAdminPublicationsRoute: DashboardAdminPublicationsRoute,
   DashboardAdminIndexRoute: DashboardAdminIndexRoute,
@@ -690,3 +668,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
