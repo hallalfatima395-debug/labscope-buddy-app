@@ -374,6 +374,19 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      pending_requests_for_lab: {
+        Args: { p_lab: string }
+        Returns: {
+          created_at: string
+          email: string
+          id: string
+          laboratoire: string
+          nom: string
+          prenom: string
+          role: string
+          statut: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
