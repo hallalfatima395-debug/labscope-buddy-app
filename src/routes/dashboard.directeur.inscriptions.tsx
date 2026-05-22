@@ -35,7 +35,11 @@ function DirecteurInscriptionsPage() {
   const { lab, loading: labLoading } = useDirecteurLab();
   const [items, setItems] = useState<PendingRequest[]>([]);
   const [loading, setLoading] = useState(true);
-  const [sentEmail, setSentEmail] = useState<{ to: string; name: string } | null>(null);
+  const [sentEmail, setSentEmail] = useState<{
+    to: string;
+    name: string;
+    kind: "accepte" | "refuse";
+  } | null>(null);
 
   const load = async () => {
     if (!lab?.nom_fr) return;
@@ -75,13 +79,13 @@ function DirecteurInscriptionsPage() {
     const { error } = await supabase.from("profiles").update({ statut }).eq("id", p.id);
     if (error) return toast.error(error.message);
     setItems((prev) => prev.filter((x) => x.id !== p.id));
+    const name = `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
     if (statut === "accepte") {
-      // Email simulation (no SMTP wired) — clear visual feedback for the demo.
-      toast.success(`Compte validé · Email envoyé à ${p.email}`);
-      if (p.email) setSentEmail({ to: p.email, name: `${p.prenom ?? ""} ${p.nom ?? ""}`.trim() });
+      toast.success(`Compte validé · Email de confirmation envoyé à ${p.email}`);
     } else {
-      toast.success("Demande refusée");
+      toast.success(`Demande refusée · Email de notification envoyé à ${p.email}`);
     }
+    if (p.email) setSentEmail({ to: p.email, name, kind: statut });
   };
 
   if (labLoading) {
@@ -168,8 +172,13 @@ function DirecteurInscriptionsPage() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Mail className="h-5 w-5" style={{ color: "var(--teal, #0D9488)" }} />
-              Email de confirmation envoyé
+              <Mail
+                className="h-5 w-5"
+                style={{ color: sentEmail?.kind === "refuse" ? "#dc2626" : "var(--teal, #0D9488)" }}
+              />
+              {sentEmail?.kind === "refuse"
+                ? "Email de refus envoyé"
+                : "Email de confirmation envoyé"}
             </DialogTitle>
             <DialogDescription>
               Simulation d'envoi — aperçu du message transmis à l'utilisateur.
@@ -180,15 +189,26 @@ function DirecteurInscriptionsPage() {
               <span className="font-semibold">À :</span> {sentEmail?.to}
             </p>
             <p>
-              <span className="font-semibold">Objet :</span> Votre inscription au laboratoire a été acceptée
+              <span className="font-semibold">Objet :</span>{" "}
+              {sentEmail?.kind === "refuse"
+                ? "Suite à votre demande d'inscription au laboratoire"
+                : "Votre inscription au laboratoire a été acceptée"}
             </p>
             <hr className="my-2" />
             <p>Bonjour {sentEmail?.name || ""},</p>
-            <p>
-              Félicitations, votre demande d'inscription au laboratoire{" "}
-              <span className="font-medium">{lab.nom_fr}</span> a été acceptée par le directeur. Vous
-              pouvez désormais vous connecter à votre espace.
-            </p>
+            {sentEmail?.kind === "refuse" ? (
+              <p>
+                Nous regrettons de vous informer que votre demande d'inscription au laboratoire{" "}
+                <span className="font-medium">{lab.nom_fr}</span> n'a pas été retenue par le
+                directeur. Merci pour votre intérêt.
+              </p>
+            ) : (
+              <p>
+                Félicitations, votre demande d'inscription au laboratoire{" "}
+                <span className="font-medium">{lab.nom_fr}</span> a été acceptée par le directeur.
+                Vous pouvez désormais vous connecter à votre espace.
+              </p>
+            )}
             <p className="text-muted-foreground">— L'équipe LabScope</p>
           </div>
           <DialogFooter>
