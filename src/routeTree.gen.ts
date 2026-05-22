@@ -26,6 +26,7 @@ import { Route as DashboardDoctorantPublicationsRouteImport } from './routes/das
 import { Route as DashboardDoctorantBilanRouteImport } from './routes/dashboard.doctorant.bilan'
 import { Route as DashboardDirecteurPublicationsRouteImport } from './routes/dashboard.directeur.publications'
 import { Route as DashboardDirecteurProjetsRouteImport } from './routes/dashboard.directeur.projets'
+import { Route as DashboardDirecteurInscriptionsRouteImport } from './routes/dashboard.directeur.inscriptions'
 import { Route as DashboardDirecteurEquipesRouteImport } from './routes/dashboard.directeur.equipes'
 import { Route as DashboardDirecteurChercheursRouteImport } from './routes/dashboard.directeur.chercheurs'
 import { Route as DashboardDirecteurBilansRouteImport } from './routes/dashboard.directeur.bilans'
@@ -127,6 +128,12 @@ const DashboardDirecteurProjetsRoute =
     path: '/projets',
     getParentRoute: () => DashboardDirecteurRoute,
   } as any)
+const DashboardDirecteurInscriptionsRoute =
+  DashboardDirecteurInscriptionsRouteImport.update({
+    id: '/inscriptions',
+    path: '/inscriptions',
+    getParentRoute: () => DashboardDirecteurRoute,
+  } as any)
 const DashboardDirecteurEquipesRoute =
   DashboardDirecteurEquipesRouteImport.update({
     id: '/equipes',
@@ -210,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/directeur/bilans': typeof DashboardDirecteurBilansRoute
   '/dashboard/directeur/chercheurs': typeof DashboardDirecteurChercheursRoute
   '/dashboard/directeur/equipes': typeof DashboardDirecteurEquipesRoute
+  '/dashboard/directeur/inscriptions': typeof DashboardDirecteurInscriptionsRoute
   '/dashboard/directeur/projets': typeof DashboardDirecteurProjetsRoute
   '/dashboard/directeur/publications': typeof DashboardDirecteurPublicationsRoute
   '/dashboard/doctorant/bilan': typeof DashboardDoctorantBilanRoute
@@ -236,6 +244,7 @@ export interface FileRoutesByTo {
   '/dashboard/directeur/bilans': typeof DashboardDirecteurBilansRoute
   '/dashboard/directeur/chercheurs': typeof DashboardDirecteurChercheursRoute
   '/dashboard/directeur/equipes': typeof DashboardDirecteurEquipesRoute
+  '/dashboard/directeur/inscriptions': typeof DashboardDirecteurInscriptionsRoute
   '/dashboard/directeur/projets': typeof DashboardDirecteurProjetsRoute
   '/dashboard/directeur/publications': typeof DashboardDirecteurPublicationsRoute
   '/dashboard/doctorant/bilan': typeof DashboardDoctorantBilanRoute
@@ -267,6 +276,7 @@ export interface FileRoutesById {
   '/dashboard/directeur/bilans': typeof DashboardDirecteurBilansRoute
   '/dashboard/directeur/chercheurs': typeof DashboardDirecteurChercheursRoute
   '/dashboard/directeur/equipes': typeof DashboardDirecteurEquipesRoute
+  '/dashboard/directeur/inscriptions': typeof DashboardDirecteurInscriptionsRoute
   '/dashboard/directeur/projets': typeof DashboardDirecteurProjetsRoute
   '/dashboard/directeur/publications': typeof DashboardDirecteurPublicationsRoute
   '/dashboard/doctorant/bilan': typeof DashboardDoctorantBilanRoute
@@ -299,6 +309,7 @@ export interface FileRouteTypes {
     | '/dashboard/directeur/bilans'
     | '/dashboard/directeur/chercheurs'
     | '/dashboard/directeur/equipes'
+    | '/dashboard/directeur/inscriptions'
     | '/dashboard/directeur/projets'
     | '/dashboard/directeur/publications'
     | '/dashboard/doctorant/bilan'
@@ -325,6 +336,7 @@ export interface FileRouteTypes {
     | '/dashboard/directeur/bilans'
     | '/dashboard/directeur/chercheurs'
     | '/dashboard/directeur/equipes'
+    | '/dashboard/directeur/inscriptions'
     | '/dashboard/directeur/projets'
     | '/dashboard/directeur/publications'
     | '/dashboard/doctorant/bilan'
@@ -355,6 +367,7 @@ export interface FileRouteTypes {
     | '/dashboard/directeur/bilans'
     | '/dashboard/directeur/chercheurs'
     | '/dashboard/directeur/equipes'
+    | '/dashboard/directeur/inscriptions'
     | '/dashboard/directeur/projets'
     | '/dashboard/directeur/publications'
     | '/dashboard/doctorant/bilan'
@@ -498,6 +511,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardDirecteurProjetsRouteImport
       parentRoute: typeof DashboardDirecteurRoute
     }
+    '/dashboard/directeur/inscriptions': {
+      id: '/dashboard/directeur/inscriptions'
+      path: '/inscriptions'
+      fullPath: '/dashboard/directeur/inscriptions'
+      preLoaderRoute: typeof DashboardDirecteurInscriptionsRouteImport
+      parentRoute: typeof DashboardDirecteurRoute
+    }
     '/dashboard/directeur/equipes': {
       id: '/dashboard/directeur/equipes'
       path: '/equipes'
@@ -621,6 +641,7 @@ interface DashboardDirecteurRouteChildren {
   DashboardDirecteurBilansRoute: typeof DashboardDirecteurBilansRoute
   DashboardDirecteurChercheursRoute: typeof DashboardDirecteurChercheursRoute
   DashboardDirecteurEquipesRoute: typeof DashboardDirecteurEquipesRoute
+  DashboardDirecteurInscriptionsRoute: typeof DashboardDirecteurInscriptionsRoute
   DashboardDirecteurProjetsRoute: typeof DashboardDirecteurProjetsRoute
   DashboardDirecteurPublicationsRoute: typeof DashboardDirecteurPublicationsRoute
   DashboardDirecteurIndexRoute: typeof DashboardDirecteurIndexRoute
@@ -630,6 +651,7 @@ const DashboardDirecteurRouteChildren: DashboardDirecteurRouteChildren = {
   DashboardDirecteurBilansRoute: DashboardDirecteurBilansRoute,
   DashboardDirecteurChercheursRoute: DashboardDirecteurChercheursRoute,
   DashboardDirecteurEquipesRoute: DashboardDirecteurEquipesRoute,
+  DashboardDirecteurInscriptionsRoute: DashboardDirecteurInscriptionsRoute,
   DashboardDirecteurProjetsRoute: DashboardDirecteurProjetsRoute,
   DashboardDirecteurPublicationsRoute: DashboardDirecteurPublicationsRoute,
   DashboardDirecteurIndexRoute: DashboardDirecteurIndexRoute,
@@ -668,13 +690,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
