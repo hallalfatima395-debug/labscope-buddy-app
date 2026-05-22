@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { InscriptionModal } from "@/components/inscription-modal";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -150,10 +151,27 @@ function Landing() {
     }
   };
 
-  const handleContact = (e: FormEvent) => {
+  const handleContact = async (e: FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const fd = new FormData(form);
+    const payload = {
+      nom: String(fd.get("nom") ?? "").trim(),
+      prenom: String(fd.get("prenom") ?? "").trim(),
+      email: String(fd.get("email") ?? "").trim(),
+      message: String(fd.get("message") ?? "").trim(),
+    };
+    if (!payload.nom || !payload.prenom || !payload.email || !payload.message) {
+      toast.error("Veuillez remplir tous les champs.");
+      return;
+    }
+    const { error } = await supabase.from("contact_messages").insert(payload);
+    if (error) {
+      toast.error("Erreur lors de l'envoi du message.");
+      return;
+    }
     toast.success("Message envoyé. Nous vous répondrons rapidement.");
-    (e.target as HTMLFormElement).reset();
+    form.reset();
   };
 
   const isAr = lang === "ar";
