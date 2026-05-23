@@ -23,6 +23,7 @@ interface Row {
   grade: string | null;
   specialite: string | null;
   equipe: string;
+  role: "enseignant" | "doctorant";
 }
 
 function Page() {
@@ -50,6 +51,7 @@ function Page() {
         grade: m.grade,
         specialite: m.specialite,
         equipe: m.equipes?.nom ?? "—",
+        role: m.profiles?.role as "enseignant" | "doctorant",
       }));
     setRows(mapped);
 
@@ -72,8 +74,8 @@ function Page() {
     const s = q.toLowerCase().trim();
     const base = !s ? rows : rows.filter((r) => [r.nom, r.prenom, r.email, r.grade ?? "", r.specialite ?? "", r.equipe].some((v) => v.toLowerCase().includes(s)));
     return {
-      enseignants: base.filter((r) => (rowsMeta.get(r.id) ?? "") === "enseignant"),
-      doctorants: base.filter((r) => (rowsMeta.get(r.id) ?? "") === "doctorant"),
+      enseignants: base.filter((r) => r.role === "enseignant"),
+      doctorants: base.filter((r) => r.role === "doctorant"),
     };
   }, [rows, q]);
 
@@ -151,27 +153,37 @@ function Page() {
         </Dialog>
       </div>
       <Input placeholder="Rechercher…" value={q} onChange={(e) => setQ(e.target.value)} className="max-w-sm" />
-      <Card>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nom</TableHead><TableHead>Prénom</TableHead><TableHead>Email</TableHead>
-              <TableHead>Grade</TableHead><TableHead>Spécialité</TableHead><TableHead>Équipe</TableHead><TableHead></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.length === 0 ? (
-              <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">Aucune donnée disponible</TableCell></TableRow>
-            ) : filtered.map((r) => (
-              <TableRow key={r.id}>
-                <TableCell>{r.nom}</TableCell><TableCell>{r.prenom}</TableCell><TableCell>{r.email}</TableCell>
-                <TableCell>{r.grade ?? "—"}</TableCell><TableCell>{r.specialite ?? "—"}</TableCell><TableCell>{r.equipe}</TableCell>
-                <TableCell><Button size="icon" variant="ghost" onClick={() => remove(r.id)}><Trash2 className="h-4 w-4" /></Button></TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
+      <Tabs defaultValue="enseignants" className="w-full">
+        <TabsList>
+          <TabsTrigger value="enseignants">Enseignants-Chercheurs ({filtered.enseignants.length})</TabsTrigger>
+          <TabsTrigger value="doctorants">Doctorants ({filtered.doctorants.length})</TabsTrigger>
+        </TabsList>
+        {(["enseignants", "doctorants"] as const).map((key) => (
+          <TabsContent key={key} value={key}>
+            <Card>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Nom</TableHead><TableHead>Prénom</TableHead><TableHead>Email</TableHead>
+                    <TableHead>Grade</TableHead><TableHead>Spécialité</TableHead><TableHead>Équipe</TableHead><TableHead></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filtered[key].length === 0 ? (
+                    <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">Aucune donnée disponible</TableCell></TableRow>
+                  ) : filtered[key].map((r) => (
+                    <TableRow key={r.id}>
+                      <TableCell>{r.nom}</TableCell><TableCell>{r.prenom}</TableCell><TableCell>{r.email}</TableCell>
+                      <TableCell>{r.grade ?? "—"}</TableCell><TableCell>{r.specialite ?? "—"}</TableCell><TableCell>{r.equipe}</TableCell>
+                      <TableCell><Button size="icon" variant="ghost" onClick={() => remove(r.id)}><Trash2 className="h-4 w-4" /></Button></TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Card>
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 }
