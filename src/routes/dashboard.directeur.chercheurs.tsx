@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Trash2 } from "lucide-react";
 import { useDirecteurLab } from "@/hooks/use-directeur-lab";
 import { toast } from "sonner";
@@ -69,8 +70,11 @@ function Page() {
 
   const filtered = useMemo(() => {
     const s = q.toLowerCase().trim();
-    if (!s) return rows;
-    return rows.filter((r) => [r.nom, r.prenom, r.email, r.grade ?? "", r.specialite ?? "", r.equipe].some((v) => v.toLowerCase().includes(s)));
+    const base = !s ? rows : rows.filter((r) => [r.nom, r.prenom, r.email, r.grade ?? "", r.specialite ?? "", r.equipe].some((v) => v.toLowerCase().includes(s)));
+    return {
+      enseignants: base.filter((r) => (rowsMeta.get(r.id) ?? "") === "enseignant"),
+      doctorants: base.filter((r) => (rowsMeta.get(r.id) ?? "") === "doctorant"),
+    };
   }, [rows, q]);
 
   const assign = async () => {
