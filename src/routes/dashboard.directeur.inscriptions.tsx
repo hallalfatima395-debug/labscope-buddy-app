@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, X, UserPlus, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { useDirecteurLab } from "@/hooks/use-directeur-lab";
+import { sendEmailInBackground, buildMembreAcceptedEmail } from "@/lib/send-email";
 import {
   Dialog,
   DialogContent,
@@ -96,6 +97,10 @@ function DirecteurInscriptionsPage() {
     setItems((prev) => prev.filter((x) => x.id !== p.id));
     const name = `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
     if (nextStatut === APPROVED_STATUS) {
+      if (p.email) {
+        const { subject, html } = buildMembreAcceptedEmail(name, lab?.nom_fr ?? "");
+        sendEmailInBackground({ to: p.email, subject, html });
+      }
       toast.success(`Compte validé · Email de confirmation envoyé à ${p.email}`);
     } else {
       toast.success(`Demande refusée · Email de notification envoyé à ${p.email}`);
