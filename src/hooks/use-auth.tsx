@@ -3,7 +3,7 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
 export type Role = "admin" | "directeur" | "enseignant" | "doctorant";
-export type Statut = "en_attente" | "accepte" | "refuse";
+export type Statut = "en_attente" | "en_attente_admin" | "accepte" | "refuse";
 
 export interface Profile {
   id: string;

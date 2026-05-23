@@ -121,7 +121,14 @@ function LoginForm({ onSuccess }: { onSuccess: (path: string) => void }) {
         .from("profiles").select("id, role, nom, prenom, email, statut").eq("id", data.user.id).maybeSingle();
       const p = prof as Profile | null;
       if (!p) { await supabase.auth.signOut(); return toast.error("Profil introuvable"); }
-      if (p.statut === "en_attente") { await supabase.auth.signOut(); return toast.warning("Votre compte est en attente de validation"); }
+      if (p.statut === "en_attente" || p.statut === "en_attente_admin") {
+        await supabase.auth.signOut();
+        return toast.warning(
+          p.statut === "en_attente_admin"
+            ? "Votre compte est en attente de validation par l'Admin Central."
+            : "Votre compte est en attente de validation par votre Directeur de laboratoire.",
+        );
+      }
       if (p.statut === "refuse") { await supabase.auth.signOut(); return toast.error("Votre compte a été refusé"); }
       toast.success("Connexion réussie");
       onSuccess(dashboardPathForRole(p.role));
