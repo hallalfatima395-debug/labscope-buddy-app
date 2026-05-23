@@ -27,7 +27,8 @@ function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!loading && session && profile?.statut === "accepte" && profile.role) {
+    const allowed = profile?.statut === "accepte" || profile?.statut === "valide";
+    if (!loading && session && allowed && profile.role) {
       void navigate({ to: dashboardPathForRole(profile.role) });
     }
   }, [loading, session, profile, navigate]);
