@@ -1,0 +1,1 @@
+ALTER TABLE public.equipes ADD COLUMN IF NOT EXISTS chef_membre_id uuid REFERENCES public.membres(id) ON DELETE SET NULL;
