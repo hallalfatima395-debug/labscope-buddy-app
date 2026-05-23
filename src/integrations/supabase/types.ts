@@ -374,6 +374,10 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      is_directeur_of_profile_lab: {
+        Args: { _directeur_id: string; _profile_id: string }
+        Returns: boolean
+      }
       pending_directeurs_for_admin: {
         Args: never
         Returns: {
