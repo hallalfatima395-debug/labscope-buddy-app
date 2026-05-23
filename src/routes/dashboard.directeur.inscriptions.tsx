@@ -31,6 +31,9 @@ interface PendingRequest {
   laboratoire: string | null;
 }
 
+const APPROVED_STATUS = "accepte" as const;
+const REJECTED_STATUS = "refuse" as const;
+
 function DirecteurInscriptionsPage() {
   const { lab, loading: labLoading } = useDirecteurLab();
   const [items, setItems] = useState<PendingRequest[]>([]);
@@ -75,17 +78,29 @@ function DirecteurInscriptionsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lab?.nom_fr]);
 
-  const decide = async (p: PendingRequest, statut: "accepte" | "refuse") => {
-    const { error } = await supabase.from("profiles").update({ statut }).eq("id", p.id);
+  const decide = async (p: PendingRequest, action: "accepte" | "refuse") => {
+    const nextStatut = action === "accepte" ? APPROVED_STATUS : REJECTED_STATUS;
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .update({ statut: nextStatut })
+      .eq("id", p.id)
+      .select("id, statut")
+      .single();
+
     if (error) return toast.error(error.message);
+    if (!data || data.statut !== nextStatut) {
+      return toast.error("La mise à jour du statut n'a pas été enregistrée.");
+    }
+
     setItems((prev) => prev.filter((x) => x.id !== p.id));
     const name = `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
-    if (statut === "accepte") {
+    if (nextStatut === APPROVED_STATUS) {
       toast.success(`Compte validé · Email de confirmation envoyé à ${p.email}`);
     } else {
       toast.success(`Demande refusée · Email de notification envoyé à ${p.email}`);
     }
-    if (p.email) setSentEmail({ to: p.email, name, kind: statut });
+    if (p.email) setSentEmail({ to: p.email, name, kind: action });
   };
 
   if (labLoading) {
