@@ -56,8 +56,12 @@ function LoginPage() {
 
       const p = prof as Profile;
 
-      if (p.statut === "en_attente") {
-        toast.warning("Votre compte est en attente de validation");
+      if (p.statut === "en_attente" || p.statut === "en_attente_admin") {
+        toast.warning(
+          p.statut === "en_attente_admin"
+            ? "Votre compte est en attente de validation par l'Admin Central."
+            : "Votre compte est en attente de validation par votre Directeur de laboratoire.",
+        );
         await supabase.auth.signOut();
         return;
       }
