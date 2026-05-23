@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, X, UserPlus } from "lucide-react";
 import { toast } from "sonner";
+import { sendEmailInBackground, buildDirecteurAcceptedEmail } from "@/lib/send-email";
 
 export const Route = createFileRoute("/dashboard/admin/directeurs")({
   component: AdminDirecteursPage,
@@ -60,6 +61,11 @@ function AdminDirecteursPage() {
     const { error } = await supabase.from("profiles").update({ statut }).eq("id", p.id);
     if (error) return toast.error(error.message);
     setItems((prev) => prev.filter((x) => x.id !== p.id));
+    if (statut === "accepte" && p.email) {
+      const name = `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
+      const { subject, html } = buildDirecteurAcceptedEmail(name);
+      sendEmailInBackground({ to: p.email, subject, html });
+    }
     toast.success(
       statut === "accepte"
         ? `Directeur validé · ${p.email}`
