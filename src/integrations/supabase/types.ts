@@ -374,6 +374,15 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      is_directeur: { Args: { _user_id: string }; Returns: boolean }
+      is_directeur_of_lab: {
+        Args: { _lab_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_directeur_of_membre: {
+        Args: { _membre_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_directeur_of_profile_lab: {
         Args: { _directeur_id: string; _profile_id: string }
         Returns: boolean
