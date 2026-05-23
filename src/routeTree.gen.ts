@@ -36,6 +36,7 @@ import { Route as DashboardAdminPublicationsRouteImport } from './routes/dashboa
 import { Route as DashboardAdminMessagesRouteImport } from './routes/dashboard.admin.messages'
 import { Route as DashboardAdminEquipesRouteImport } from './routes/dashboard.admin.equipes'
 import { Route as DashboardAdminDoctorantsRouteImport } from './routes/dashboard.admin.doctorants'
+import { Route as DashboardAdminDirecteursRouteImport } from './routes/dashboard.admin.directeurs'
 import { Route as DashboardAdminBilansRouteImport } from './routes/dashboard.admin.bilans'
 
 const PolitiqueConfidentialiteRoute =
@@ -184,6 +185,12 @@ const DashboardAdminDoctorantsRoute =
     path: '/doctorants',
     getParentRoute: () => DashboardAdminRoute,
   } as any)
+const DashboardAdminDirecteursRoute =
+  DashboardAdminDirecteursRouteImport.update({
+    id: '/directeurs',
+    path: '/directeurs',
+    getParentRoute: () => DashboardAdminRoute,
+  } as any)
 const DashboardAdminBilansRoute = DashboardAdminBilansRouteImport.update({
   id: '/bilans',
   path: '/bilans',
@@ -200,6 +207,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/directeur': typeof DashboardDirecteurRouteWithChildren
   '/dashboard/doctorant': typeof DashboardDoctorantRouteWithChildren
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
+  '/dashboard/admin/directeurs': typeof DashboardAdminDirecteursRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
   '/dashboard/admin/messages': typeof DashboardAdminMessagesRoute
@@ -226,6 +234,7 @@ export interface FileRoutesByTo {
   '/mentions-legales': typeof MentionsLegalesRoute
   '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
+  '/dashboard/admin/directeurs': typeof DashboardAdminDirecteursRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
   '/dashboard/admin/messages': typeof DashboardAdminMessagesRoute
@@ -257,6 +266,7 @@ export interface FileRoutesById {
   '/dashboard/directeur': typeof DashboardDirecteurRouteWithChildren
   '/dashboard/doctorant': typeof DashboardDoctorantRouteWithChildren
   '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
+  '/dashboard/admin/directeurs': typeof DashboardAdminDirecteursRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
   '/dashboard/admin/messages': typeof DashboardAdminMessagesRoute
@@ -289,6 +299,7 @@ export interface FileRouteTypes {
     | '/dashboard/directeur'
     | '/dashboard/doctorant'
     | '/dashboard/admin/bilans'
+    | '/dashboard/admin/directeurs'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
     | '/dashboard/admin/messages'
@@ -315,6 +326,7 @@ export interface FileRouteTypes {
     | '/mentions-legales'
     | '/politique-confidentialite'
     | '/dashboard/admin/bilans'
+    | '/dashboard/admin/directeurs'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
     | '/dashboard/admin/messages'
@@ -345,6 +357,7 @@ export interface FileRouteTypes {
     | '/dashboard/directeur'
     | '/dashboard/doctorant'
     | '/dashboard/admin/bilans'
+    | '/dashboard/admin/directeurs'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
     | '/dashboard/admin/messages'
@@ -568,6 +581,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAdminDoctorantsRouteImport
       parentRoute: typeof DashboardAdminRoute
     }
+    '/dashboard/admin/directeurs': {
+      id: '/dashboard/admin/directeurs'
+      path: '/directeurs'
+      fullPath: '/dashboard/admin/directeurs'
+      preLoaderRoute: typeof DashboardAdminDirecteursRouteImport
+      parentRoute: typeof DashboardAdminRoute
+    }
     '/dashboard/admin/bilans': {
       id: '/dashboard/admin/bilans'
       path: '/bilans'
@@ -580,6 +600,7 @@ declare module '@tanstack/react-router' {
 
 interface DashboardAdminRouteChildren {
   DashboardAdminBilansRoute: typeof DashboardAdminBilansRoute
+  DashboardAdminDirecteursRoute: typeof DashboardAdminDirecteursRoute
   DashboardAdminDoctorantsRoute: typeof DashboardAdminDoctorantsRoute
   DashboardAdminEquipesRoute: typeof DashboardAdminEquipesRoute
   DashboardAdminMessagesRoute: typeof DashboardAdminMessagesRoute
@@ -589,6 +610,7 @@ interface DashboardAdminRouteChildren {
 
 const DashboardAdminRouteChildren: DashboardAdminRouteChildren = {
   DashboardAdminBilansRoute: DashboardAdminBilansRoute,
+  DashboardAdminDirecteursRoute: DashboardAdminDirecteursRoute,
   DashboardAdminDoctorantsRoute: DashboardAdminDoctorantsRoute,
   DashboardAdminEquipesRoute: DashboardAdminEquipesRoute,
   DashboardAdminMessagesRoute: DashboardAdminMessagesRoute,
