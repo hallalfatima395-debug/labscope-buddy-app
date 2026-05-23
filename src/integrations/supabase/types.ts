@@ -99,24 +99,34 @@ export type Database = {
       }
       equipes: {
         Row: {
+          chef_membre_id: string | null
           created_at: string
           id: string
           laboratoire_id: string
           nom: string
         }
         Insert: {
+          chef_membre_id?: string | null
           created_at?: string
           id?: string
           laboratoire_id: string
           nom: string
         }
         Update: {
+          chef_membre_id?: string | null
           created_at?: string
           id?: string
           laboratoire_id?: string
           nom?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "equipes_chef_membre_id_fkey"
+            columns: ["chef_membre_id"]
+            isOneToOne: false
+            referencedRelation: "membres"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "equipes_laboratoire_id_fkey"
             columns: ["laboratoire_id"]

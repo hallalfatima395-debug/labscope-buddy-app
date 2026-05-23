@@ -37,7 +37,6 @@ import { Route as DashboardAdminMessagesRouteImport } from './routes/dashboard.a
 import { Route as DashboardAdminEquipesRouteImport } from './routes/dashboard.admin.equipes'
 import { Route as DashboardAdminDoctorantsRouteImport } from './routes/dashboard.admin.doctorants'
 import { Route as DashboardAdminDirecteursRouteImport } from './routes/dashboard.admin.directeurs'
-import { Route as DashboardAdminBilansRouteImport } from './routes/dashboard.admin.bilans'
 
 const PolitiqueConfidentialiteRoute =
   PolitiqueConfidentialiteRouteImport.update({
@@ -191,11 +190,6 @@ const DashboardAdminDirecteursRoute =
     path: '/directeurs',
     getParentRoute: () => DashboardAdminRoute,
   } as any)
-const DashboardAdminBilansRoute = DashboardAdminBilansRouteImport.update({
-  id: '/bilans',
-  path: '/bilans',
-  getParentRoute: () => DashboardAdminRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -206,7 +200,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/chercheur': typeof DashboardChercheurRouteWithChildren
   '/dashboard/directeur': typeof DashboardDirecteurRouteWithChildren
   '/dashboard/doctorant': typeof DashboardDoctorantRouteWithChildren
-  '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/directeurs': typeof DashboardAdminDirecteursRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
@@ -233,7 +226,6 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
-  '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/directeurs': typeof DashboardAdminDirecteursRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
@@ -265,7 +257,6 @@ export interface FileRoutesById {
   '/dashboard/chercheur': typeof DashboardChercheurRouteWithChildren
   '/dashboard/directeur': typeof DashboardDirecteurRouteWithChildren
   '/dashboard/doctorant': typeof DashboardDoctorantRouteWithChildren
-  '/dashboard/admin/bilans': typeof DashboardAdminBilansRoute
   '/dashboard/admin/directeurs': typeof DashboardAdminDirecteursRoute
   '/dashboard/admin/doctorants': typeof DashboardAdminDoctorantsRoute
   '/dashboard/admin/equipes': typeof DashboardAdminEquipesRoute
@@ -298,7 +289,6 @@ export interface FileRouteTypes {
     | '/dashboard/chercheur'
     | '/dashboard/directeur'
     | '/dashboard/doctorant'
-    | '/dashboard/admin/bilans'
     | '/dashboard/admin/directeurs'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
@@ -325,7 +315,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/mentions-legales'
     | '/politique-confidentialite'
-    | '/dashboard/admin/bilans'
     | '/dashboard/admin/directeurs'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
@@ -356,7 +345,6 @@ export interface FileRouteTypes {
     | '/dashboard/chercheur'
     | '/dashboard/directeur'
     | '/dashboard/doctorant'
-    | '/dashboard/admin/bilans'
     | '/dashboard/admin/directeurs'
     | '/dashboard/admin/doctorants'
     | '/dashboard/admin/equipes'
@@ -588,18 +576,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAdminDirecteursRouteImport
       parentRoute: typeof DashboardAdminRoute
     }
-    '/dashboard/admin/bilans': {
-      id: '/dashboard/admin/bilans'
-      path: '/bilans'
-      fullPath: '/dashboard/admin/bilans'
-      preLoaderRoute: typeof DashboardAdminBilansRouteImport
-      parentRoute: typeof DashboardAdminRoute
-    }
   }
 }
 
 interface DashboardAdminRouteChildren {
-  DashboardAdminBilansRoute: typeof DashboardAdminBilansRoute
   DashboardAdminDirecteursRoute: typeof DashboardAdminDirecteursRoute
   DashboardAdminDoctorantsRoute: typeof DashboardAdminDoctorantsRoute
   DashboardAdminEquipesRoute: typeof DashboardAdminEquipesRoute
@@ -609,7 +589,6 @@ interface DashboardAdminRouteChildren {
 }
 
 const DashboardAdminRouteChildren: DashboardAdminRouteChildren = {
-  DashboardAdminBilansRoute: DashboardAdminBilansRoute,
   DashboardAdminDirecteursRoute: DashboardAdminDirecteursRoute,
   DashboardAdminDoctorantsRoute: DashboardAdminDoctorantsRoute,
   DashboardAdminEquipesRoute: DashboardAdminEquipesRoute,

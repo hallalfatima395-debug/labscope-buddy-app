@@ -242,15 +242,15 @@ function Landing() {
             }}
           />
         </div>
-        <div className={`mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-20 sm:px-8 lg:px-12 ${isAr ? "items-end text-right" : "items-start text-left"}`}>
-          <p className="mb-4 inline-block rounded-full border px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: "#F1F5F9", borderColor: "rgba(241,245,249,0.45)" }}>
+        <div dir={isAr ? "rtl" : "ltr"} className={`mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-20 sm:px-8 lg:px-12 ${isAr ? "items-end text-right" : "items-start text-left"}`}>
+          <p dir={isAr ? "rtl" : "ltr"} className="mb-4 inline-block rounded-full border px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: "#F1F5F9", borderColor: "rgba(241,245,249,0.45)" }}>
             {t.hero.eyebrow}
           </p>
-          <h1 className="hero-title max-w-3xl font-sans text-3xl font-bold leading-[1.15] tracking-tight sm:text-4xl lg:text-5xl">
+          <h1 dir={isAr ? "rtl" : "ltr"} className="hero-title max-w-3xl font-sans text-3xl font-bold leading-[1.15] tracking-tight sm:text-4xl lg:text-5xl">
             {t.hero.titleA} {t.hero.titleB} {t.hero.titleC}
           </h1>
-          <p className="hero-desc mt-4 max-w-xl text-base font-normal leading-relaxed sm:text-lg">{t.hero.desc}</p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
+          <p dir={isAr ? "rtl" : "ltr"} className="hero-desc mt-4 max-w-xl text-base font-normal leading-relaxed sm:text-lg">{t.hero.desc}</p>
+          <div className={`mt-6 flex flex-wrap items-center gap-3 ${isAr ? "flex-row-reverse" : ""}`}>
             <button
               onClick={handleStart}
               className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold shadow-lg shadow-black/20 transition hover:brightness-110"
