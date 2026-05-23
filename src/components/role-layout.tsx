@@ -16,11 +16,14 @@ import {
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
+import { useLang } from "@/hooks/use-lang";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export interface NavItem {
   title: string;
   url: string;
   icon: ComponentType<{ className?: string }>;
+  i18nKey?: string;
 }
 
 export function RoleLayout({
@@ -28,15 +31,20 @@ export function RoleLayout({
   roleLabel,
   items,
   children,
+  titleKey,
+  roleLabelKey,
 }: {
   title: string;
   roleLabel: string;
   items: ReadonlyArray<NavItem>;
   children: ReactNode;
+  titleKey?: string;
+  roleLabelKey?: string;
 }) {
   const { profile, signOut } = useAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { t, dir, isAr } = useLang();
 
   const handleSignOut = async () => {
     await signOut();
@@ -45,11 +53,11 @@ export function RoleLayout({
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
-        <Sidebar collapsible="icon">
+      <div dir={dir} className={`min-h-screen flex w-full bg-background ${isAr ? "font-arabic" : ""}`}>
+        <Sidebar collapsible="icon" side={isAr ? "right" : "left"}>
           <SidebarHeader className="px-4 py-4">
             <p className="text-xs uppercase tracking-widest text-sidebar-foreground/60">LabScope</p>
-            <p className="text-sm font-semibold">{roleLabel}</p>
+            <p className="text-sm font-semibold">{roleLabelKey ? t(roleLabelKey) : roleLabel}</p>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>
@@ -60,7 +68,7 @@ export function RoleLayout({
                       <SidebarMenuButton asChild isActive={pathname === item.url}>
                         <Link to={item.url} className="flex items-center gap-2">
                           <item.icon className="h-4 w-4" />
-                          <span>{item.title}</span>
+                          <span>{item.i18nKey ? t(item.i18nKey) : item.title}</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -68,7 +76,7 @@ export function RoleLayout({
                   <SidebarMenuItem>
                     <SidebarMenuButton onClick={handleSignOut}>
                       <LogOut className="h-4 w-4" />
-                      <span>Logout</span>
+                      <span>{t("logoutShort")}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 </SidebarMenu>
@@ -85,11 +93,16 @@ export function RoleLayout({
             <span className="absolute inset-x-0 top-0 h-[3px]" style={{ backgroundColor: "var(--teal)" }} />
             <div className="flex items-center gap-3">
               <SidebarTrigger />
-              <h1 className="font-display text-2xl font-semibold" style={{ color: "var(--navy)" }}>{title}</h1>
+              <h1 className="font-display text-2xl font-semibold" style={{ color: "var(--navy)" }}>
+                {titleKey ? t(titleKey) : title}
+              </h1>
             </div>
-            <Button variant="outline" size="sm" onClick={handleSignOut}>
-              Déconnexion
-            </Button>
+            <div className="flex items-center gap-3">
+              <LanguageSwitcher />
+              <Button variant="outline" size="sm" onClick={handleSignOut}>
+                {t("logout")}
+              </Button>
+            </div>
           </header>
           <main className="flex-1 p-6 overflow-auto">{children}</main>
         </div>

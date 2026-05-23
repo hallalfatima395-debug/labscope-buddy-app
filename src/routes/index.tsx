@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { InscriptionModal } from "@/components/inscription-modal";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useLang } from "@/hooks/use-lang";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -41,12 +42,12 @@ export const Route = createFileRoute("/")({
 
 const SUBTITLES = [
   "Université Djillali Liabès — Sidi Bel Abbès",
-  "Service de la Recherche Scientifique",
+  "Vice-Rectorat de la Recherche Scientifique",
 ];
 
 const SUBTITLES_AR = [
   "جامعة جيلالي اليابس — سيدي بلعباس",
-  "مصلحة البحث العلمي",
+  "نيابة مديرية الجامعة للبحث العلمي",
 ];
 
 const T = {
@@ -82,7 +83,7 @@ const T = {
       hoursLines: ["Dimanche – Jeudi", "08h00 – 16h30"],
       phoneLines: ["+213 (0) 48 74 91 36"],
     },
-    footer: "© 2025 — Université Djillali Liabès",
+    footer: "© 2026 — Université Djillali Liabès",
   },
   ar: {
     nav: { home: "الرئيسية", services: "الخدمات", contact: "اتصل بنا", login: "تسجيل الدخول", register: "إنشاء حساب" },
@@ -116,7 +117,7 @@ const T = {
       hoursLines: ["الأحد – الخميس", "08:00 – 16:30"],
       phoneLines: ["+213 (0) 48 74 91 36"],
     },
-    footer: "© 2025 — جامعة جيلالي اليابس",
+    footer: "© 2026 — جامعة جيلالي اليابس",
   },
 } as const;
 
@@ -124,19 +125,7 @@ function Landing() {
   const { session, profile } = useAuth();
   const navigate = useNavigate();
   const [subIdx, setSubIdx] = useState(0);
-  const [lang, setLang] = useState<"fr" | "ar">(() => {
-    if (typeof window === "undefined") return "fr";
-    const stored = window.localStorage.getItem("labscope-lang");
-    return stored === "ar" || stored === "fr" ? stored : "fr";
-  });
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem("labscope-lang", lang);
-      document.documentElement.setAttribute("lang", lang);
-      document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-    }
-  }, [lang]);
+  const { lang, setLang } = useLang();
 
   useEffect(() => {
     const t = setInterval(() => setSubIdx((i) => (i + 1) % SUBTITLES.length), 3500);

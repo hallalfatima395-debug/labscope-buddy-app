@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import udlLogo from "@/assets/udl-logo.png";
+import { useLang } from "@/hooks/use-lang";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -22,6 +24,7 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const { session, profile, loading } = useAuth();
   const navigate = useNavigate();
+  const { t, dir, isAr } = useLang();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -39,7 +42,7 @@ function LoginPage() {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error || !data.user) {
-        toast.error(error?.message ?? "Identifiants invalides");
+        toast.error(error?.message ?? t("login.bad_credentials"));
         return;
       }
 
@@ -50,7 +53,7 @@ function LoginPage() {
         .maybeSingle();
 
       if (profErr || !prof) {
-        toast.error("Profil introuvable");
+        toast.error(t("login.profile_missing"));
         await supabase.auth.signOut();
         return;
       }
@@ -59,20 +62,18 @@ function LoginPage() {
 
       if (p.statut === "en_attente" || p.statut === "en_attente_admin") {
         toast.warning(
-          p.statut === "en_attente_admin"
-            ? "Votre compte est en attente de validation par l'Admin Central."
-            : "Votre compte est en attente de validation par votre Directeur de laboratoire.",
+          p.statut === "en_attente_admin" ? t("login.pending_admin") : t("login.pending_directeur"),
         );
         await supabase.auth.signOut();
         return;
       }
       if (p.statut === "refuse") {
-        toast.error("Votre compte a été refusé");
+        toast.error(t("login.refused"));
         await supabase.auth.signOut();
         return;
       }
 
-      toast.success("Connexion réussie");
+      toast.success(t("login.success"));
       void navigate({ to: dashboardPathForRole(p.role) });
     } finally {
       setSubmitting(false);
@@ -80,17 +81,20 @@ function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-4">
+    <main dir={dir} className={`flex min-h-screen items-center justify-center bg-background px-4 ${isAr ? "font-arabic" : ""}`}>
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <Card className="w-full max-w-md">
         <CardHeader className="items-center text-center">
           <img src={udlLogo} alt="UDL" className="mx-auto mb-3 h-16 w-auto" />
-          <CardTitle className="font-display text-3xl">LabScope</CardTitle>
-          <CardDescription>Connectez-vous à votre compte.</CardDescription>
+          <CardTitle className="font-display text-3xl">{t("login.title")}</CardTitle>
+          <CardDescription>{t("login.subtitle")}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("login.email")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -101,7 +105,7 @@ function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Mot de passe</Label>
+              <Label htmlFor="password">{t("login.password")}</Label>
               <Input
                 id="password"
                 type="password"
@@ -117,7 +121,7 @@ function LoginPage() {
               style={{ backgroundColor: "var(--teal)", color: "var(--teal-foreground)" }}
               disabled={submitting}
             >
-              {submitting ? "Connexion…" : "Se connecter"}
+              {submitting ? t("login.submitting") : t("login.submit")}
             </Button>
           </form>
         </CardContent>

@@ -259,7 +259,7 @@ function MentionsLegales() {
           <div className="flex items-center gap-3">
             <img src={udlLogo} alt="UDL" className="h-9 w-auto" />
             <p className="font-display text-lg" style={{ color: "#0F172A" }}>LabScope</p>
-            <p className="text-xs" style={{ color: "#6B7280" }}>© 2025 — Université Djillali Liabès</p>
+            <p className="text-xs" style={{ color: "#6B7280" }}>© 2026 — Université Djillali Liabès</p>
           </div>
           <div className="flex items-center gap-6 text-xs font-medium">
             <Link to="/politique-confidentialite" style={{ color: "#1E293B" }} className="hover:underline">

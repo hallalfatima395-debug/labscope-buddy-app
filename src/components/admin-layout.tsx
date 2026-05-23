@@ -16,21 +16,24 @@ import {
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
+import { useLang } from "@/hooks/use-lang";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 const items = [
-  { title: "Dashboard", url: "/dashboard/admin", icon: LayoutDashboard },
-  { title: "Demandes Directeurs", url: "/dashboard/admin/directeurs", icon: UserCheck },
-  { title: "Équipes", url: "/dashboard/admin/equipes", icon: Users },
-  { title: "Publications", url: "/dashboard/admin/publications", icon: BookOpen },
-  { title: "Doctorants", url: "/dashboard/admin/doctorants", icon: GraduationCap },
-  { title: "Bilans", url: "/dashboard/admin/bilans", icon: ClipboardList },
-  { title: "Messages", url: "/dashboard/admin/messages", icon: MessageSquare },
+  { title: "Dashboard", url: "/dashboard/admin", icon: LayoutDashboard, key: "nav.dashboard" },
+  { title: "Demandes Directeurs", url: "/dashboard/admin/directeurs", icon: UserCheck, key: "nav.demandes_directeurs" },
+  { title: "Équipes", url: "/dashboard/admin/equipes", icon: Users, key: "nav.equipes" },
+  { title: "Publications", url: "/dashboard/admin/publications", icon: BookOpen, key: "nav.publications" },
+  { title: "Doctorants", url: "/dashboard/admin/doctorants", icon: GraduationCap, key: "nav.doctorants" },
+  { title: "Bilans", url: "/dashboard/admin/bilans", icon: ClipboardList, key: "nav.bilans" },
+  { title: "Messages", url: "/dashboard/admin/messages", icon: MessageSquare, key: "nav.messages" },
 ] as const;
 
 export function AdminLayout({ children }: { children: ReactNode }) {
   const { profile, signOut } = useAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { t, dir, isAr } = useLang();
 
   const handleSignOut = async () => {
     await signOut();
@@ -39,11 +42,11 @@ export function AdminLayout({ children }: { children: ReactNode }) {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
-        <Sidebar collapsible="icon">
+      <div dir={dir} className={`min-h-screen flex w-full bg-background ${isAr ? "font-arabic" : ""}`}>
+        <Sidebar collapsible="icon" side={isAr ? "right" : "left"}>
           <SidebarHeader className="px-4 py-4">
             <p className="text-xs uppercase tracking-widest text-sidebar-foreground/60">LabScope</p>
-            <p className="text-sm font-semibold">Admin</p>
+            <p className="text-sm font-semibold">{t("role.admin")}</p>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>
@@ -54,7 +57,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
                       <SidebarMenuButton asChild isActive={pathname === item.url}>
                         <Link to={item.url} className="flex items-center gap-2">
                           <item.icon className="h-4 w-4" />
-                          <span>{item.title}</span>
+                          <span>{t(item.key)}</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -62,7 +65,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
                   <SidebarMenuItem>
                     <SidebarMenuButton onClick={handleSignOut}>
                       <LogOut className="h-4 w-4" />
-                      <span>Logout</span>
+                      <span>{t("logoutShort")}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 </SidebarMenu>
@@ -79,11 +82,14 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             <span className="absolute inset-x-0 top-0 h-[3px]" style={{ backgroundColor: "var(--teal)" }} />
             <div className="flex items-center gap-3">
               <SidebarTrigger />
-              <h1 className="font-display text-2xl font-semibold" style={{ color: "var(--navy)" }}>Espace Administrateur</h1>
+              <h1 className="font-display text-2xl font-semibold" style={{ color: "var(--navy)" }}>{t("space.admin")}</h1>
             </div>
-            <Button variant="outline" size="sm" onClick={handleSignOut}>
-              Déconnexion
-            </Button>
+            <div className="flex items-center gap-3">
+              <LanguageSwitcher />
+              <Button variant="outline" size="sm" onClick={handleSignOut}>
+                {t("logout")}
+              </Button>
+            </div>
           </header>
           <main className="flex-1 p-6 overflow-auto">{children}</main>
         </div>
