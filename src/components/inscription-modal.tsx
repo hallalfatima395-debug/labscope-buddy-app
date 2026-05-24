@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GraduationCap, BookOpen, Building2, ArrowLeft, FlaskConical } from "lucide-react";
 import { toast } from "sonner";
+import { useLang } from "@/hooks/use-lang";
 
 type SignupRole = "enseignant" | "doctorant" | "directeur";
 
@@ -28,6 +29,71 @@ const FACULTES = [
 const GRADES_ENS = ["MAB", "MAA", "MCB", "MCA", "Professeur"] as const;
 const GRADES_DIR = ["MCB", "MCA", "Professeur"] as const;
 
+const M = {
+  fr: {
+    subtitle: "Université Djillali Liabès — Sidi Bel Abbès",
+    connexion: "Connexion", inscription: "Inscription",
+    email: "Email", password: "Mot de passe", emailPh: "votre@email.com",
+    login: "Se connecter →", loggingIn: "Connexion…",
+    badCreds: "Identifiants invalides", profileMissing: "Profil introuvable",
+    pendingAdmin: "Votre compte est en attente de validation par l'Admin Central.",
+    pendingDir: "Votre compte est en attente de validation par votre Directeur de laboratoire.",
+    refused: "Votre compte a été refusé", loginOk: "Connexion réussie",
+    chooseProfile: "Choisissez votre profil :",
+    roleEns: "Enseignant-Chercheur", roleDoc: "Doctorant", roleDir: "Directeur de Labo",
+    changeProfile: "Changer de profil",
+    nom: "Nom", prenom: "Prénom", dob: "Date de naissance",
+    confirmPw: "Confirmer mot de passe",
+    grade: "Grade", chooseGrade: "Choisir un grade",
+    specialite: "Spécialité", labo: "Laboratoire de rattachement",
+    sujet: "Sujet de thèse", dirThese: "Directeur de thèse",
+    labFr: "Nom du laboratoire (FR)", labAr: "اسم المختبر (AR)",
+    faculte: "Faculté", chooseFaculte: "Choisir une faculté",
+    dateCrea: "Date de création du laboratoire",
+    submit: "S'inscrire →", submitting: "Inscription…",
+    errNom: "Nom et prénom requis",
+    errPw: "Mot de passe : 8 caractères minimum",
+    errPwMatch: "Les mots de passe ne correspondent pas",
+    errAge: "Vous devez avoir au moins 18 ans",
+    errAll: "Tous les champs sont requis",
+    errDate: "Date de création : entre 1962 et 2024",
+    errDup: "Vous avez déjà soumis une demande pour ce laboratoire",
+    errSignup: "Inscription impossible",
+    signupOk: "Inscription réussie ! Veuillez attendre une notification d'acceptation.",
+  },
+  ar: {
+    subtitle: "جامعة جيلالي اليابس — سيدي بلعباس",
+    connexion: "تسجيل الدخول", inscription: "إنشاء حساب",
+    email: "البريد الإلكتروني", password: "كلمة المرور", emailPh: "your@email.com",
+    login: "دخول ←", loggingIn: "جارٍ الدخول…",
+    badCreds: "بيانات الاعتماد غير صحيحة", profileMissing: "الملف الشخصي غير موجود",
+    pendingAdmin: "حسابك في انتظار التحقق من قِبَل المسؤول المركزي.",
+    pendingDir: "حسابك في انتظار التحقق من قِبَل مدير المختبر.",
+    refused: "تم رفض حسابك", loginOk: "تم تسجيل الدخول بنجاح",
+    chooseProfile: "اختر ملفك الشخصي:",
+    roleEns: "أستاذ باحث", roleDoc: "طالب دكتوراه", roleDir: "مدير مختبر",
+    changeProfile: "تغيير الملف الشخصي",
+    nom: "اللقب", prenom: "الاسم", dob: "تاريخ الميلاد",
+    confirmPw: "تأكيد كلمة المرور",
+    grade: "الرتبة", chooseGrade: "اختر رتبة",
+    specialite: "التخصص", labo: "المختبر التابع له",
+    sujet: "موضوع الأطروحة", dirThese: "مدير الأطروحة",
+    labFr: "اسم المختبر (بالفرنسية)", labAr: "اسم المختبر (بالعربية)",
+    faculte: "الكلية", chooseFaculte: "اختر كلية",
+    dateCrea: "تاريخ إنشاء المختبر",
+    submit: "تسجيل ←", submitting: "جارٍ التسجيل…",
+    errNom: "اللقب والاسم مطلوبان",
+    errPw: "كلمة المرور: 8 أحرف على الأقل",
+    errPwMatch: "كلمتا المرور غير متطابقتين",
+    errAge: "يجب أن يكون عمرك 18 سنة على الأقل",
+    errAll: "جميع الحقول مطلوبة",
+    errDate: "تاريخ الإنشاء: بين 1962 و 2024",
+    errDup: "لقد قدّمت بالفعل طلبًا لهذا المختبر",
+    errSignup: "تعذّر التسجيل",
+    signupOk: "تم التسجيل بنجاح! يُرجى انتظار إشعار القبول.",
+  },
+} as const;
+
 function ageFromDob(dob: string): number {
   const d = new Date(dob);
   if (Number.isNaN(d.getTime())) return 0;
@@ -42,13 +108,16 @@ export function InscriptionModal({ children, defaultTab = "inscription" }: { chi
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<"connexion" | "inscription">(defaultTab);
   const navigate = useNavigate();
+  const { lang, dir, isAr } = useLang();
+  const m = M[lang];
 
   return (
     <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (o) setTab(defaultTab); }}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         data-auth-modal
-        className="max-w-2xl max-h-[90vh] overflow-hidden p-0 gap-0 border-0"
+        dir={dir}
+        className={`max-w-2xl max-h-[90vh] overflow-hidden p-0 gap-0 border-0 ${isAr ? "font-arabic" : ""}`}
         style={{ backgroundColor: "#FFFFFF" }}
       >
         <div
@@ -63,7 +132,7 @@ export function InscriptionModal({ children, defaultTab = "inscription" }: { chi
           </div>
           <div className="leading-tight">
             <p className="font-display text-xl font-semibold" style={{ color: "#FFFFFF" }}>LabScope</p>
-            <p className="text-xs" style={{ color: "#5EEAD4" }}>Université Djillali Liabès — Sidi Bel Abbès</p>
+            <p className="text-xs" style={{ color: "#5EEAD4" }}>{m.subtitle}</p>
           </div>
         </div>
 
@@ -77,13 +146,13 @@ export function InscriptionModal({ children, defaultTab = "inscription" }: { chi
                 value="connexion"
                 className="rounded-none border-b-2 border-transparent bg-transparent py-3 text-sm font-semibold uppercase tracking-wide text-slate-500 data-[state=active]:border-[#0D9488] data-[state=active]:bg-transparent data-[state=active]:text-[#0D9488] data-[state=active]:shadow-none"
               >
-                Connexion
+                {m.connexion}
               </TabsTrigger>
               <TabsTrigger
                 value="inscription"
                 className="rounded-none border-b-2 border-transparent bg-transparent py-3 text-sm font-semibold uppercase tracking-wide text-slate-500 data-[state=active]:border-[#0D9488] data-[state=active]:bg-transparent data-[state=active]:text-[#0D9488] data-[state=active]:shadow-none"
               >
-                Inscription
+                {m.inscription}
               </TabsTrigger>
             </TabsList>
 
@@ -110,27 +179,27 @@ function LoginForm({ onSuccess }: { onSuccess: (path: string) => void }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const { lang } = useLang();
+  const m = M[lang];
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     setBusy(true);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error || !data.user) return toast.error(error?.message ?? "Identifiants invalides");
+      if (error || !data.user) return toast.error(error?.message ?? m.badCreds);
       const { data: prof } = await supabase
         .from("profiles").select("id, role, nom, prenom, email, statut").eq("id", data.user.id).maybeSingle();
       const p = prof as Profile | null;
-      if (!p) { await supabase.auth.signOut(); return toast.error("Profil introuvable"); }
+      if (!p) { await supabase.auth.signOut(); return toast.error(m.profileMissing); }
       if (p.statut === "en_attente" || p.statut === "en_attente_admin") {
         await supabase.auth.signOut();
         return toast.warning(
-          p.statut === "en_attente_admin"
-            ? "Votre compte est en attente de validation par l'Admin Central."
-            : "Votre compte est en attente de validation par votre Directeur de laboratoire.",
+          p.statut === "en_attente_admin" ? m.pendingAdmin : m.pendingDir,
         );
       }
-      if (p.statut === "refuse") { await supabase.auth.signOut(); return toast.error("Votre compte a été refusé"); }
-      toast.success("Connexion réussie");
+      if (p.statut === "refuse") { await supabase.auth.signOut(); return toast.error(m.refused); }
+      toast.success(m.loginOk);
       onSuccess(dashboardPathForRole(p.role));
     } finally {
       setBusy(false);
@@ -140,11 +209,11 @@ function LoginForm({ onSuccess }: { onSuccess: (path: string) => void }) {
   return (
     <form onSubmit={submit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="lemail" className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#475569" }}>Email</Label>
-        <Input id="lemail" type="email" required placeholder="votre@email.com" value={email} onChange={(e) => setEmail(e.target.value)} style={{ backgroundColor: "#FFFFFF", borderColor: "#E2E8F0", color: "#0F172A" }} />
+        <Label htmlFor="lemail" className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#475569" }}>{m.email}</Label>
+        <Input id="lemail" type="email" required placeholder={m.emailPh} value={email} onChange={(e) => setEmail(e.target.value)} style={{ backgroundColor: "#FFFFFF", borderColor: "#E2E8F0", color: "#0F172A" }} />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="lpw" className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#475569" }}>Mot de passe</Label>
+        <Label htmlFor="lpw" className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#475569" }}>{m.password}</Label>
         <Input id="lpw" type="password" required placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} style={{ backgroundColor: "#FFFFFF", borderColor: "#E2E8F0", color: "#0F172A" }} />
       </div>
       <Button
@@ -153,7 +222,7 @@ function LoginForm({ onSuccess }: { onSuccess: (path: string) => void }) {
         disabled={busy}
         style={{ backgroundColor: "#2DD4BF", color: "#0F172A", borderColor: "#2DD4BF" }}
       >
-        {busy ? "Connexion…" : "Se connecter →"}
+        {busy ? m.loggingIn : m.login}
       </Button>
     </form>
   );
@@ -161,15 +230,17 @@ function LoginForm({ onSuccess }: { onSuccess: (path: string) => void }) {
 
 function InscriptionFlow({ onDone }: { onDone: () => void }) {
   const [role, setRole] = useState<SignupRole | null>(null);
+  const { lang } = useLang();
+  const m = M[lang];
 
   if (!role) {
     return (
       <div className="space-y-3">
-        <p className="text-sm" style={{ color: "#475569" }}>Choisissez votre profil :</p>
+        <p className="text-sm" style={{ color: "#475569" }}>{m.chooseProfile}</p>
         <div className="grid gap-3 sm:grid-cols-3">
-          <RoleCard icon={<GraduationCap className="h-6 w-6" />} title="Enseignant-Chercheur" onClick={() => setRole("enseignant")} />
-          <RoleCard icon={<BookOpen className="h-6 w-6" />} title="Doctorant" onClick={() => setRole("doctorant")} />
-          <RoleCard icon={<Building2 className="h-6 w-6" />} title="Directeur de Labo" onClick={() => setRole("directeur")} />
+          <RoleCard icon={<GraduationCap className="h-6 w-6" />} title={m.roleEns} onClick={() => setRole("enseignant")} />
+          <RoleCard icon={<BookOpen className="h-6 w-6" />} title={m.roleDoc} onClick={() => setRole("doctorant")} />
+          <RoleCard icon={<Building2 className="h-6 w-6" />} title={m.roleDir} onClick={() => setRole("directeur")} />
         </div>
       </div>
     );
@@ -196,6 +267,8 @@ function RoleCard({ icon, title, onClick }: { icon: ReactNode; title: string; on
 
 function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => void; onDone: () => void }) {
   const [busy, setBusy] = useState(false);
+  const { lang } = useLang();
+  const m = M[lang];
   const [f, setF] = useState({
     nom: "", prenom: "", email: "", dob: "", password: "", confirm: "",
     grade: "", specialite: "", laboratoire: "",
@@ -206,20 +279,20 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!f.nom.trim() || !f.prenom.trim()) return toast.error("Nom et prénom requis");
-    if (f.password.length < 8) return toast.error("Mot de passe : 8 caractères minimum");
-    if (f.password !== f.confirm) return toast.error("Les mots de passe ne correspondent pas");
-    if (!f.dob || ageFromDob(f.dob) < 18) return toast.error("Vous devez avoir au moins 18 ans");
+    if (!f.nom.trim() || !f.prenom.trim()) return toast.error(m.errNom);
+    if (f.password.length < 8) return toast.error(m.errPw);
+    if (f.password !== f.confirm) return toast.error(m.errPwMatch);
+    if (!f.dob || ageFromDob(f.dob) < 18) return toast.error(m.errAge);
 
     if (role === "enseignant" && (!f.grade || !f.specialite.trim() || !f.laboratoire.trim()))
-      return toast.error("Tous les champs sont requis");
+      return toast.error(m.errAll);
     if (role === "doctorant" && (!f.sujet_these.trim() || !f.directeur_these.trim() || !f.laboratoire.trim()))
-      return toast.error("Tous les champs sont requis");
+      return toast.error(m.errAll);
     if (role === "directeur" && (!f.lab_fr.trim() || !f.lab_ar.trim() || !f.faculte || !f.grade || !f.date_creation))
-      return toast.error("Tous les champs sont requis");
+      return toast.error(m.errAll);
     if (role === "directeur") {
       const y = new Date(f.date_creation).getFullYear();
-      if (y < 1962 || y > 2024) return toast.error("Date de création : entre 1962 et 2024");
+      if (y < 1962 || y > 2024) return toast.error(m.errDate);
     }
 
     setBusy(true);
@@ -232,7 +305,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
           { p_email: f.email, p_lab: labName } as never,
         );
         if (chkErr) return toast.error(chkErr.message);
-        if (exists) return toast.error("Vous avez déjà soumis une demande pour ce laboratoire");
+        if (exists) return toast.error(m.errDup);
       }
 
       const meta: Record<string, unknown> = { nom: f.nom, prenom: f.prenom, role, date_naissance: f.dob };
@@ -245,10 +318,10 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
         password: f.password,
         options: { emailRedirectTo: `${window.location.origin}/login`, data: meta },
       });
-      if (error || !data.user) return toast.error(error?.message ?? "Inscription impossible");
+      if (error || !data.user) return toast.error(error?.message ?? m.errSignup);
 
       await supabase.auth.signOut();
-      toast.success("Inscription réussie ! Veuillez attendre une notification d'acceptation.");
+      toast.success(m.signupOk);
       onDone();
     } finally {
       setBusy(false);
@@ -258,60 +331,60 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
   return (
     <form onSubmit={submit} className="space-y-4">
       <button type="button" onClick={onBack} className="inline-flex items-center gap-1 text-xs font-medium" style={{ color: "#0D9488" }}>
-        <ArrowLeft className="h-3 w-3" /> Changer de profil
+        <ArrowLeft className="h-3 w-3" /> {m.changeProfile}
       </button>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <Field label="Nom"><Input required value={f.nom} onChange={set("nom")} /></Field>
-        <Field label="Prénom"><Input required value={f.prenom} onChange={set("prenom")} /></Field>
-        <Field label="Email"><Input type="email" required value={f.email} onChange={set("email")} /></Field>
-        <Field label="Date de naissance">
+        <Field label={m.nom}><Input required value={f.nom} onChange={set("nom")} /></Field>
+        <Field label={m.prenom}><Input required value={f.prenom} onChange={set("prenom")} /></Field>
+        <Field label={m.email}><Input type="email" required value={f.email} onChange={set("email")} /></Field>
+        <Field label={m.dob}>
           <Input type="date" required value={f.dob} onChange={set("dob")} max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().slice(0, 10)} />
         </Field>
-        <Field label="Mot de passe"><Input type="password" required value={f.password} onChange={set("password")} /></Field>
-        <Field label="Confirmer mot de passe"><Input type="password" required value={f.confirm} onChange={set("confirm")} /></Field>
+        <Field label={m.password}><Input type="password" required value={f.password} onChange={set("password")} /></Field>
+        <Field label={m.confirmPw}><Input type="password" required value={f.confirm} onChange={set("confirm")} /></Field>
       </div>
 
       {role === "enseignant" && (
         <div className="grid gap-3 sm:grid-cols-2">
-          <Field label="Grade">
+          <Field label={m.grade}>
             <Select value={f.grade} onValueChange={(v) => setF((p) => ({ ...p, grade: v }))}>
-              <SelectTrigger><SelectValue placeholder="Choisir un grade" /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder={m.chooseGrade} /></SelectTrigger>
               <SelectContent>{GRADES_ENS.map((g) => <SelectItem key={g} value={g}>{g}</SelectItem>)}</SelectContent>
             </Select>
           </Field>
-          <Field label="Spécialité"><Input value={f.specialite} onChange={set("specialite")} /></Field>
-          <Field label="Laboratoire de rattachement" className="sm:col-span-2"><Input value={f.laboratoire} onChange={set("laboratoire")} /></Field>
+          <Field label={m.specialite}><Input value={f.specialite} onChange={set("specialite")} /></Field>
+          <Field label={m.labo} className="sm:col-span-2"><Input value={f.laboratoire} onChange={set("laboratoire")} /></Field>
         </div>
       )}
 
       {role === "doctorant" && (
         <div className="grid gap-3 sm:grid-cols-2">
-          <Field label="Sujet de thèse" className="sm:col-span-2"><Input value={f.sujet_these} onChange={set("sujet_these")} /></Field>
-          <Field label="Directeur de thèse"><Input value={f.directeur_these} onChange={set("directeur_these")} /></Field>
-          <Field label="Laboratoire de rattachement"><Input value={f.laboratoire} onChange={set("laboratoire")} /></Field>
+          <Field label={m.sujet} className="sm:col-span-2"><Input value={f.sujet_these} onChange={set("sujet_these")} /></Field>
+          <Field label={m.dirThese}><Input value={f.directeur_these} onChange={set("directeur_these")} /></Field>
+          <Field label={m.labo}><Input value={f.laboratoire} onChange={set("laboratoire")} /></Field>
         </div>
       )}
 
       {role === "directeur" && (
         <div className="grid gap-3 sm:grid-cols-2">
-          <Field label="Nom du laboratoire (FR)"><Input value={f.lab_fr} onChange={set("lab_fr")} /></Field>
-          <Field label="اسم المختبر (AR)">
+          <Field label={m.labFr}><Input value={f.lab_fr} onChange={set("lab_fr")} /></Field>
+          <Field label={m.labAr}>
             <Input dir="rtl" lang="ar" className="font-arabic text-right" value={f.lab_ar} onChange={set("lab_ar")} />
           </Field>
-          <Field label="Faculté">
+          <Field label={m.faculte}>
             <Select value={f.faculte} onValueChange={(v) => setF((p) => ({ ...p, faculte: v }))}>
-              <SelectTrigger><SelectValue placeholder="Choisir une faculté" /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder={m.chooseFaculte} /></SelectTrigger>
               <SelectContent>{FACULTES.map((fac) => <SelectItem key={fac} value={fac}>{fac}</SelectItem>)}</SelectContent>
             </Select>
           </Field>
-          <Field label="Grade">
+          <Field label={m.grade}>
             <Select value={f.grade} onValueChange={(v) => setF((p) => ({ ...p, grade: v }))}>
-              <SelectTrigger><SelectValue placeholder="Choisir un grade" /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder={m.chooseGrade} /></SelectTrigger>
               <SelectContent>{GRADES_DIR.map((g) => <SelectItem key={g} value={g}>{g}</SelectItem>)}</SelectContent>
             </Select>
           </Field>
-          <Field label="Date de création du laboratoire" className="sm:col-span-2">
+          <Field label={m.dateCrea} className="sm:col-span-2">
             <Input type="date" min="1962-01-01" max="2024-12-31" value={f.date_creation} onChange={set("date_creation")} />
           </Field>
         </div>
@@ -323,7 +396,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
         disabled={busy}
         style={{ backgroundColor: "#2DD4BF", color: "#0F172A", borderColor: "#2DD4BF" }}
       >
-        {busy ? "Inscription…" : "S'inscrire →"}
+        {busy ? m.submitting : m.submit}
       </Button>
     </form>
   );
