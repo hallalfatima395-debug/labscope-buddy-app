@@ -365,7 +365,20 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
             </Select>
           </Field>
           <Field label={m.specialite}><Input value={f.specialite} onChange={set("specialite")} /></Field>
-          <Field label={m.labo} className="sm:col-span-2"><Input value={f.laboratoire} onChange={set("laboratoire")} /></Field>
+          <Field label={m.labo} className="sm:col-span-2">
+            <Select
+              value={f.laboratoire_id}
+              onValueChange={(v) => {
+                const selected = labs.find((l) => l.id === v);
+                setF((p) => ({ ...p, laboratoire_id: v, laboratoire: selected?.nom_fr ?? "" }));
+              }}
+            >
+              <SelectTrigger><SelectValue placeholder={m.chooseLabo} /></SelectTrigger>
+              <SelectContent>
+                {labs.map((l) => <SelectItem key={l.id} value={l.id}>{l.nom_fr}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </Field>
         </div>
       )}
 
@@ -373,7 +386,20 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label={m.sujet} className="sm:col-span-2"><Input value={f.sujet_these} onChange={set("sujet_these")} /></Field>
           <Field label={m.dirThese}><Input value={f.directeur_these} onChange={set("directeur_these")} /></Field>
-          <Field label={m.labo}><Input value={f.laboratoire} onChange={set("laboratoire")} /></Field>
+          <Field label={m.labo}>
+            <Select
+              value={f.laboratoire_id}
+              onValueChange={(v) => {
+                const selected = labs.find((l) => l.id === v);
+                setF((p) => ({ ...p, laboratoire_id: v, laboratoire: selected?.nom_fr ?? "" }));
+              }}
+            >
+              <SelectTrigger><SelectValue placeholder={m.chooseLabo} /></SelectTrigger>
+              <SelectContent>
+                {labs.map((l) => <SelectItem key={l.id} value={l.id}>{l.nom_fr}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </Field>
         </div>
       )}
 
