@@ -271,13 +271,22 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
   const [busy, setBusy] = useState(false);
   const { lang } = useLang();
   const m = M[lang];
+  const [labs, setLabs] = useState<{ id: string; nom_fr: string; nom_ar: string | null }[]>([]);
   const [f, setF] = useState({
     nom: "", prenom: "", email: "", dob: "", password: "", confirm: "",
-    grade: "", specialite: "", laboratoire: "",
+    grade: "", specialite: "", laboratoire: "", laboratoire_id: "",
     sujet_these: "", directeur_these: "",
     lab_fr: "", lab_ar: "", faculte: "", date_creation: "",
   });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
+
+  useEffect(() => {
+    if (role !== "enseignant" && role !== "doctorant") return;
+    void (async () => {
+      const { data } = await supabase.from("laboratoires").select("id, nom_fr, nom_ar").order("nom_fr");
+      if (data) setLabs(data);
+    })();
+  }, [role]);
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
