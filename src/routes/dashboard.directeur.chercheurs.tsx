@@ -34,6 +34,7 @@ function Page() {
   const [available, setAvailable] = useState<{ id: string; nom: string; prenom: string; email: string; role: string }[]>([]);
   const [equipes, setEquipes] = useState<{ id: string; nom: string }[]>([]);
   const [form, setForm] = useState({ profile_id: "", equipe_id: "", grade: "", specialite: "" });
+  const [selectedMembre, setSelectedMembre] = useState<{ grade: string | null; specialite: string | null } | null>(null);
 
   const load = useCallback(async () => {
     if (!lab) return;
