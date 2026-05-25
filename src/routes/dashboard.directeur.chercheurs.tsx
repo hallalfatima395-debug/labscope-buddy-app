@@ -70,6 +70,7 @@ function Page() {
   }, [lab]);
 
   useEffect(() => { void load(); }, [load]);
+  useEffect(() => { if (!open) setSelectedMembre(null); }, [open]);
 
   const filtered = useMemo(() => {
     const s = q.toLowerCase().trim();
