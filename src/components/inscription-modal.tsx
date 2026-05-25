@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useState, useEffect, type FormEvent, type ReactNode } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, dashboardPathForRole, type Profile } from "@/hooks/use-auth";
@@ -50,6 +50,7 @@ const M = {
     labFr: "Nom du laboratoire (FR)", labAr: "اسم المختبر (AR)",
     faculte: "Faculté", chooseFaculte: "Choisir une faculté",
     dateCrea: "Date de création du laboratoire",
+    chooseLabo: "Choisir un laboratoire",
     submit: "S'inscrire →", submitting: "Inscription…",
     errNom: "Nom et prénom requis",
     errPw: "Mot de passe : 8 caractères minimum",
@@ -81,6 +82,7 @@ const M = {
     labFr: "اسم المختبر (بالفرنسية)", labAr: "اسم المختبر (بالعربية)",
     faculte: "الكلية", chooseFaculte: "اختر كلية",
     dateCrea: "تاريخ إنشاء المختبر",
+    chooseLabo: "اختر مختبراً",
     submit: "تسجيل ←", submitting: "جارٍ التسجيل…",
     errNom: "اللقب والاسم مطلوبان",
     errPw: "كلمة المرور: 8 أحرف على الأقل",
@@ -269,13 +271,22 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
   const [busy, setBusy] = useState(false);
   const { lang } = useLang();
   const m = M[lang];
+  const [labs, setLabs] = useState<{ id: string; nom_fr: string; nom_ar: string | null }[]>([]);
   const [f, setF] = useState({
     nom: "", prenom: "", email: "", dob: "", password: "", confirm: "",
-    grade: "", specialite: "", laboratoire: "",
+    grade: "", specialite: "", laboratoire: "", laboratoire_id: "",
     sujet_these: "", directeur_these: "",
     lab_fr: "", lab_ar: "", faculte: "", date_creation: "",
   });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
+
+  useEffect(() => {
+    if (role !== "enseignant" && role !== "doctorant") return;
+    void (async () => {
+      const { data } = await supabase.from("laboratoires").select("id, nom_fr, nom_ar").order("nom_fr");
+      if (data) setLabs(data);
+    })();
+  }, [role]);
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -284,9 +295,9 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
     if (f.password !== f.confirm) return toast.error(m.errPwMatch);
     if (!f.dob || ageFromDob(f.dob) < 18) return toast.error(m.errAge);
 
-    if (role === "enseignant" && (!f.grade || !f.specialite.trim() || !f.laboratoire.trim()))
+    if (role === "enseignant" && (!f.grade || !f.specialite.trim() || !f.laboratoire_id.trim()))
       return toast.error(m.errAll);
-    if (role === "doctorant" && (!f.sujet_these.trim() || !f.directeur_these.trim() || !f.laboratoire.trim()))
+    if (role === "doctorant" && (!f.sujet_these.trim() || !f.directeur_these.trim() || !f.laboratoire_id.trim()))
       return toast.error(m.errAll);
     if (role === "directeur" && (!f.lab_fr.trim() || !f.lab_ar.trim() || !f.faculte || !f.grade || !f.date_creation))
       return toast.error(m.errAll);
@@ -309,8 +320,8 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
       }
 
       const meta: Record<string, unknown> = { nom: f.nom, prenom: f.prenom, role, date_naissance: f.dob };
-      if (role === "enseignant") Object.assign(meta, { grade: f.grade, specialite: f.specialite, laboratoire: f.laboratoire });
-      if (role === "doctorant") Object.assign(meta, { sujet_these: f.sujet_these, directeur_these: f.directeur_these, laboratoire: f.laboratoire });
+      if (role === "enseignant") Object.assign(meta, { grade: f.grade, specialite: f.specialite, laboratoire: f.laboratoire, laboratoire_id: f.laboratoire_id });
+      if (role === "doctorant") Object.assign(meta, { sujet_these: f.sujet_these, directeur_these: f.directeur_these, laboratoire: f.laboratoire, laboratoire_id: f.laboratoire_id });
       if (role === "directeur") Object.assign(meta, { laboratoire_fr: f.lab_fr, laboratoire_ar: f.lab_ar, faculte: f.faculte, grade: f.grade, date_creation: f.date_creation });
 
       const { data, error } = await supabase.auth.signUp({
@@ -354,7 +365,20 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
             </Select>
           </Field>
           <Field label={m.specialite}><Input value={f.specialite} onChange={set("specialite")} /></Field>
-          <Field label={m.labo} className="sm:col-span-2"><Input value={f.laboratoire} onChange={set("laboratoire")} /></Field>
+          <Field label={m.labo} className="sm:col-span-2">
+            <Select
+              value={f.laboratoire_id}
+              onValueChange={(v) => {
+                const selected = labs.find((l) => l.id === v);
+                setF((p) => ({ ...p, laboratoire_id: v, laboratoire: selected?.nom_fr ?? "" }));
+              }}
+            >
+              <SelectTrigger><SelectValue placeholder={m.chooseLabo} /></SelectTrigger>
+              <SelectContent>
+                {labs.map((l) => <SelectItem key={l.id} value={l.id}>{l.nom_fr}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </Field>
         </div>
       )}
 
@@ -362,7 +386,20 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label={m.sujet} className="sm:col-span-2"><Input value={f.sujet_these} onChange={set("sujet_these")} /></Field>
           <Field label={m.dirThese}><Input value={f.directeur_these} onChange={set("directeur_these")} /></Field>
-          <Field label={m.labo}><Input value={f.laboratoire} onChange={set("laboratoire")} /></Field>
+          <Field label={m.labo}>
+            <Select
+              value={f.laboratoire_id}
+              onValueChange={(v) => {
+                const selected = labs.find((l) => l.id === v);
+                setF((p) => ({ ...p, laboratoire_id: v, laboratoire: selected?.nom_fr ?? "" }));
+              }}
+            >
+              <SelectTrigger><SelectValue placeholder={m.chooseLabo} /></SelectTrigger>
+              <SelectContent>
+                {labs.map((l) => <SelectItem key={l.id} value={l.id}>{l.nom_fr}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </Field>
         </div>
       )}
 
