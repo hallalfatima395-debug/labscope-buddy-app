@@ -34,6 +34,7 @@ function Page() {
   const [available, setAvailable] = useState<{ id: string; nom: string; prenom: string; email: string; role: string }[]>([]);
   const [equipes, setEquipes] = useState<{ id: string; nom: string }[]>([]);
   const [form, setForm] = useState({ profile_id: "", equipe_id: "", grade: "", specialite: "" });
+  const [selectedMembre, setSelectedMembre] = useState<{ grade: string | null; specialite: string | null } | null>(null);
 
   const load = useCallback(async () => {
     if (!lab) return;
@@ -69,6 +70,7 @@ function Page() {
   }, [lab]);
 
   useEffect(() => { void load(); }, [load]);
+  useEffect(() => { if (!open) setSelectedMembre(null); }, [open]);
 
   const filtered = useMemo(() => {
     const s = q.toLowerCase().trim();
@@ -125,7 +127,13 @@ function Page() {
             <div className="space-y-3">
               <div className="space-y-2">
                 <Label>Utilisateur</Label>
-                <Select value={form.profile_id} onValueChange={(v) => setForm({ ...form, profile_id: v })}>
+                <Select value={form.profile_id} onValueChange={async (v) => {
+                  setForm({ ...form, profile_id: v, grade: "", specialite: "" });
+                  if (!v) { setSelectedMembre(null); return; }
+                  const { data } = await supabase.from("membres").select("grade, specialite").eq("profile_id", v).maybeSingle();
+                  setSelectedMembre(data ?? { grade: null, specialite: null });
+                  setForm((prev) => ({ ...prev, grade: data?.grade ?? "", specialite: data?.specialite ?? "" }));
+                }}>
                   <SelectTrigger><SelectValue placeholder="Sélectionner…" /></SelectTrigger>
                   <SelectContent>
                     {available.length === 0 ? <SelectItem value="none" disabled>Aucun utilisateur disponible</SelectItem> :
@@ -133,6 +141,18 @@ function Page() {
                   </SelectContent>
                 </Select>
               </div>
+              {form.profile_id && selectedMembre && (
+                <div className="grid grid-cols-2 gap-3 text-sm bg-muted/50 p-3 rounded-md border">
+                  <div>
+                    <span className="block text-xs text-muted-foreground">Grade</span>
+                    <span className="font-medium">{selectedMembre.grade ?? "—"}</span>
+                  </div>
+                  <div>
+                    <span className="block text-xs text-muted-foreground">Spécialité</span>
+                    <span className="font-medium">{selectedMembre.specialite ?? "—"}</span>
+                  </div>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label>Équipe</Label>
                 <Select value={form.equipe_id} onValueChange={(v) => setForm({ ...form, equipe_id: v })}>
