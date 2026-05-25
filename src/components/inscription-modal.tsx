@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useState, useEffect, type FormEvent, type ReactNode } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, dashboardPathForRole, type Profile } from "@/hooks/use-auth";
@@ -50,6 +50,7 @@ const M = {
     labFr: "Nom du laboratoire (FR)", labAr: "اسم المختبر (AR)",
     faculte: "Faculté", chooseFaculte: "Choisir une faculté",
     dateCrea: "Date de création du laboratoire",
+    chooseLabo: "Choisir un laboratoire",
     submit: "S'inscrire →", submitting: "Inscription…",
     errNom: "Nom et prénom requis",
     errPw: "Mot de passe : 8 caractères minimum",
@@ -81,6 +82,7 @@ const M = {
     labFr: "اسم المختبر (بالفرنسية)", labAr: "اسم المختبر (بالعربية)",
     faculte: "الكلية", chooseFaculte: "اختر كلية",
     dateCrea: "تاريخ إنشاء المختبر",
+    chooseLabo: "اختر مختبراً",
     submit: "تسجيل ←", submitting: "جارٍ التسجيل…",
     errNom: "اللقب والاسم مطلوبان",
     errPw: "كلمة المرور: 8 أحرف على الأقل",
