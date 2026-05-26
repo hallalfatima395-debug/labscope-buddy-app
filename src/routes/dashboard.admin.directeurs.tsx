@@ -150,6 +150,56 @@ function AdminDirecteursPage() {
           ))}
         </div>
       )}
+
+      <Dialog open={!!sentEmail} onOpenChange={(o) => !o && setSentEmail(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Mail
+                className="h-5 w-5"
+                style={{ color: sentEmail?.kind === "refuse" ? "#dc2626" : "var(--teal, #0D9488)" }}
+              />
+              {sentEmail?.kind === "refuse"
+                ? "Demande refusée"
+                : "Email de confirmation envoyé"}
+            </DialogTitle>
+            <DialogDescription>
+              {sentEmail?.kind === "refuse"
+                ? "La demande de Directeur a été refusée."
+                : "Aperçu de l'email transmis au Directeur."}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="rounded-md border bg-muted/30 p-4 text-sm space-y-2">
+            <p>
+              <span className="font-semibold">À :</span> {sentEmail?.to}
+            </p>
+            <p>
+              <span className="font-semibold">Objet :</span>{" "}
+              {sentEmail?.kind === "refuse"
+                ? "Suite à votre demande de compte Directeur"
+                : "Votre compte Directeur a été validé - LabScope"}
+            </p>
+            <hr className="my-2" />
+            <p>Bonjour {sentEmail?.name || "Directeur"},</p>
+            {sentEmail?.kind === "refuse" ? (
+              <p>
+                Nous regrettons de vous informer que votre demande de compte Directeur n'a pas
+                été retenue par l'administration centrale.
+              </p>
+            ) : (
+              <p>
+                Félicitations, votre compte <span className="font-medium">Directeur de laboratoire</span>{" "}
+                vient d'être validé par l'administration centrale. Vous pouvez désormais vous
+                connecter à votre Dashboard sur LabScope.
+              </p>
+            )}
+            <p className="text-muted-foreground">— L'équipe LabScope</p>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setSentEmail(null)}>Fermer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
