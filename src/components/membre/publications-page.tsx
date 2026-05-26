@@ -36,9 +36,11 @@ export function PublicationsPage() {
       .eq("membre_id", membre.id)
       .order("annee", { ascending: false });
     setRows((data as Pub[]) ?? []);
-    if (membre.laboratoire_id) {
-      const { data: eq } = await supabase.from("equipes").select("id, nom").eq("laboratoire_id", membre.laboratoire_id);
+    if (membre.equipe_id) {
+      const { data: eq } = await supabase.from("equipes").select("id, nom").eq("id", membre.equipe_id);
       setEquipes((eq as Equipe[]) ?? []);
+    } else {
+      setEquipes([]);
     }
   }, [membre]);
 
