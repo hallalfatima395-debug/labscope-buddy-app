@@ -424,6 +424,14 @@ export type Database = {
           statut: string
         }[]
       }
+      team_enseignants: {
+        Args: { p_equipe_id: string }
+        Returns: {
+          id: string
+          nom: string
+          prenom: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
