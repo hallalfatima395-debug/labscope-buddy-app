@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, X, UserPlus, Mail } from "lucide-react";
 import { toast } from "sonner";
-import { sendEmailInBackground, buildDirecteurAcceptedEmail } from "@/lib/send-email";
+import { buildDirecteurAcceptedEmail } from "@/lib/send-email";
 import {
   Dialog,
   DialogContent,
@@ -77,7 +77,15 @@ function AdminDirecteursPage() {
     const name = `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
     if (statut === "accepte" && p.email) {
       const { subject, html } = buildDirecteurAcceptedEmail(name);
-      sendEmailInBackground({ to: p.email, subject, html });
+      const { error: mailErr } = await supabase.functions.invoke("send-email", {
+        body: { to: p.email, subject, html },
+      });
+      if (mailErr) {
+        console.error("[send-email] Échec:", mailErr);
+        toast.error(`Directeur validé, mais l'envoi de l'email a échoué : ${mailErr.message}`);
+        if (p.email) setSentEmail({ to: p.email, name, kind: statut });
+        return;
+      }
     }
     toast.success(
       statut === "accepte"
