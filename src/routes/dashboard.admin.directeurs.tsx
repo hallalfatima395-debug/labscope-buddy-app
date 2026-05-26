@@ -4,9 +4,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, X, UserPlus } from "lucide-react";
+import { Check, X, UserPlus, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { sendEmailInBackground, buildDirecteurAcceptedEmail } from "@/lib/send-email";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/dashboard/admin/directeurs")({
   component: AdminDirecteursPage,
@@ -27,6 +35,11 @@ interface PendingDirecteur {
 function AdminDirecteursPage() {
   const [items, setItems] = useState<PendingDirecteur[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sentEmail, setSentEmail] = useState<{
+    to: string;
+    name: string;
+    kind: "accepte" | "refuse";
+  } | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -61,16 +74,17 @@ function AdminDirecteursPage() {
     const { error } = await supabase.from("profiles").update({ statut }).eq("id", p.id);
     if (error) return toast.error(error.message);
     setItems((prev) => prev.filter((x) => x.id !== p.id));
+    const name = `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
     if (statut === "accepte" && p.email) {
-      const name = `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
       const { subject, html } = buildDirecteurAcceptedEmail(name);
       sendEmailInBackground({ to: p.email, subject, html });
     }
     toast.success(
       statut === "accepte"
-        ? `Directeur validé · ${p.email}`
+        ? `Directeur validé · Email de confirmation envoyé à ${p.email}`
         : `Demande refusée · ${p.email}`,
     );
+    if (p.email) setSentEmail({ to: p.email, name, kind: statut });
   };
 
   return (
