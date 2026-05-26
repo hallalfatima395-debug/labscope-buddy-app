@@ -1,3 +1,4 @@
+import { AutoTranslate } from "@/components/auto-translate";
 import type { ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { LayoutDashboard, Users, GraduationCap, FolderKanban, BookOpen, ClipboardList, LogOut, UserPlus } from "lucide-react";
