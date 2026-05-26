@@ -1,3 +1,4 @@
+import { AutoTranslate } from "@/components/auto-translate";
 import type { ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { LayoutDashboard, Users, BookOpen, GraduationCap, LogOut, MessageSquare, UserCheck } from "lucide-react";
@@ -90,7 +91,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
               </Button>
             </div>
           </header>
-          <main className="flex-1 p-6 overflow-auto">{children}</main>
+          <main className="flex-1 p-6 overflow-auto"><AutoTranslate>{children}</AutoTranslate></main>
         </div>
       </div>
     </SidebarProvider>
