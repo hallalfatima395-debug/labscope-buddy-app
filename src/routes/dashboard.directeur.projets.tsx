@@ -28,7 +28,7 @@ interface Projet {
 function Page() {
   const { lab } = useDirecteurLab();
   const [rows, setRows] = useState<Projet[]>([]);
-  const [equipes, setEquipes] = useState<{ id: string; nom: string }[]>([]);
+  const [equipes, setEquipes] = useState<{ id: string; nom: string; chef_membre_id: string | null }[]>([]);
   const [filter, setFilter] = useState("all");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Projet | null>(null);
@@ -41,7 +41,7 @@ function Page() {
       .select("id, titre, description, date_debut, date_fin, equipe_id, equipes:equipe_id(nom)")
       .eq("laboratoire_id", lab.id);
     setRows(((data as any[]) ?? []).map((p) => ({ ...p, equipe_nom: p.equipes?.nom ?? "—" })));
-    const { data: eqs } = await supabase.from("equipes").select("id, nom").eq("laboratoire_id", lab.id);
+    const { data: eqs } = await supabase.from("equipes").select("id, nom, chef_membre_id").eq("laboratoire_id", lab.id);
     setEquipes((eqs as any) ?? []);
   }, [lab]);
 
@@ -101,7 +101,11 @@ function Page() {
                 <Label>Équipe</Label>
                 <Select value={form.equipe_id} onValueChange={(v) => setForm({ ...form, equipe_id: v })}>
                   <SelectTrigger><SelectValue placeholder="Équipe" /></SelectTrigger>
-                  <SelectContent>{equipes.map((e) => <SelectItem key={e.id} value={e.id}>{e.nom}</SelectItem>)}</SelectContent>
+                  <SelectContent>
+                    {equipes.filter((e) => e.chef_membre_id !== null).map((e) => (
+                      <SelectItem key={e.id} value={e.id}>{e.nom}</SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </div>
             </div>
