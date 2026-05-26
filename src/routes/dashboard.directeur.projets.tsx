@@ -101,7 +101,11 @@ function Page() {
                 <Label>Équipe</Label>
                 <Select value={form.equipe_id} onValueChange={(v) => setForm({ ...form, equipe_id: v })}>
                   <SelectTrigger><SelectValue placeholder="Équipe" /></SelectTrigger>
-                  <SelectContent>{equipes.map((e) => <SelectItem key={e.id} value={e.id}>{e.nom}</SelectItem>)}</SelectContent>
+                  <SelectContent>
+                    {equipes.filter((e) => e.chef_membre_id !== null).map((e) => (
+                      <SelectItem key={e.id} value={e.id}>{e.nom}</SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </div>
             </div>
