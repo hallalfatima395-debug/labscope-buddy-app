@@ -417,16 +417,16 @@ function InfoCard({
   iconFg?: string;
 }) {
   return (
-    <div className="rounded-2xl p-6 shadow-sm" style={{ backgroundColor: bg, color: fg }}>
+    <div className="p-6 shadow-sm" style={{ backgroundColor: bg, color: fg, borderRadius: "1rem" }}>
       <div className="flex items-start gap-4">
         <div className="rounded-xl p-3" style={{ backgroundColor: iconBg ?? "rgba(255,255,255,0.15)", color: iconFg ?? "inherit" }}>
           <Icon className="h-5 w-5" />
         </div>
         <div>
-          <p className="font-display text-xl font-semibold uppercase tracking-wide">{title}</p>
-          <div className="mt-1 space-y-0.5 text-sm opacity-90">
+          <p className="font-display text-xl font-semibold uppercase tracking-wide" style={{ color: fg }}>{title}</p>
+          <div className="mt-1 space-y-0.5 text-sm" style={{ color: fg, opacity: 0.9 }}>
             {lines.map((l) => (
-              <p key={l}>{l}</p>
+              <p key={l} style={{ color: fg }}>{l}</p>
             ))}
           </div>
         </div>
