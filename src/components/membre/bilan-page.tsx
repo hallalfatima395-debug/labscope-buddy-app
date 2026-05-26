@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 
 interface Bilan {
@@ -31,6 +32,26 @@ export function BilanPage({ includeThese = false }: { includeThese?: boolean }) 
   const [communications, setCommunications] = useState("");
   const [encadrements, setEncadrements] = useState("");
   const [avancement, setAvancement] = useState("");
+  const [encadrants, setEncadrants] = useState<{ id: string; label: string }[]>([]);
+
+  useEffect(() => {
+    if (!includeThese || !membre?.equipe_id) { setEncadrants([]); return; }
+    void (async () => {
+      const { data: mems } = await supabase
+        .from("membres")
+        .select("profile_id")
+        .eq("equipe_id", membre.equipe_id as string);
+      const ids = (mems ?? []).map((m: { profile_id: string }) => m.profile_id);
+      if (ids.length === 0) { setEncadrants([]); return; }
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("id, nom, prenom, role")
+        .in("id", ids)
+        .eq("role", "enseignant");
+      setEncadrants(((profs ?? []) as { id: string; nom: string | null; prenom: string | null }[])
+        .map((p) => ({ id: p.id, label: `${p.prenom ?? ""} ${p.nom ?? ""}`.trim() || "—" })));
+    })();
+  }, [includeThese, membre?.equipe_id]);
 
   useEffect(() => {
     if (!membre) return;
@@ -104,8 +125,21 @@ export function BilanPage({ includeThese = false }: { includeThese?: boolean }) 
             <Textarea rows={3} value={projets} onChange={(e) => setProjets(e.target.value)} disabled={readOnly} /></div>
           <div className="space-y-1"><Label>Communications</Label>
             <Textarea rows={3} value={communications} onChange={(e) => setCommunications(e.target.value)} disabled={readOnly} /></div>
-          <div className="space-y-1"><Label>Encadrements</Label>
-            <Textarea rows={3} value={encadrements} onChange={(e) => setEncadrements(e.target.value)} disabled={readOnly} /></div>
+          {includeThese ? (
+            <div className="space-y-1"><Label>Encadré par</Label>
+              <Select value={encadrements} onValueChange={setEncadrements} disabled={readOnly}>
+                <SelectTrigger><SelectValue placeholder={encadrants.length ? "Sélectionner un enseignant-chercheur" : "Aucun enseignant-chercheur dans votre équipe"} /></SelectTrigger>
+                <SelectContent>
+                  {encadrants.map((e) => (
+                    <SelectItem key={e.id} value={e.label}>{e.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ) : (
+            <div className="space-y-1"><Label>Encadrements</Label>
+              <Textarea rows={3} value={encadrements} onChange={(e) => setEncadrements(e.target.value)} disabled={readOnly} /></div>
+          )}
           {includeThese && (
             <div className="space-y-1"><Label>Avancement de la thèse</Label>
               <Textarea rows={4} value={avancement} onChange={(e) => setAvancement(e.target.value)} disabled={readOnly} /></div>
