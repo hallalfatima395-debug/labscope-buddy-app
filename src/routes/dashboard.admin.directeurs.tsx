@@ -4,9 +4,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, X, UserPlus } from "lucide-react";
+import { Check, X, UserPlus, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { sendEmailInBackground, buildDirecteurAcceptedEmail } from "@/lib/send-email";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/dashboard/admin/directeurs")({
   component: AdminDirecteursPage,
@@ -27,6 +35,11 @@ interface PendingDirecteur {
 function AdminDirecteursPage() {
   const [items, setItems] = useState<PendingDirecteur[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sentEmail, setSentEmail] = useState<{
+    to: string;
+    name: string;
+    kind: "accepte" | "refuse";
+  } | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -61,16 +74,17 @@ function AdminDirecteursPage() {
     const { error } = await supabase.from("profiles").update({ statut }).eq("id", p.id);
     if (error) return toast.error(error.message);
     setItems((prev) => prev.filter((x) => x.id !== p.id));
+    const name = `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
     if (statut === "accepte" && p.email) {
-      const name = `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
       const { subject, html } = buildDirecteurAcceptedEmail(name);
       sendEmailInBackground({ to: p.email, subject, html });
     }
     toast.success(
       statut === "accepte"
-        ? `Directeur validé · ${p.email}`
+        ? `Directeur validé · Email de confirmation envoyé à ${p.email}`
         : `Demande refusée · ${p.email}`,
     );
+    if (p.email) setSentEmail({ to: p.email, name, kind: statut });
   };
 
   return (
@@ -136,6 +150,56 @@ function AdminDirecteursPage() {
           ))}
         </div>
       )}
+
+      <Dialog open={!!sentEmail} onOpenChange={(o) => !o && setSentEmail(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Mail
+                className="h-5 w-5"
+                style={{ color: sentEmail?.kind === "refuse" ? "#dc2626" : "var(--teal, #0D9488)" }}
+              />
+              {sentEmail?.kind === "refuse"
+                ? "Demande refusée"
+                : "Email de confirmation envoyé"}
+            </DialogTitle>
+            <DialogDescription>
+              {sentEmail?.kind === "refuse"
+                ? "La demande de Directeur a été refusée."
+                : "Aperçu de l'email transmis au Directeur."}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="rounded-md border bg-muted/30 p-4 text-sm space-y-2">
+            <p>
+              <span className="font-semibold">À :</span> {sentEmail?.to}
+            </p>
+            <p>
+              <span className="font-semibold">Objet :</span>{" "}
+              {sentEmail?.kind === "refuse"
+                ? "Suite à votre demande de compte Directeur"
+                : "Votre compte Directeur a été validé - LabScope"}
+            </p>
+            <hr className="my-2" />
+            <p>Bonjour {sentEmail?.name || "Directeur"},</p>
+            {sentEmail?.kind === "refuse" ? (
+              <p>
+                Nous regrettons de vous informer que votre demande de compte Directeur n'a pas
+                été retenue par l'administration centrale.
+              </p>
+            ) : (
+              <p>
+                Félicitations, votre compte <span className="font-medium">Directeur de laboratoire</span>{" "}
+                vient d'être validé par l'administration centrale. Vous pouvez désormais vous
+                connecter à votre Dashboard sur LabScope.
+              </p>
+            )}
+            <p className="text-muted-foreground">— L'équipe LabScope</p>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setSentEmail(null)}>Fermer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
