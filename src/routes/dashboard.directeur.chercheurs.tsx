@@ -64,7 +64,13 @@ function Page() {
       .select("id, nom, prenom, email, role")
       .in("role", ["enseignant", "doctorant"])
       .eq("statut", "accepte");
-    const { data: existing } = await supabase.from("membres").select("profile_id").not("laboratoire_id", "is", null);
+    // Only exclude profiles already assigned to a DIFFERENT lab.
+    // Profiles assigned to the current lab (or unassigned) remain selectable so the director can edit grade/equipe/specialité.
+    const { data: existing } = await supabase
+      .from("membres")
+      .select("profile_id, laboratoire_id")
+      .not("laboratoire_id", "is", null)
+      .neq("laboratoire_id", lab.id);
     const taken = new Set(((existing as any[]) ?? []).map((m) => m.profile_id));
     setAvailable(((profs as any[]) ?? []).filter((p) => !taken.has(p.id)));
   }, [lab]);
