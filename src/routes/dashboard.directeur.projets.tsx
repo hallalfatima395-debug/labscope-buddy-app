@@ -41,7 +41,7 @@ function Page() {
       .select("id, titre, description, date_debut, date_fin, equipe_id, equipes:equipe_id(nom)")
       .eq("laboratoire_id", lab.id);
     setRows(((data as any[]) ?? []).map((p) => ({ ...p, equipe_nom: p.equipes?.nom ?? "—" })));
-    const { data: eqs } = await supabase.from("equipes").select("id, nom").eq("laboratoire_id", lab.id);
+    const { data: eqs } = await supabase.from("equipes").select("id, nom, chef_membre_id").eq("laboratoire_id", lab.id);
     setEquipes((eqs as any) ?? []);
   }, [lab]);
 
