@@ -40,7 +40,7 @@ export function BilanPage({ includeThese = false }: { includeThese?: boolean }) 
       const { data: mems } = await supabase
         .from("membres")
         .select("profile_id")
-        .eq("equipe_id", membre.equipe_id);
+        .eq("equipe_id", membre.equipe_id as string);
       const ids = (mems ?? []).map((m: { profile_id: string }) => m.profile_id);
       if (ids.length === 0) { setEncadrants([]); return; }
       const { data: profs } = await supabase
