@@ -37,18 +37,9 @@ export function BilanPage({ includeThese = false }: { includeThese?: boolean }) 
   useEffect(() => {
     if (!includeThese || !membre?.equipe_id) { setEncadrants([]); return; }
     void (async () => {
-      const { data: mems } = await supabase
-        .from("membres")
-        .select("profile_id")
-        .eq("equipe_id", membre.equipe_id as string);
-      const ids = (mems ?? []).map((m: { profile_id: string }) => m.profile_id);
-      if (ids.length === 0) { setEncadrants([]); return; }
-      const { data: profs } = await supabase
-        .from("profiles")
-        .select("id, nom, prenom, role")
-        .in("id", ids)
-        .eq("role", "enseignant");
-      setEncadrants(((profs ?? []) as { id: string; nom: string | null; prenom: string | null }[])
+      const { data, error } = await supabase.rpc("team_enseignants", { p_equipe_id: membre.equipe_id as string });
+      if (error) { setEncadrants([]); return; }
+      setEncadrants(((data ?? []) as { id: string; nom: string | null; prenom: string | null }[])
         .map((p) => ({ id: p.id, label: `${p.prenom ?? ""} ${p.nom ?? ""}`.trim() || "—" })));
     })();
   }, [includeThese, membre?.equipe_id]);
