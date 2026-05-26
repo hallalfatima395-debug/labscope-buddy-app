@@ -34,7 +34,7 @@ function Page() {
   const [available, setAvailable] = useState<{ id: string; nom: string; prenom: string; email: string; role: string }[]>([]);
   const [equipes, setEquipes] = useState<{ id: string; nom: string }[]>([]);
   const [form, setForm] = useState({ profile_id: "", equipe_id: "", grade: "", specialite: "" });
-  const [selectedMembre, setSelectedMembre] = useState<{ grade: string | null; specialite: string | null } | null>(null);
+  const [activeTab, setActiveTab] = useState<"enseignants" | "doctorants">("enseignants");
 
   const load = useCallback(async () => {
     if (!lab) return;
@@ -70,7 +70,7 @@ function Page() {
   }, [lab]);
 
   useEffect(() => { void load(); }, [load]);
-  useEffect(() => { if (!open) setSelectedMembre(null); }, [open]);
+  useEffect(() => { if (!open) setForm({ profile_id: "", equipe_id: "", grade: "", specialite: "" }); }, [open]);
 
   const filtered = useMemo(() => {
     const s = q.toLowerCase().trim();
@@ -80,6 +80,12 @@ function Page() {
       doctorants: base.filter((r) => r.role === "doctorant"),
     };
   }, [rows, q]);
+
+  const targetRole = activeTab === "enseignants" ? "enseignant" : "doctorant";
+  const availableForTab = useMemo(
+    () => available.filter((u) => u.role === targetRole),
+    [available, targetRole],
+  );
 
   const assign = async () => {
     if (!lab || !form.profile_id) return;
@@ -129,30 +135,17 @@ function Page() {
                 <Label>Utilisateur</Label>
                 <Select value={form.profile_id} onValueChange={async (v) => {
                   setForm({ ...form, profile_id: v, grade: "", specialite: "" });
-                  if (!v) { setSelectedMembre(null); return; }
+                  if (!v) return;
                   const { data } = await supabase.from("membres").select("grade, specialite").eq("profile_id", v).maybeSingle();
-                  setSelectedMembre(data ?? { grade: null, specialite: null });
                   setForm((prev) => ({ ...prev, grade: data?.grade ?? "", specialite: data?.specialite ?? "" }));
                 }}>
-                  <SelectTrigger><SelectValue placeholder="Sélectionner…" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={`Sélectionner un ${targetRole}…`} /></SelectTrigger>
                   <SelectContent>
-                    {available.length === 0 ? <SelectItem value="none" disabled>Aucun utilisateur disponible</SelectItem> :
-                      available.map((u) => <SelectItem key={u.id} value={u.id}>{u.prenom} {u.nom} ({u.role})</SelectItem>)}
+                    {availableForTab.length === 0 ? <SelectItem value="none" disabled>Aucun utilisateur disponible</SelectItem> :
+                      availableForTab.map((u) => <SelectItem key={u.id} value={u.id}>{u.prenom} {u.nom}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
-              {form.profile_id && selectedMembre && (
-                <div className="grid grid-cols-2 gap-3 text-sm bg-muted/50 p-3 rounded-md border">
-                  <div>
-                    <span className="block text-xs text-muted-foreground">Grade</span>
-                    <span className="font-medium">{selectedMembre.grade ?? "—"}</span>
-                  </div>
-                  <div>
-                    <span className="block text-xs text-muted-foreground">Spécialité</span>
-                    <span className="font-medium">{selectedMembre.specialite ?? "—"}</span>
-                  </div>
-                </div>
-              )}
               <div className="space-y-2">
                 <Label>Équipe</Label>
                 <Select value={form.equipe_id} onValueChange={(v) => setForm({ ...form, equipe_id: v })}>
@@ -173,7 +166,7 @@ function Page() {
         </Dialog>
       </div>
       <Input placeholder="Rechercher…" value={q} onChange={(e) => setQ(e.target.value)} className="max-w-sm" />
-      <Tabs defaultValue="enseignants" className="w-full">
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "enseignants" | "doctorants")} className="w-full">
         <TabsList>
           <TabsTrigger value="enseignants">Enseignants-Chercheurs ({filtered.enseignants.length})</TabsTrigger>
           <TabsTrigger value="doctorants">Doctorants ({filtered.doctorants.length})</TabsTrigger>
