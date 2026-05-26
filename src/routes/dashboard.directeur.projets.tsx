@@ -28,7 +28,7 @@ interface Projet {
 function Page() {
   const { lab } = useDirecteurLab();
   const [rows, setRows] = useState<Projet[]>([]);
-  const [equipes, setEquipes] = useState<{ id: string; nom: string }[]>([]);
+  const [equipes, setEquipes] = useState<{ id: string; nom: string; chef_membre_id: string | null }[]>([]);
   const [filter, setFilter] = useState("all");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Projet | null>(null);
