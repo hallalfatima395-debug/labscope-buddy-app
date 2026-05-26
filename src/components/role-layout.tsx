@@ -18,6 +18,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/hooks/use-lang";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { AutoTranslate } from "@/components/auto-translate";
 
 export interface NavItem {
   title: string;
@@ -104,7 +105,9 @@ export function RoleLayout({
               </Button>
             </div>
           </header>
-          <main className="flex-1 p-6 overflow-auto">{children}</main>
+          <main className="flex-1 p-6 overflow-auto">
+            <AutoTranslate>{children}</AutoTranslate>
+          </main>
         </div>
       </div>
     </SidebarProvider>
