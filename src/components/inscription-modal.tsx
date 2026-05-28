@@ -321,7 +321,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
       const meta: Record<string, unknown> = { nom: f.nom, prenom: f.prenom, role, date_naissance: f.dob };
       if (role === "enseignant") Object.assign(meta, { grade: f.grade, specialite: f.specialite, laboratoire: f.laboratoire, laboratoire_id: f.laboratoire_id });
       if (role === "doctorant") Object.assign(meta, { sujet_these: f.sujet_these, directeur_these: f.directeur_these, laboratoire: f.laboratoire, laboratoire_id: f.laboratoire_id });
-      if (role === "directeur") Object.assign(meta, { laboratoire_fr: f.lab_fr, laboratoire_ar: f.lab_ar, faculte: f.faculte, grade: f.grade, date_creation: f.date_creation });
+      if (role === "directeur") Object.assign(meta, { laboratoire_fr: f.lab_fr, laboratoire_ar: f.lab_ar, faculte: f.faculte, date_creation: f.date_creation });
 
       const { data, error } = await supabase.auth.signUp({
         email: f.email,
