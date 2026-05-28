@@ -24,6 +24,7 @@ const FACULTES = [
   "Faculté de Droit et des Sciences Politiques",
   "Faculté des Sciences Économiques, Commerciales et de Gestion",
   "Faculté de Médecine",
+  "Institut des Sciences Agronomiques",
 ];
 
 const GRADES_ENS = ["MAB", "MAA", "MCB", "MCA", "Professeur"] as const;
@@ -294,9 +295,9 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
     if (f.password !== f.confirm) return toast.error(m.errPwMatch);
     if (!f.dob || ageFromDob(f.dob) < 18) return toast.error(m.errAge);
 
-    if (role === "enseignant" && (!f.grade || !f.specialite.trim() || !f.laboratoire_id.trim()))
+    if (role === "enseignant" && (!f.grade || !f.specialite.trim() || !f.laboratoire_id.trim() || !f.faculte))
       return toast.error(m.errAll);
-    if (role === "doctorant" && (!f.sujet_these.trim() || !f.directeur_these.trim() || !f.laboratoire_id.trim()))
+    if (role === "doctorant" && (!f.sujet_these.trim() || !f.directeur_these.trim() || !f.laboratoire_id.trim() || !f.specialite.trim() || !f.faculte))
       return toast.error(m.errAll);
     if (role === "directeur" && (!f.lab_fr.trim() || !f.lab_ar.trim() || !f.faculte || !f.date_creation))
       return toast.error(m.errAll);
@@ -319,8 +320,8 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
       }
 
       const meta: Record<string, unknown> = { nom: f.nom, prenom: f.prenom, role, date_naissance: f.dob };
-      if (role === "enseignant") Object.assign(meta, { grade: f.grade, specialite: f.specialite, laboratoire: f.laboratoire, laboratoire_id: f.laboratoire_id });
-      if (role === "doctorant") Object.assign(meta, { sujet_these: f.sujet_these, directeur_these: f.directeur_these, laboratoire: f.laboratoire, laboratoire_id: f.laboratoire_id });
+      if (role === "enseignant") Object.assign(meta, { grade: f.grade, specialite: f.specialite, laboratoire: f.laboratoire, laboratoire_id: f.laboratoire_id, faculte: f.faculte });
+      if (role === "doctorant") Object.assign(meta, { sujet_these: f.sujet_these, directeur_these: f.directeur_these, specialite: f.specialite, laboratoire: f.laboratoire, laboratoire_id: f.laboratoire_id, faculte: f.faculte });
       if (role === "directeur") Object.assign(meta, { laboratoire_fr: f.lab_fr, laboratoire_ar: f.lab_ar, faculte: f.faculte, date_creation: f.date_creation });
 
       const { data, error } = await supabase.auth.signUp({
@@ -364,6 +365,12 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
             </Select>
           </Field>
           <Field label={m.specialite}><Input value={f.specialite} onChange={set("specialite")} /></Field>
+          <Field label={m.faculte}>
+            <Select value={f.faculte} onValueChange={(v) => setF((p) => ({ ...p, faculte: v }))}>
+              <SelectTrigger><SelectValue placeholder={m.chooseFaculte} /></SelectTrigger>
+              <SelectContent>{FACULTES.map((fac) => <SelectItem key={fac} value={fac}>{fac}</SelectItem>)}</SelectContent>
+            </Select>
+          </Field>
           <Field label={m.labo} className="sm:col-span-2">
             <Select
               value={f.laboratoire_id}
@@ -385,6 +392,13 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label={m.sujet} className="sm:col-span-2"><Input value={f.sujet_these} onChange={set("sujet_these")} /></Field>
           <Field label={m.dirThese}><Input value={f.directeur_these} onChange={set("directeur_these")} /></Field>
+          <Field label={m.specialite}><Input value={f.specialite} onChange={set("specialite")} /></Field>
+          <Field label={m.faculte}>
+            <Select value={f.faculte} onValueChange={(v) => setF((p) => ({ ...p, faculte: v }))}>
+              <SelectTrigger><SelectValue placeholder={m.chooseFaculte} /></SelectTrigger>
+              <SelectContent>{FACULTES.map((fac) => <SelectItem key={fac} value={fac}>{fac}</SelectItem>)}</SelectContent>
+            </Select>
+          </Field>
           <Field label={m.labo}>
             <Select
               value={f.laboratoire_id}
