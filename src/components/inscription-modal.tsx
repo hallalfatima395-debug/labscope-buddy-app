@@ -27,7 +27,6 @@ const FACULTES = [
 ];
 
 const GRADES_ENS = ["MAB", "MAA", "MCB", "MCA", "Professeur"] as const;
-const GRADES_DIR = ["MCB", "MCA", "Professeur"] as const;
 
 const M = {
   fr: {
@@ -299,7 +298,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
       return toast.error(m.errAll);
     if (role === "doctorant" && (!f.sujet_these.trim() || !f.directeur_these.trim() || !f.laboratoire_id.trim()))
       return toast.error(m.errAll);
-    if (role === "directeur" && (!f.lab_fr.trim() || !f.lab_ar.trim() || !f.faculte || !f.grade || !f.date_creation))
+    if (role === "directeur" && (!f.lab_fr.trim() || !f.lab_ar.trim() || !f.faculte || !f.date_creation))
       return toast.error(m.errAll);
     if (role === "directeur") {
       const y = new Date(f.date_creation).getFullYear();
@@ -322,7 +321,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
       const meta: Record<string, unknown> = { nom: f.nom, prenom: f.prenom, role, date_naissance: f.dob };
       if (role === "enseignant") Object.assign(meta, { grade: f.grade, specialite: f.specialite, laboratoire: f.laboratoire, laboratoire_id: f.laboratoire_id });
       if (role === "doctorant") Object.assign(meta, { sujet_these: f.sujet_these, directeur_these: f.directeur_these, laboratoire: f.laboratoire, laboratoire_id: f.laboratoire_id });
-      if (role === "directeur") Object.assign(meta, { laboratoire_fr: f.lab_fr, laboratoire_ar: f.lab_ar, faculte: f.faculte, grade: f.grade, date_creation: f.date_creation });
+      if (role === "directeur") Object.assign(meta, { laboratoire_fr: f.lab_fr, laboratoire_ar: f.lab_ar, faculte: f.faculte, date_creation: f.date_creation });
 
       const { data, error } = await supabase.auth.signUp({
         email: f.email,
@@ -413,12 +412,6 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
             <Select value={f.faculte} onValueChange={(v) => setF((p) => ({ ...p, faculte: v }))}>
               <SelectTrigger><SelectValue placeholder={m.chooseFaculte} /></SelectTrigger>
               <SelectContent>{FACULTES.map((fac) => <SelectItem key={fac} value={fac}>{fac}</SelectItem>)}</SelectContent>
-            </Select>
-          </Field>
-          <Field label={m.grade}>
-            <Select value={f.grade} onValueChange={(v) => setF((p) => ({ ...p, grade: v }))}>
-              <SelectTrigger><SelectValue placeholder={m.chooseGrade} /></SelectTrigger>
-              <SelectContent>{GRADES_DIR.map((g) => <SelectItem key={g} value={g}>{g}</SelectItem>)}</SelectContent>
             </Select>
           </Field>
           <Field label={m.dateCrea} className="sm:col-span-2">
