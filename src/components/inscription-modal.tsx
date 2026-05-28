@@ -27,7 +27,6 @@ const FACULTES = [
 ];
 
 const GRADES_ENS = ["MAB", "MAA", "MCB", "MCA", "Professeur"] as const;
-const GRADES_DIR = ["MCB", "MCA", "Professeur"] as const;
 
 const M = {
   fr: {
