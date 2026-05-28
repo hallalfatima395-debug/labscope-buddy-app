@@ -24,6 +24,7 @@ const FACULTES = [
   "Faculté de Droit et des Sciences Politiques",
   "Faculté des Sciences Économiques, Commerciales et de Gestion",
   "Faculté de Médecine",
+  "Institut des Sciences Agronomiques",
 ];
 
 const GRADES_ENS = ["MAB", "MAA", "MCB", "MCA", "Professeur"] as const;
