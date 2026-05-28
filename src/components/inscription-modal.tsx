@@ -124,17 +124,17 @@ export function InscriptionModal({ children, defaultTab = "inscription" }: { chi
       >
         <div
           className="flex items-center gap-4 px-6 py-5"
-          style={{ backgroundColor: "#0F172A", color: "#FFFFFF" }}
+          style={{ backgroundColor: "#2DD4BF", color: "#0F172A" }}
         >
           <div
             className="flex h-12 w-12 items-center justify-center rounded-full"
-            style={{ backgroundColor: "#2DD4BF" }}
+            style={{ backgroundColor: "#FFFFFF" }}
           >
             <FlaskConical className="h-6 w-6" style={{ color: "#0F172A" }} />
           </div>
           <div className="leading-tight">
-            <p className="font-display text-xl font-semibold" style={{ color: "#FFFFFF" }}>LabScope</p>
-            <p className="text-xs" style={{ color: "#5EEAD4" }}>{m.subtitle}</p>
+            <p className="font-display text-xl font-semibold" style={{ color: "#0F172A" }}>LabScope</p>
+            <p className="text-xs" style={{ color: "#0F172A" }}>{m.subtitle}</p>
           </div>
         </div>
 
@@ -272,6 +272,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
   const { lang } = useLang();
   const m = M[lang];
   const [labs, setLabs] = useState<{ id: string; nom_fr: string; nom_ar: string | null }[]>([]);
+  const [directeurs, setDirecteurs] = useState<{ id: string; nom: string; prenom: string }[]>([]);
   const [f, setF] = useState({
     nom: "", prenom: "", email: "", dob: "", password: "", confirm: "",
     grade: "", specialite: "", laboratoire: "", laboratoire_id: "",
@@ -287,6 +288,20 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
       if (data) setLabs(data);
     })();
   }, [role]);
+
+  useEffect(() => {
+    if (role !== "doctorant" || !f.laboratoire_id) {
+      setDirecteurs([]);
+      return;
+    }
+    void (async () => {
+      const { data } = await supabase.rpc(
+        "list_enseignants_by_lab" as never,
+        { p_lab_id: f.laboratoire_id } as never,
+      );
+      setDirecteurs((data as { id: string; nom: string; prenom: string }[] | null) ?? []);
+    })();
+  }, [role, f.laboratoire_id]);
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -391,7 +406,6 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
       {role === "doctorant" && (
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label={m.sujet} className="sm:col-span-2"><Input value={f.sujet_these} onChange={set("sujet_these")} /></Field>
-          <Field label={m.dirThese}><Input value={f.directeur_these} onChange={set("directeur_these")} /></Field>
           <Field label={m.specialite}><Input value={f.specialite} onChange={set("specialite")} /></Field>
           <Field label={m.faculte}>
             <Select value={f.faculte} onValueChange={(v) => setF((p) => ({ ...p, faculte: v }))}>
@@ -404,12 +418,28 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
               value={f.laboratoire_id}
               onValueChange={(v) => {
                 const selected = labs.find((l) => l.id === v);
-                setF((p) => ({ ...p, laboratoire_id: v, laboratoire: selected?.nom_fr ?? "" }));
+                setF((p) => ({ ...p, laboratoire_id: v, laboratoire: selected?.nom_fr ?? "", directeur_these: "" }));
               }}
             >
               <SelectTrigger><SelectValue placeholder={m.chooseLabo} /></SelectTrigger>
               <SelectContent>
                 {labs.map((l) => <SelectItem key={l.id} value={l.id}>{l.nom_fr}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </Field>
+          <Field label={m.dirThese} className="sm:col-span-2">
+            <Select
+              value={f.directeur_these}
+              onValueChange={(v) => setF((p) => ({ ...p, directeur_these: v }))}
+              disabled={!f.laboratoire_id || directeurs.length === 0}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={!f.laboratoire_id ? m.chooseLabo : (directeurs.length === 0 ? "—" : m.dirThese)} />
+              </SelectTrigger>
+              <SelectContent>
+                {directeurs.map((d) => (
+                  <SelectItem key={d.id} value={`${d.prenom} ${d.nom}`}>{d.prenom} {d.nom}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </Field>
