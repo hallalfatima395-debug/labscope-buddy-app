@@ -644,29 +644,30 @@
     color: var(--app-ink) !important;
   }
 
-  /* Sidebars — sage green with white text */
+  /* Sidebars — pure white background with sage green accents */
   nav[data-sidebar], aside[data-sidebar],
   [data-sidebar="sidebar"], [data-sidebar="menu"],
   .bg-sidebar, .bg-navy,
   .bg-slate-900, .bg-slate-800,
   .bg-gray-900, .bg-neutral-900, .bg-zinc-900 {
-    background-color: var(--app-btn) !important;
-    color: #FFFFFF !important;
-    border-color: rgba(255,255,255,0.12) !important;
+    background-color: #FFFFFF !important;
+    color: var(--app-ink) !important;
+    border-color: var(--app-accent) !important;
   }
   [data-sidebar] a, [data-sidebar] button,
   [data-sidebar] span, [data-sidebar] p,
-  [data-sidebar] svg.lucide { color: #FFFFFF !important; }
+  [data-sidebar] svg.lucide { color: var(--app-ink) !important; }
   [data-sidebar] a:hover, [data-sidebar] button:hover {
-    background-color: rgba(255,255,255,0.14) !important;
+    background-color: rgba(143,188,143,0.12) !important;
+    color: var(--app-ink) !important;
   }
   [data-sidebar] [data-active="true"],
   [data-sidebar] [aria-current="page"],
   [data-sidebar] a.active,
   [data-sidebar] [data-state="active"] {
-    background-color: var(--app-btn-hover) !important;
+    background-color: var(--app-btn) !important;
     color: #FFFFFF !important;
-    border-color: var(--app-btn-hover) !important;
+    border-color: var(--app-btn) !important;
   }
 
   /* Primary buttons / CTAs / submit — sage green */
