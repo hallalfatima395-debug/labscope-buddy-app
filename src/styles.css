@@ -801,3 +801,51 @@
     border-color: var(--app-accent) !important;
   }
 }
+
+/* ============================================================
+   Targeted overrides — sidebar/logo pure white,
+   sidebar active item (Dashboard etc.) back to sage #8FBC8F.
+   ============================================================ */
+@layer base {
+  /* Sidebar + logo area — force pure white */
+  [data-sidebar="sidebar"],
+  [data-slot="sidebar"],
+  nav[data-sidebar],
+  aside[data-sidebar],
+  [data-sidebar="header"],
+  [data-slot="sidebar-header"],
+  [data-sidebar="content"],
+  [data-slot="sidebar-content"],
+  [data-sidebar="footer"],
+  [data-slot="sidebar-footer"] {
+    background-color: #FFFFFF !important;
+  }
+  [data-sidebar="header"] img,
+  [data-slot="sidebar-header"] img,
+  [data-sidebar="header"] a,
+  [data-slot="sidebar-header"] a {
+    background-color: #FFFFFF !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Active sidebar item (Dashboard context menu) — sage green */
+  [data-sidebar] [data-active="true"],
+  [data-sidebar] [aria-current="page"],
+  [data-sidebar] a.active,
+  [data-sidebar] [data-state="active"],
+  [data-sidebar="menu-button"][data-active="true"],
+  [data-slot="sidebar-menu-button"][data-active="true"] {
+    background-color: #8FBC8F !important;
+    color: #FFFFFF !important;
+    border-color: #8FBC8F !important;
+  }
+  [data-sidebar] [data-active="true"] span,
+  [data-sidebar] [data-active="true"] svg.lucide,
+  [data-sidebar] [aria-current="page"] span,
+  [data-sidebar] [aria-current="page"] svg.lucide,
+  [data-sidebar] [data-state="active"] span,
+  [data-sidebar] [data-state="active"] svg.lucide {
+    color: #FFFFFF !important;
+  }
+}
