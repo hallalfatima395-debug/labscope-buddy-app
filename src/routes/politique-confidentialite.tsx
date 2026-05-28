@@ -18,7 +18,7 @@ const T = {
   fr: {
     back: "Retour à l'accueil",
     title: "Politique de confidentialité",
-    updated: "Dernière mise à jour : 22 mai 2025",
+    updated: "Dernière mise à jour : 28 mai 2026",
     s1: "1. Introduction",
     p1: "LabScope est une plateforme développée par l'Université Djillali Liabès — Sidi Bel Abbès, dans le cadre du Vice-Rectorat de la Recherche Scientifique. La présente politique informe les utilisateurs sur la manière dont leurs données personnelles sont collectées, utilisées et protégées.",
     s2: "2. Responsable du traitement",
@@ -28,7 +28,7 @@ const T = {
     s3: "3. Données collectées",
     p3: "LabScope collecte uniquement les données strictement nécessaires au fonctionnement de la plateforme et à la gestion des laboratoires.",
     box1Title: "Données d'inscription",
-    box1: ["Nom et prénom", "Adresse e-mail", "Rôle (membre, chercheur, directeur, doctorant)", "Affiliation au laboratoire / équipe"],
+    box1: ["Nom et prénom", "Adresse e-mail", "Rôle (chercheur, directeur, doctorant)", "Affiliation au laboratoire"],
     box2Title: "Messages de contact",
     box2: ["Nom et prénom", "Adresse e-mail", "Contenu du message", "Date d'envoi"],
     s4: "4. Finalités du traitement",
@@ -41,7 +41,7 @@ const T = {
       "Assurer la sécurité du service et prévenir les usages frauduleux",
     ],
     s5: "5. Confidentialité et sécurité",
-    p5: "LabScope garantit la confidentialité absolue de vos données. Les informations collectées sont strictement réservées à l'usage interne de l'Université Djillali Liabès et de ses services habilités. Aucune donnée personnelle n'est cédée, vendue, louée ou échangée. Les données sont stockées sur une infrastructure sécurisée (Lovable Cloud) avec chiffrement et politiques d'accès (RLS).",
+    p5: "LabScope garantit la confidentialité absolue de vos données. Les informations collectées sont strictement réservées à l'usage interne de l'Université Djillali Liabès et de ses services habilités. Aucune donnée personnelle n'est cédée, vendue, louée ou échangée. Les données sont stockées sur une infrastructure cloud sécurisée avec chiffrement et politiques d'accès (RLS).",
     s6: "6. Durée de conservation",
     p6: "Les données sont conservées aussi longtemps que nécessaire. En cas de suppression d'un compte, les données sont anonymisées ou supprimées sous 90 jours. Les messages de contact sont conservés 24 mois.",
     s7: "7. Vos droits",
@@ -60,14 +60,13 @@ const T = {
     s10: "10. Contact",
     contactIntro: "Pour toute question relative à la confidentialité :",
     contactName: "Vice-Rectorat de la Recherche Scientifique — UDL",
-    contactPhone: "Téléphone : +213 (0) 48 74 91 36",
     footer: "© 2026 — Université Djillali Liabès",
     policyLink: "Politique de confidentialité", legalLink: "Mentions légales",
   },
   ar: {
     back: "العودة إلى الرئيسية",
     title: "سياسة الخصوصية",
-    updated: "آخر تحديث: 22 ماي 2025",
+    updated: "آخر تحديث: 28 ماي 2026",
     s1: "1. مقدمة",
     p1: "لابسكوب منصة طوّرتها جامعة جيلالي اليابس — سيدي بلعباس، في إطار نيابة مديرية الجامعة للبحث العلمي. تهدف هذه السياسة إلى إعلام المستخدمين بكيفية جمع بياناتهم الشخصية واستخدامها وحمايتها.",
     s2: "2. المسؤول عن المعالجة",
@@ -77,7 +76,7 @@ const T = {
     s3: "3. البيانات المجمَّعة",
     p3: "يجمع لابسكوب فقط البيانات الضرورية لتشغيل المنصة وإدارة المختبرات.",
     box1Title: "بيانات التسجيل",
-    box1: ["اللقب والاسم", "البريد الإلكتروني", "الدور (عضو، باحث، مدير، طالب دكتوراه)", "الانتماء إلى المختبر / الفريق"],
+    box1: ["اللقب والاسم", "البريد الإلكتروني", "الدور (باحث، مدير، طالب دكتوراه)", "الانتماء إلى المختبر"],
     box2Title: "رسائل التواصل",
     box2: ["اللقب والاسم", "البريد الإلكتروني", "محتوى الرسالة", "تاريخ الإرسال"],
     s4: "4. أهداف المعالجة",
@@ -90,7 +89,7 @@ const T = {
       "ضمان أمن الخدمة ومنع الاستخدامات الاحتيالية",
     ],
     s5: "5. السرية والأمن",
-    p5: "يضمن لابسكوب السرية التامة لبياناتك. تُحفظ المعلومات حصريًا للاستخدام الداخلي لجامعة جيلالي اليابس وخدماتها المخوّلة. لا تُباع ولا تُؤجَّر أي بيانات شخصية ولا تُتبادل مع الغير. تُخزَّن البيانات على بنية تحتية آمنة (Lovable Cloud) مع التشفير وسياسات الوصول (RLS).",
+    p5: "يضمن لابسكوب السرية التامة لبياناتك. تُحفظ المعلومات حصريًا للاستخدام الداخلي لجامعة جيلالي اليابس وخدماتها المخوّلة. لا تُباع ولا تُؤجَّر أي بيانات شخصية ولا تُتبادل مع الغير. تُخزَّن البيانات على بنية تحتية سحابية آمنة مع التشفير وسياسات الوصول (RLS).",
     s6: "6. مدة الاحتفاظ",
     p6: "تُحفظ البيانات طوال المدة اللازمة. عند حذف الحساب، تُجهَّل أو تُحذف خلال 90 يومًا. تُحفظ رسائل الاتصال لمدة 24 شهرًا.",
     s7: "7. حقوقك",
@@ -109,7 +108,6 @@ const T = {
     s10: "10. التواصل",
     contactIntro: "لأي سؤال يتعلق بالسرية:",
     contactName: "نيابة مديرية الجامعة للبحث العلمي — جامعة جيلالي اليابس",
-    contactPhone: "الهاتف: +213 (0) 48 74 91 36",
     footer: "© 2026 — جامعة جيلالي اليابس",
     policyLink: "سياسة الخصوصية", legalLink: "إشعارات قانونية",
   },
@@ -213,7 +211,6 @@ function PolitiqueConfidentialite() {
               <p className="font-semibold" style={{ color: "#0F172A" }}>{t.contactName}</p>
               <p className="mt-1 text-sm" style={{ color: "#6B7280" }}>{t.addrV}</p>
               <p className="mt-1 text-sm" style={{ color: "#6B7280" }}>{t.emailL} <a href="mailto:vicerectoarat.pgrs@univ-sba.dz" className="underline" style={{ color: "#0D9488" }}>vicerectoarat.pgrs@univ-sba.dz</a></p>
-              <p className="mt-1 text-sm" style={{ color: "#6B7280" }}>{t.contactPhone}</p>
             </div>
           </Section>
         </div>
