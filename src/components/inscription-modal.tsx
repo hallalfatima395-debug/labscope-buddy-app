@@ -298,7 +298,7 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
       return toast.error(m.errAll);
     if (role === "doctorant" && (!f.sujet_these.trim() || !f.directeur_these.trim() || !f.laboratoire_id.trim()))
       return toast.error(m.errAll);
-    if (role === "directeur" && (!f.lab_fr.trim() || !f.lab_ar.trim() || !f.faculte || !f.grade || !f.date_creation))
+    if (role === "directeur" && (!f.lab_fr.trim() || !f.lab_ar.trim() || !f.faculte || !f.date_creation))
       return toast.error(m.errAll);
     if (role === "directeur") {
       const y = new Date(f.date_creation).getFullYear();
