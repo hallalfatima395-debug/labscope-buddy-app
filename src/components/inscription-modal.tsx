@@ -124,17 +124,17 @@ export function InscriptionModal({ children, defaultTab = "inscription" }: { chi
       >
         <div
           className="flex items-center gap-4 px-6 py-5"
-          style={{ backgroundColor: "#0F172A", color: "#FFFFFF" }}
+          style={{ backgroundColor: "#2DD4BF", color: "#0F172A" }}
         >
           <div
             className="flex h-12 w-12 items-center justify-center rounded-full"
-            style={{ backgroundColor: "#2DD4BF" }}
+            style={{ backgroundColor: "#FFFFFF" }}
           >
             <FlaskConical className="h-6 w-6" style={{ color: "#0F172A" }} />
           </div>
           <div className="leading-tight">
-            <p className="font-display text-xl font-semibold" style={{ color: "#FFFFFF" }}>LabScope</p>
-            <p className="text-xs" style={{ color: "#5EEAD4" }}>{m.subtitle}</p>
+            <p className="font-display text-xl font-semibold" style={{ color: "#0F172A" }}>LabScope</p>
+            <p className="text-xs" style={{ color: "#0F172A" }}>{m.subtitle}</p>
           </div>
         </div>
 
