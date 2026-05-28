@@ -365,6 +365,12 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
             </Select>
           </Field>
           <Field label={m.specialite}><Input value={f.specialite} onChange={set("specialite")} /></Field>
+          <Field label={m.faculte}>
+            <Select value={f.faculte} onValueChange={(v) => setF((p) => ({ ...p, faculte: v }))}>
+              <SelectTrigger><SelectValue placeholder={m.chooseFaculte} /></SelectTrigger>
+              <SelectContent>{FACULTES.map((fac) => <SelectItem key={fac} value={fac}>{fac}</SelectItem>)}</SelectContent>
+            </Select>
+          </Field>
           <Field label={m.labo} className="sm:col-span-2">
             <Select
               value={f.laboratoire_id}
@@ -386,6 +392,13 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label={m.sujet} className="sm:col-span-2"><Input value={f.sujet_these} onChange={set("sujet_these")} /></Field>
           <Field label={m.dirThese}><Input value={f.directeur_these} onChange={set("directeur_these")} /></Field>
+          <Field label={m.specialite}><Input value={f.specialite} onChange={set("specialite")} /></Field>
+          <Field label={m.faculte}>
+            <Select value={f.faculte} onValueChange={(v) => setF((p) => ({ ...p, faculte: v }))}>
+              <SelectTrigger><SelectValue placeholder={m.chooseFaculte} /></SelectTrigger>
+              <SelectContent>{FACULTES.map((fac) => <SelectItem key={fac} value={fac}>{fac}</SelectItem>)}</SelectContent>
+            </Select>
+          </Field>
           <Field label={m.labo}>
             <Select
               value={f.laboratoire_id}
