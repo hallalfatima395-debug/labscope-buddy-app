@@ -786,3 +786,94 @@
     border-color: var(--app-accent) !important;
   }
 }
+
+/* ============================================================
+   Sidebar palette refinement
+   Sidebar bg #E8F0E9, text/icons #5a7d61.
+   Active item / action buttons inside sidebar → #5a7d61 with white text.
+   Landing page header (acts as top-bar/"sidebar" of home) stays pure white.
+   ============================================================ */
+@layer base {
+  :root {
+    --side-bg: #E8F0E9;
+    --side-ink: #5a7d61;
+  }
+
+  /* Dashboard sidebars */
+  nav[data-sidebar], aside[data-sidebar],
+  [data-sidebar="sidebar"], [data-sidebar="menu"],
+  .bg-sidebar {
+    background-color: var(--side-bg) !important;
+    color: var(--side-ink) !important;
+    border-color: rgba(90,125,97,0.18) !important;
+  }
+  [data-sidebar] a, [data-sidebar] button,
+  [data-sidebar] span, [data-sidebar] p,
+  [data-sidebar] svg.lucide {
+    color: var(--side-ink) !important;
+  }
+  [data-sidebar] a:hover, [data-sidebar] button:hover {
+    background-color: rgba(90,125,97,0.12) !important;
+    color: var(--side-ink) !important;
+  }
+  /* Active sidebar item — sage with white text */
+  [data-sidebar] [data-active="true"],
+  [data-sidebar] [aria-current="page"],
+  [data-sidebar] a.active,
+  [data-sidebar] [data-state="active"] {
+    background-color: var(--side-ink) !important;
+    color: #FFFFFF !important;
+    border-color: var(--side-ink) !important;
+  }
+  [data-sidebar] [data-active="true"] svg.lucide,
+  [data-sidebar] [aria-current="page"] svg.lucide,
+  [data-sidebar] [data-state="active"] svg.lucide {
+    color: #FFFFFF !important;
+  }
+
+  /* Contextual / dropdown menus & primary action buttons inside dashboards */
+  [role="menu"], [data-radix-popper-content-wrapper] [role="menu"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="context-menu-content"] {
+    background-color: var(--side-ink) !important;
+    color: #FFFFFF !important;
+    border-color: var(--side-ink) !important;
+  }
+  [role="menu"] [role="menuitem"],
+  [data-slot="dropdown-menu-item"],
+  [data-slot="context-menu-item"] {
+    color: #FFFFFF !important;
+  }
+  [role="menu"] [role="menuitem"]:hover,
+  [data-slot="dropdown-menu-item"]:hover,
+  [data-slot="context-menu-item"]:hover,
+  [role="menu"] [role="menuitem"][data-highlighted],
+  [data-slot="dropdown-menu-item"][data-highlighted],
+  [data-slot="context-menu-item"][data-highlighted] {
+    background-color: rgba(255,255,255,0.14) !important;
+    color: #FFFFFF !important;
+  }
+  [role="menu"] svg.lucide,
+  [data-slot="dropdown-menu-content"] svg.lucide,
+  [data-slot="context-menu-content"] svg.lucide {
+    color: #FFFFFF !important;
+  }
+
+  /* Dashboard primary action buttons → sage #5a7d61 with white text */
+  main button.bg-primary, main .bg-primary,
+  main button[type="submit"]:not([data-variant]):not(.bg-transparent):not(.bg-destructive) {
+    background-color: var(--side-ink) !important;
+    color: #FFFFFF !important;
+    border-color: var(--side-ink) !important;
+  }
+  main button.bg-primary:hover, main .bg-primary:hover,
+  main button[type="submit"]:hover {
+    background-color: #496a50 !important;
+  }
+
+  /* Landing page header (home "sidebar"/top-bar) → pure white */
+  header.sticky {
+    background-color: #FFFFFF !important;
+    border-color: rgba(15,23,42,0.08) !important;
+  }
+}
