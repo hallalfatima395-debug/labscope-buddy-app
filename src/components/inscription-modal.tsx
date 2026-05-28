@@ -124,7 +124,7 @@ export function InscriptionModal({ children, defaultTab = "inscription" }: { chi
       >
         <div
           className="flex items-center gap-4 px-6 py-5"
-          style={{ backgroundColor: "#2DD4BF", color: "#0F172A" }}
+          style={{ backgroundColor: "#8FBC8F", color: "#0F172A" }}
         >
           <div
             className="flex h-12 w-12 items-center justify-center rounded-full"

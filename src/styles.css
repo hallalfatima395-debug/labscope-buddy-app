@@ -654,6 +654,20 @@
     color: #1E293B !important;
     border-color: rgba(15,23,42,0.10) !important;
   }
+  /* Sidebar logo / header area — pure white, no divider */
+  [data-sidebar="header"],
+  [data-slot="sidebar-header"] {
+    background-color: #FFFFFF !important;
+    border-color: transparent !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+  }
+  [data-sidebar="header"] img,
+  [data-slot="sidebar-header"] img {
+    background-color: #FFFFFF !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
   [data-sidebar] a, [data-sidebar] button,
   [data-sidebar] span, [data-sidebar] p,
   [data-sidebar] svg.lucide { color: #1E293B !important; }
