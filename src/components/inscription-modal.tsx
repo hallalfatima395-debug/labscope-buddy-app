@@ -414,12 +414,6 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
               <SelectContent>{FACULTES.map((fac) => <SelectItem key={fac} value={fac}>{fac}</SelectItem>)}</SelectContent>
             </Select>
           </Field>
-          <Field label={m.grade}>
-            <Select value={f.grade} onValueChange={(v) => setF((p) => ({ ...p, grade: v }))}>
-              <SelectTrigger><SelectValue placeholder={m.chooseGrade} /></SelectTrigger>
-              <SelectContent>{GRADES_DIR.map((g) => <SelectItem key={g} value={g}>{g}</SelectItem>)}</SelectContent>
-            </Select>
-          </Field>
           <Field label={m.dateCrea} className="sm:col-span-2">
             <Input type="date" min="1962-01-01" max="2024-12-31" value={f.date_creation} onChange={set("date_creation")} />
           </Field>
