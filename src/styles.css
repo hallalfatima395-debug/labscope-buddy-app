@@ -604,3 +604,185 @@
     border-radius: 9999px;
   }
 }
+
+/* ============================================================
+   Palette override — Sage green + soft peach accents
+   Background #f4f9f4, Buttons #8FBC8F, Accents/borders #faddd0
+   Applied globally without touching layout, logos, or images.
+   ============================================================ */
+@layer base {
+  :root {
+    --app-bg: #f4f9f4;
+    --app-btn: #8FBC8F;
+    --app-btn-hover: #7AAB7A;
+    --app-accent: #faddd0;
+    --app-accent-strong: #f3c3ad;
+    --app-ink: #1f2d1f;
+  }
+
+  html, body {
+    background: var(--app-bg) !important;
+    color: var(--app-ink) !important;
+  }
+
+  /* Neutral surfaces stay light, cards keep crisp white for readability */
+  .bg-white,
+  .bg-gray-50, .bg-gray-100,
+  .bg-slate-50, .bg-slate-100,
+  .bg-neutral-50, .bg-neutral-100,
+  .bg-zinc-50, .bg-zinc-100,
+  .bg-stone-50, .bg-stone-100,
+  .bg-background, .bg-card, .bg-popover,
+  .bg-muted, .bg-secondary {
+    background-color: #FFFFFF !important;
+  }
+
+  /* Header / top chrome — light sage tint to blend with body */
+  header.sticky {
+    background-color: var(--app-bg) !important;
+    border-color: var(--app-accent) !important;
+    color: var(--app-ink) !important;
+  }
+
+  /* Sidebars — sage green with white text */
+  nav[data-sidebar], aside[data-sidebar],
+  [data-sidebar="sidebar"], [data-sidebar="menu"],
+  .bg-sidebar, .bg-navy,
+  .bg-slate-900, .bg-slate-800,
+  .bg-gray-900, .bg-neutral-900, .bg-zinc-900 {
+    background-color: var(--app-btn) !important;
+    color: #FFFFFF !important;
+    border-color: rgba(255,255,255,0.12) !important;
+  }
+  [data-sidebar] a, [data-sidebar] button,
+  [data-sidebar] span, [data-sidebar] p,
+  [data-sidebar] svg.lucide { color: #FFFFFF !important; }
+  [data-sidebar] a:hover, [data-sidebar] button:hover {
+    background-color: rgba(255,255,255,0.14) !important;
+  }
+  [data-sidebar] [data-active="true"],
+  [data-sidebar] [aria-current="page"],
+  [data-sidebar] a.active,
+  [data-sidebar] [data-state="active"] {
+    background-color: var(--app-btn-hover) !important;
+    color: #FFFFFF !important;
+    border-color: var(--app-btn-hover) !important;
+  }
+
+  /* Primary buttons / CTAs / submit — sage green */
+  button.bg-primary, .bg-primary,
+  .bg-teal, .bg-terracotta,
+  [data-variant="default"].btn,
+  button[type="submit"]:not([data-variant]):not(.bg-transparent):not(.bg-destructive) {
+    background-color: var(--app-btn) !important;
+    color: #FFFFFF !important;
+    border-color: var(--app-btn) !important;
+  }
+  button.bg-primary:hover, .bg-primary:hover,
+  .bg-teal:hover, .bg-terracotta:hover,
+  button[type="submit"]:hover {
+    background-color: var(--app-btn-hover) !important;
+    box-shadow: 0 10px 24px -12px rgba(143,188,143,0.55) !important;
+  }
+
+  /* Outline / secondary buttons — peach border + sage text */
+  button[data-variant="outline"], .btn-outline,
+  button.border, .border-terracotta, .border-input {
+    border-color: var(--app-accent-strong) !important;
+    color: var(--app-btn-hover) !important;
+  }
+
+  .text-primary, .text-teal, .text-terracotta {
+    color: var(--app-btn-hover) !important;
+  }
+
+  /* Icons in content areas — sage */
+  main svg.lucide, section svg.lucide, button svg.lucide {
+    color: var(--app-btn-hover);
+  }
+  header svg.lucide, nav svg.lucide {
+    color: var(--app-ink) !important;
+  }
+
+  /* Cards — white surface, soft peach top accent, gentle shadow, no overlap */
+  main .rounded-2xl, main .rounded-xl, main [class*="Card"],
+  section .rounded-2xl, section .rounded-xl {
+    background-color: #FFFFFF !important;
+    background-image: none !important;
+    border: 1px solid var(--app-accent) !important;
+    border-top: 2px solid var(--app-accent-strong) !important;
+    border-radius: 1rem !important;
+    box-shadow:
+      0 1px 2px rgba(31,45,31,0.04),
+      0 8px 24px -18px rgba(143,188,143,0.30) !important;
+  }
+  main .rounded-2xl:hover, main .rounded-xl:hover {
+    box-shadow:
+      0 14px 32px -20px rgba(143,188,143,0.38),
+      0 10px 28px -22px rgba(250,221,208,0.55) !important;
+  }
+
+  /* Tables — peach header band, dark ink text, clean rows */
+  table thead, table thead tr, table thead tr:hover,
+  table thead.bg-navy, table thead .bg-navy,
+  thead[class*="bg-navy"], tr.bg-navy {
+    background: var(--app-accent) !important;
+  }
+  table thead th {
+    color: var(--app-ink) !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid var(--app-accent-strong) !important;
+  }
+  table tbody tr { background-color: #FFFFFF !important; }
+  table tbody tr:nth-child(even) { background-color: #fbfdf9 !important; }
+  table tbody tr:hover { background-color: #fdeee5 !important; }
+  table tbody td {
+    color: var(--app-ink) !important;
+    border-bottom: 1px solid var(--app-accent) !important;
+  }
+
+  /* Inputs — peach border, sage focus ring */
+  main input:not([type="checkbox"]):not([type="radio"]),
+  main textarea,
+  main [data-slot="select-trigger"],
+  main button[role="combobox"] {
+    background-color: #FFFFFF !important;
+    border-color: var(--app-accent-strong) !important;
+    color: var(--app-ink) !important;
+  }
+  main input:focus, main textarea:focus,
+  main [data-slot="select-trigger"]:focus,
+  main button[role="combobox"]:focus {
+    border-color: var(--app-btn) !important;
+    box-shadow: 0 0 0 3px rgba(143,188,143,0.25) !important;
+    outline: none !important;
+  }
+
+  /* Auth modal — keep white body with peach accents */
+  [role="dialog"][data-auth-modal] [role="tabpanel"] {
+    background-image: none !important;
+    background-color: #FFFFFF !important;
+  }
+  [role="dialog"][data-auth-modal] button[type="submit"] {
+    background-color: var(--app-btn) !important;
+    color: #FFFFFF !important;
+    border-color: var(--app-btn) !important;
+  }
+  [role="dialog"][data-auth-modal] button[type="submit"]:hover {
+    background-color: var(--app-btn-hover) !important;
+  }
+  [role="dialog"][data-auth-modal] input:focus,
+  [role="dialog"][data-auth-modal] textarea:focus {
+    border-color: var(--app-btn) !important;
+    box-shadow: 0 0 0 3px rgba(250,221,208,0.6) !important;
+  }
+  [role="dialog"][data-auth-modal] [data-state="active"][role="tab"] {
+    color: var(--app-btn-hover) !important;
+    border-color: var(--app-btn-hover) !important;
+  }
+
+  /* Generic borders that previously used sky/teal/rose — unify to peach */
+  .border, .border-input, .border-border {
+    border-color: var(--app-accent) !important;
+  }
+}
