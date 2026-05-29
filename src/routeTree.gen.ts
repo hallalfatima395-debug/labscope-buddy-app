@@ -37,6 +37,7 @@ import { Route as DashboardAdminMessagesRouteImport } from './routes/dashboard.a
 import { Route as DashboardAdminEquipesRouteImport } from './routes/dashboard.admin.equipes'
 import { Route as DashboardAdminDoctorantsRouteImport } from './routes/dashboard.admin.doctorants'
 import { Route as DashboardAdminDirecteursRouteImport } from './routes/dashboard.admin.directeurs'
+import { Route as DashboardDirecteurBilansIdRouteImport } from './routes/dashboard.directeur.bilans.$id'
 
 const PolitiqueConfidentialiteRoute =
   PolitiqueConfidentialiteRouteImport.update({
@@ -190,6 +191,12 @@ const DashboardAdminDirecteursRoute =
     path: '/directeurs',
     getParentRoute: () => DashboardAdminRoute,
   } as any)
+const DashboardDirecteurBilansIdRoute =
+  DashboardDirecteurBilansIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => DashboardDirecteurBilansRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -207,7 +214,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/publications': typeof DashboardAdminPublicationsRoute
   '/dashboard/chercheur/bilan': typeof DashboardChercheurBilanRoute
   '/dashboard/chercheur/publications': typeof DashboardChercheurPublicationsRoute
-  '/dashboard/directeur/bilans': typeof DashboardDirecteurBilansRoute
+  '/dashboard/directeur/bilans': typeof DashboardDirecteurBilansRouteWithChildren
   '/dashboard/directeur/chercheurs': typeof DashboardDirecteurChercheursRoute
   '/dashboard/directeur/equipes': typeof DashboardDirecteurEquipesRoute
   '/dashboard/directeur/inscriptions': typeof DashboardDirecteurInscriptionsRoute
@@ -220,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/chercheur/': typeof DashboardChercheurIndexRoute
   '/dashboard/directeur/': typeof DashboardDirecteurIndexRoute
   '/dashboard/doctorant/': typeof DashboardDoctorantIndexRoute
+  '/dashboard/directeur/bilans/$id': typeof DashboardDirecteurBilansIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -233,7 +241,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin/publications': typeof DashboardAdminPublicationsRoute
   '/dashboard/chercheur/bilan': typeof DashboardChercheurBilanRoute
   '/dashboard/chercheur/publications': typeof DashboardChercheurPublicationsRoute
-  '/dashboard/directeur/bilans': typeof DashboardDirecteurBilansRoute
+  '/dashboard/directeur/bilans': typeof DashboardDirecteurBilansRouteWithChildren
   '/dashboard/directeur/chercheurs': typeof DashboardDirecteurChercheursRoute
   '/dashboard/directeur/equipes': typeof DashboardDirecteurEquipesRoute
   '/dashboard/directeur/inscriptions': typeof DashboardDirecteurInscriptionsRoute
@@ -246,6 +254,7 @@ export interface FileRoutesByTo {
   '/dashboard/chercheur': typeof DashboardChercheurIndexRoute
   '/dashboard/directeur': typeof DashboardDirecteurIndexRoute
   '/dashboard/doctorant': typeof DashboardDoctorantIndexRoute
+  '/dashboard/directeur/bilans/$id': typeof DashboardDirecteurBilansIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -264,7 +273,7 @@ export interface FileRoutesById {
   '/dashboard/admin/publications': typeof DashboardAdminPublicationsRoute
   '/dashboard/chercheur/bilan': typeof DashboardChercheurBilanRoute
   '/dashboard/chercheur/publications': typeof DashboardChercheurPublicationsRoute
-  '/dashboard/directeur/bilans': typeof DashboardDirecteurBilansRoute
+  '/dashboard/directeur/bilans': typeof DashboardDirecteurBilansRouteWithChildren
   '/dashboard/directeur/chercheurs': typeof DashboardDirecteurChercheursRoute
   '/dashboard/directeur/equipes': typeof DashboardDirecteurEquipesRoute
   '/dashboard/directeur/inscriptions': typeof DashboardDirecteurInscriptionsRoute
@@ -277,6 +286,7 @@ export interface FileRoutesById {
   '/dashboard/chercheur/': typeof DashboardChercheurIndexRoute
   '/dashboard/directeur/': typeof DashboardDirecteurIndexRoute
   '/dashboard/doctorant/': typeof DashboardDoctorantIndexRoute
+  '/dashboard/directeur/bilans/$id': typeof DashboardDirecteurBilansIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -309,6 +319,7 @@ export interface FileRouteTypes {
     | '/dashboard/chercheur/'
     | '/dashboard/directeur/'
     | '/dashboard/doctorant/'
+    | '/dashboard/directeur/bilans/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -335,6 +346,7 @@ export interface FileRouteTypes {
     | '/dashboard/chercheur'
     | '/dashboard/directeur'
     | '/dashboard/doctorant'
+    | '/dashboard/directeur/bilans/$id'
   id:
     | '__root__'
     | '/'
@@ -365,6 +377,7 @@ export interface FileRouteTypes {
     | '/dashboard/chercheur/'
     | '/dashboard/directeur/'
     | '/dashboard/doctorant/'
+    | '/dashboard/directeur/bilans/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -576,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAdminDirecteursRouteImport
       parentRoute: typeof DashboardAdminRoute
     }
+    '/dashboard/directeur/bilans/$id': {
+      id: '/dashboard/directeur/bilans/$id'
+      path: '/$id'
+      fullPath: '/dashboard/directeur/bilans/$id'
+      preLoaderRoute: typeof DashboardDirecteurBilansIdRouteImport
+      parentRoute: typeof DashboardDirecteurBilansRoute
+    }
   }
 }
 
@@ -616,8 +636,22 @@ const DashboardChercheurRouteChildren: DashboardChercheurRouteChildren = {
 const DashboardChercheurRouteWithChildren =
   DashboardChercheurRoute._addFileChildren(DashboardChercheurRouteChildren)
 
+interface DashboardDirecteurBilansRouteChildren {
+  DashboardDirecteurBilansIdRoute: typeof DashboardDirecteurBilansIdRoute
+}
+
+const DashboardDirecteurBilansRouteChildren: DashboardDirecteurBilansRouteChildren =
+  {
+    DashboardDirecteurBilansIdRoute: DashboardDirecteurBilansIdRoute,
+  }
+
+const DashboardDirecteurBilansRouteWithChildren =
+  DashboardDirecteurBilansRoute._addFileChildren(
+    DashboardDirecteurBilansRouteChildren,
+  )
+
 interface DashboardDirecteurRouteChildren {
-  DashboardDirecteurBilansRoute: typeof DashboardDirecteurBilansRoute
+  DashboardDirecteurBilansRoute: typeof DashboardDirecteurBilansRouteWithChildren
   DashboardDirecteurChercheursRoute: typeof DashboardDirecteurChercheursRoute
   DashboardDirecteurEquipesRoute: typeof DashboardDirecteurEquipesRoute
   DashboardDirecteurInscriptionsRoute: typeof DashboardDirecteurInscriptionsRoute
@@ -627,7 +661,7 @@ interface DashboardDirecteurRouteChildren {
 }
 
 const DashboardDirecteurRouteChildren: DashboardDirecteurRouteChildren = {
-  DashboardDirecteurBilansRoute: DashboardDirecteurBilansRoute,
+  DashboardDirecteurBilansRoute: DashboardDirecteurBilansRouteWithChildren,
   DashboardDirecteurChercheursRoute: DashboardDirecteurChercheursRoute,
   DashboardDirecteurEquipesRoute: DashboardDirecteurEquipesRoute,
   DashboardDirecteurInscriptionsRoute: DashboardDirecteurInscriptionsRoute,
