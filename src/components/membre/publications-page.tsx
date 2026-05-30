@@ -15,6 +15,7 @@ interface Pub {
   id: string; titre: string; annee: number | null; type: string | null; auteurs: string | null; equipe_id: string | null;
 }
 interface Equipe { id: string; nom: string }
+interface Contributor { id: string; label: string; isDirector?: boolean }
 
 export function PublicationsPage() {
   const { membre } = useMembre();
@@ -25,7 +26,8 @@ export function PublicationsPage() {
   const [titre, setTitre] = useState("");
   const [annee, setAnnee] = useState("");
   const [type, setType] = useState("article");
-  const [auteurs, setAuteurs] = useState("");
+  const [contributeurs, setContributeurs] = useState<string[]>([]);
+  const [contributorOptions, setContributorOptions] = useState<Contributor[]>([]);
   const [equipeId, setEquipeId] = useState<string>("");
 
   const load = useCallback(async () => {
@@ -46,11 +48,37 @@ export function PublicationsPage() {
 
   useEffect(() => { void load(); }, [load]);
 
+  // Load contributor options whenever the selected équipe changes
+  useEffect(() => {
+    if (!equipeId || !membre?.laboratoire_id) { setContributorOptions([]); return; }
+    void (async () => {
+      const [{ data: dir }, { data: mem }] = await Promise.all([
+        supabase.rpc("get_lab_directeur", { p_lab_id: membre.laboratoire_id as string }),
+        supabase.rpc("list_membres_by_equipe", { p_equipe_id: equipeId }),
+      ]);
+      const opts: Contributor[] = [];
+      const director = (dir as any[] | null)?.[0];
+      if (director) {
+        opts.push({ id: `dir:${director.id}`, label: `${director.prenom ?? ""} ${director.nom ?? ""}`.trim() + " (Directeur)", isDirector: true });
+      }
+      ((mem as any[]) ?? []).forEach((m) => {
+        opts.push({ id: m.id, label: `${m.prenom ?? ""} ${m.nom ?? ""}`.trim() + (m.role ? ` (${m.role})` : "") });
+      });
+      setContributorOptions(opts);
+    })();
+  }, [equipeId, membre?.laboratoire_id]);
+
   const openAdd = () => {
-    setEditing(null); setTitre(""); setAnnee(String(new Date().getFullYear())); setType("article"); setAuteurs(""); setEquipeId(membre?.equipe_id ?? ""); setOpen(true);
+    setEditing(null); setTitre(""); setAnnee(String(new Date().getFullYear())); setType("article"); setContributeurs([]); setEquipeId(membre?.equipe_id ?? ""); setOpen(true);
   };
   const openEdit = (p: Pub) => {
-    setEditing(p); setTitre(p.titre); setAnnee(p.annee ? String(p.annee) : ""); setType(p.type ?? "article"); setAuteurs(p.auteurs ?? ""); setEquipeId(p.equipe_id ?? ""); setOpen(true);
+    setEditing(p);
+    setTitre(p.titre);
+    setAnnee(p.annee ? String(p.annee) : "");
+    setType(p.type ?? "article");
+    setContributeurs(p.auteurs ? p.auteurs.split(",").map((s) => s.trim()).filter(Boolean) : []);
+    setEquipeId(p.equipe_id ?? "");
+    setOpen(true);
   };
 
   const save = async () => {
@@ -59,7 +87,7 @@ export function PublicationsPage() {
       titre: titre.trim(),
       annee: annee ? Number(annee) : null,
       type,
-      auteurs,
+      auteurs: contributeurs.join(", "),
       equipe_id: equipeId || null,
       laboratoire_id: membre.laboratoire_id,
       membre_id: membre.id,
@@ -111,7 +139,6 @@ export function PublicationsPage() {
                   </Select>
                 </div>
               </div>
-              <div className="space-y-1"><Label>Co-auteurs</Label><Input value={auteurs} onChange={(e) => setAuteurs(e.target.value)} placeholder="Séparés par des virgules" /></div>
               <div className="space-y-1">
                 <Label>Équipe</Label>
                 <Select value={equipeId} onValueChange={setEquipeId}>
@@ -120,6 +147,29 @@ export function PublicationsPage() {
                     {equipes.map((e) => <SelectItem key={e.id} value={e.id}>{e.nom}</SelectItem>)}
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="space-y-1">
+                <Label>Contributeurs</Label>
+                {!equipeId ? (
+                  <p className="text-xs text-muted-foreground">Sélectionnez d'abord une équipe.</p>
+                ) : contributorOptions.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">Aucun contributeur disponible.</p>
+                ) : (
+                  <div className="rounded-md border border-border p-2 max-h-48 overflow-auto space-y-1">
+                    {contributorOptions.map((c) => (
+                      <label key={c.id} className={`flex items-center gap-2 text-sm px-2 py-1 rounded ${c.isDirector ? "bg-muted font-medium" : ""}`}>
+                        <input
+                          type="checkbox"
+                          checked={contributeurs.includes(c.label)}
+                          onChange={() =>
+                            setContributeurs((prev) => prev.includes(c.label) ? prev.filter((x) => x !== c.label) : [...prev, c.label])
+                          }
+                        />
+                        <span>{c.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
             <DialogFooter>
@@ -133,7 +183,7 @@ export function PublicationsPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Titre</TableHead><TableHead>Année</TableHead><TableHead>Type</TableHead><TableHead>Co-auteurs</TableHead><TableHead className="w-32">Actions</TableHead>
+              <TableHead>Titre</TableHead><TableHead>Année</TableHead><TableHead>Type</TableHead><TableHead>Contributeurs</TableHead><TableHead className="w-32">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
