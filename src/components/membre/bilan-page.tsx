@@ -64,11 +64,14 @@ export function BilanPage({ includeThese = false }: { includeThese?: boolean }) 
     void (async () => {
       const start = `${annee}-01-01`;
       const end = `${annee}-12-31`;
+      if (!membre.equipe_id) {
+        setAutoPublications([]);
+        setAutoProjets([]);
+        return;
+      }
       const [{ data: pubs }, { data: pros }] = await Promise.all([
-        supabase.from("publications").select("titre, auteurs, type, annee").eq("membre_id", membre.id).eq("annee", annee),
-        membre.laboratoire_id
-          ? supabase.from("projets").select("titre, description, date_debut, date_fin").eq("laboratoire_id", membre.laboratoire_id).or(`date_debut.lte.${end},date_debut.is.null`).or(`date_fin.gte.${start},date_fin.is.null`)
-          : Promise.resolve({ data: [] as any[] }),
+        supabase.from("publications").select("titre, auteurs, type, annee").eq("equipe_id", membre.equipe_id).eq("annee", annee),
+        supabase.from("projets").select("titre, description, date_debut, date_fin").eq("equipe_id", membre.equipe_id).or(`date_debut.lte.${end},date_debut.is.null`).or(`date_fin.gte.${start},date_fin.is.null`),
       ]);
       setAutoPublications(((pubs as any[]) ?? []).map((p) => ({ titre: p.titre, auteurs: p.auteurs, type: p.type })));
       setAutoProjets(((pros as any[]) ?? []).map((p) => ({ titre: p.titre, description: p.description })));
