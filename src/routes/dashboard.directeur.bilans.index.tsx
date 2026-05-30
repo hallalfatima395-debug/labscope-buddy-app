@@ -7,7 +7,7 @@ import { useDirecteurLab } from "@/hooks/use-directeur-lab";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/dashboard/directeur/bilans")({ component: Page });
+export const Route = createFileRoute("/dashboard/directeur/bilans/")({ component: Page });
 
 interface Row { id: string; nom: string; prenom: string; role: string; submitted: boolean; bilanId: string | null; annee: number | null; submittedAt: string | null }
 

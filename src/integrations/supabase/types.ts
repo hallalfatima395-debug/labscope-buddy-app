@@ -270,6 +270,7 @@ export type Database = {
       }
       projets: {
         Row: {
+          contributeurs: string | null
           created_at: string
           date_debut: string | null
           date_fin: string | null
@@ -280,6 +281,7 @@ export type Database = {
           titre: string
         }
         Insert: {
+          contributeurs?: string | null
           created_at?: string
           date_debut?: string | null
           date_fin?: string | null
@@ -290,6 +292,7 @@ export type Database = {
           titre: string
         }
         Update: {
+          contributeurs?: string | null
           created_at?: string
           date_debut?: string | null
           date_fin?: string | null
@@ -379,6 +382,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_lab_directeur: {
+        Args: { p_lab_id: string }
+        Returns: {
+          id: string
+          nom: string
+          prenom: string
+        }[]
+      }
       has_existing_lab_request: {
         Args: { p_email: string; p_lab: string }
         Returns: boolean
@@ -411,6 +422,15 @@ export type Database = {
           id: string
           nom: string
           prenom: string
+        }[]
+      }
+      list_membres_by_equipe: {
+        Args: { p_equipe_id: string }
+        Returns: {
+          id: string
+          nom: string
+          prenom: string
+          role: string
         }[]
       }
       pending_directeurs_for_admin: {
