@@ -91,7 +91,7 @@ function Page() {
           <Link to="/dashboard/directeur/bilans"><ArrowLeft className="h-4 w-4 mr-1" /> Retour</Link>
         </Button>
         <Button onClick={() => window.print()} size="sm">
-          <Printer className="h-4 w-4 mr-2" /> Imprimer / PDF
+          <Printer className="h-4 w-4 mr-2" /> Exporter en PDF
         </Button>
       </div>
 
