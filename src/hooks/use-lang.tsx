@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "fr" | "ar";
 
 type Dict = Record<string, { fr: string; ar: string }>;
-
+// Shared translations for app chrome (layouts, login, common buttons).
 // Shared translations for app chrome (layouts, login, common buttons).
 // Page-specific content can use t(key) as well — fall back to the key if missing.
 const DICT: Dict = {
