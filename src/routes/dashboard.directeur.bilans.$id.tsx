@@ -38,7 +38,7 @@ function formatEncadrements(raw: string | null): { internal: string[]; external:
 function Page() {
   const { id } = Route.useParams();
   const [bilan, setBilan] = useState<BilanDetail | null>(null);
-  const [membre, setMembre] = useState<{ nom: string; prenom: string; role: string; grade: string | null; specialite: string | null; lab: string | null; faculte: string | null } | null>(null);
+  const [membre, setMembre] = useState<{ nom: string; prenom: string; role: string; grade: string | null; specialite: string | null; lab: string | null; faculte: string | null; equipe: string | null } | null>(null);
 
   useEffect(() => {
     void (async () => {
@@ -47,16 +47,21 @@ function Page() {
       setBilan(b as BilanDetail);
       const { data: m } = await supabase
         .from("membres")
-        .select("grade, specialite, laboratoire_id, profiles:profile_id(nom, prenom, role)")
+        .select("grade, specialite, laboratoire_id, equipe_id, profiles:profile_id(nom, prenom, role)")
         .eq("id", (b as BilanDetail).membre_id)
         .maybeSingle();
       const mm = m as any;
       let lab: string | null = null;
       let faculte: string | null = null;
+      let equipe: string | null = null;
       if (mm?.laboratoire_id) {
         const { data: l } = await supabase.from("laboratoires").select("nom_fr, faculte").eq("id", mm.laboratoire_id).maybeSingle();
         lab = (l as any)?.nom_fr ?? null;
         faculte = (l as any)?.faculte ?? null;
+      }
+      if (mm?.equipe_id) {
+        const { data: e } = await supabase.from("equipes").select("nom").eq("id", mm.equipe_id).maybeSingle();
+        equipe = (e as any)?.nom ?? null;
       }
       setMembre({
         nom: mm?.profiles?.nom ?? "—",
@@ -66,6 +71,7 @@ function Page() {
         specialite: mm?.specialite ?? null,
         lab,
         faculte,
+        equipe,
       });
     })();
   }, [id]);
@@ -76,13 +82,23 @@ function Page() {
 
   const enc = formatEncadrements(bilan.encadrements);
 
+  const toBullets = (text: string | null): string[] => {
+    if (!text) return [];
+    return text
+      .split(/\r?\n+/)
+      .map((l) => l.replace(/^\s*[•\-\*]\s*/, "").trim())
+      .filter((l) => l.length > 0 && l.toLowerCase() !== "aucune publication enregistrée pour cette année." && l.toLowerCase() !== "aucun projet enregistré pour cette année.");
+  };
+
   return (
     <div className="space-y-4">
       <style>{`
         @media print {
-          .no-print { display: none !important; }
-          body { background: white !important; }
-          .print-sheet { box-shadow: none !important; border: none !important; margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
+          .no-print, header, [data-sidebar], [data-slot="sidebar"], [data-slot^="sidebar-"] { display: none !important; }
+          body, html { background: white !important; }
+          .print-sheet { box-shadow: none !important; border: none !important; margin: 0 !important; padding: 0 !important; max-width: 100% !important; color: #000 !important; }
+          .print-sheet * { color: #000 !important; border-color: transparent !important; background: transparent !important; }
+          main { padding: 0 !important; overflow: visible !important; }
         }
       `}</style>
 
@@ -95,80 +111,79 @@ function Page() {
         </Button>
       </div>
 
-      <div className="print-sheet mx-auto max-w-4xl bg-white text-black border border-border shadow-sm p-10 font-serif leading-relaxed">
-        <header className="text-center border-b-2 border-black pb-4 mb-6">
+      <div className="print-sheet mx-auto max-w-4xl bg-white p-10 font-serif leading-relaxed" style={{ color: "#000" }}>
+        <header className="text-center mb-8">
           <p className="text-xs uppercase tracking-widest">République Algérienne Démocratique et Populaire</p>
-          {membre.faculte && <p className="text-sm mt-1">{membre.faculte}</p>}
+          <p className="text-xs uppercase tracking-widest mt-1">Ministère de l'Enseignement Supérieur et de la Recherche Scientifique</p>
+          {membre.faculte && <p className="text-sm mt-2">{membre.faculte}</p>}
           {membre.lab && <p className="text-sm font-semibold mt-1">Laboratoire : {membre.lab}</p>}
-          <h1 className="font-display text-3xl font-bold mt-4">Bilan d'activités — Année {bilan.annee}</h1>
+          <h1 className="font-display text-2xl font-bold mt-6">Bilan d'activités — Année {bilan.annee}</h1>
         </header>
 
-        <section className="mb-6">
-          <h2 className="text-lg font-bold border-b border-black mb-2">Identification</h2>
-          <table className="w-full text-sm">
-            <tbody>
-              <tr><td className="font-semibold py-1 w-48">Nom et Prénom</td><td>{membre.prenom} {membre.nom}</td></tr>
-              <tr><td className="font-semibold py-1">Qualité</td><td className="capitalize">{membre.role === "enseignant" ? "Enseignant-Chercheur" : membre.role}</td></tr>
-              {membre.grade && <tr><td className="font-semibold py-1">Grade</td><td>{membre.grade}</td></tr>}
-              {membre.specialite && <tr><td className="font-semibold py-1">Spécialité</td><td>{membre.specialite}</td></tr>}
-              <tr><td className="font-semibold py-1">Date de soumission</td><td>{bilan.submitted_at ? new Date(bilan.submitted_at).toLocaleDateString("fr-FR") : "—"}</td></tr>
-            </tbody>
-          </table>
+        <section className="mb-8">
+          <h2 className="text-lg font-bold mb-3">Identification</h2>
+          <div className="text-sm space-y-1">
+            <p><span className="font-semibold">Nom et Prénom :</span> {membre.prenom} {membre.nom}</p>
+            <p><span className="font-semibold">Qualité :</span> <span className="capitalize">{membre.role === "enseignant" ? "Enseignant-Chercheur" : membre.role}</span></p>
+            {membre.grade && <p><span className="font-semibold">Grade :</span> {membre.grade}</p>}
+            {membre.specialite && <p><span className="font-semibold">Spécialité :</span> {membre.specialite}</p>}
+            {membre.equipe && <p><span className="font-semibold">Équipe :</span> {membre.equipe}</p>}
+            <p><span className="font-semibold">Date de soumission :</span> {bilan.submitted_at ? new Date(bilan.submitted_at).toLocaleDateString("fr-FR") : "—"}</p>
+          </div>
         </section>
 
-        <Section title="1. Activités de recherche">{bilan.activites}</Section>
-        <Section title={`2. Publications de l'année ${bilan.annee}`}>{bilan.publications_annee}</Section>
-        <Section title={`3. Projets de recherche ${bilan.annee}`}>{bilan.projets}</Section>
-        <Section title="4. Communications">{bilan.communications}</Section>
+        <BulletSection title="Activités de recherche" text={bilan.activites} />
+        <BulletSection title={`Publications de l'année ${bilan.annee}`} text={bilan.publications_annee} bullets={toBullets(bilan.publications_annee)} />
+        <BulletSection title={`Projets de recherche ${bilan.annee}`} text={bilan.projets} bullets={toBullets(bilan.projets)} />
+        <BulletSection title="Communications" text={bilan.communications} />
 
-        <section className="mb-6 break-inside-avoid">
-          <h2 className="text-lg font-bold border-b border-black mb-2">5. Encadrements</h2>
-          {membre.role === "doctorant" ? (
-            <p className="text-sm whitespace-pre-wrap">Encadré par : {bilan.encadrements || "—"}</p>
-          ) : (
-            <div className="text-sm space-y-3">
-              <div>
-                <p className="font-semibold">Doctorants encadrés (laboratoire) :</p>
-                {enc.internal.length === 0 ? (
-                  <p className="italic">Aucun</p>
-                ) : (
-                  <ul className="list-disc pl-6">{enc.internal.map((n, i) => <li key={i}>{n}</li>)}</ul>
-                )}
-              </div>
-              {enc.external && (
-                <div>
-                  <p className="font-semibold">Encadrements externes :</p>
-                  <p className="whitespace-pre-wrap">{enc.external}</p>
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-
-        {bilan.avancement_these && (
-          <Section title="6. Avancement de la thèse">{bilan.avancement_these}</Section>
+        {membre.role === "doctorant" ? (
+          <section className="mb-8 break-inside-avoid">
+            <h2 className="text-lg font-bold mb-3">Encadré par</h2>
+            {bilan.encadrements ? (
+              <ul className="list-disc pl-6 text-sm space-y-1">
+                <li>{bilan.encadrements}</li>
+              </ul>
+            ) : (
+              <p className="text-sm">—</p>
+            )}
+          </section>
+        ) : (
+          <section className="mb-8 break-inside-avoid">
+            <h2 className="text-lg font-bold mb-3">Encadrements</h2>
+            {(enc.internal.length === 0 && !enc.external) ? (
+              <p className="text-sm">—</p>
+            ) : (
+              <ul className="list-disc pl-6 text-sm space-y-1">
+                {enc.internal.map((n, i) => <li key={`i-${i}`}>{n}</li>)}
+                {enc.external && enc.external.split(/\r?\n+/).map((l) => l.trim()).filter(Boolean).map((n, i) => (
+                  <li key={`e-${i}`}>{n}</li>
+                ))}
+              </ul>
+            )}
+          </section>
         )}
 
-        <footer className="mt-10 pt-6 border-t border-black text-sm flex justify-between">
-          <div>
-            <p className="font-semibold">Signature du membre</p>
-            <div className="h-16 w-48 mt-2"></div>
-          </div>
-          <div className="text-right">
-            <p className="font-semibold">Visa du Directeur du laboratoire</p>
-            <div className="h-16 w-48 mt-2 ml-auto"></div>
-          </div>
-        </footer>
+        {bilan.avancement_these && (
+          <BulletSection title="Avancement de la thèse" text={bilan.avancement_these} />
+        )}
       </div>
     </div>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function BulletSection({ title, text, bullets }: { title: string; text: string | null; bullets?: string[] }) {
+  const items = bullets ?? (text ? text.split(/\r?\n+/).map((l) => l.replace(/^\s*[•\-\*]\s*/, "").trim()).filter(Boolean) : []);
   return (
-    <section className="mb-6 break-inside-avoid">
-      <h2 className="text-lg font-bold border-b border-black mb-2">{title}</h2>
-      <div className="text-sm whitespace-pre-wrap min-h-[24px]">{children || <span className="italic text-gray-500">—</span>}</div>
+    <section className="mb-8 break-inside-avoid">
+      <h2 className="text-lg font-bold mb-3">{title}</h2>
+      {items.length === 0 ? (
+        <p className="text-sm">—</p>
+      ) : (
+        <ul className="list-disc pl-6 text-sm space-y-1">
+          {items.map((it, i) => <li key={i}>{it}</li>)}
+        </ul>
+      )}
     </section>
   );
 }
