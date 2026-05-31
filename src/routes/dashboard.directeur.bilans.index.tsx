@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useDirecteurLab } from "@/hooks/use-directeur-lab";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/dashboard/directeur/bilans/")({ component: Page });
 
@@ -14,6 +15,7 @@ interface Row { id: string; nom: string; prenom: string; role: string; submitted
 function Page() {
   const { lab } = useDirecteurLab();
   const [rows, setRows] = useState<Row[]>([]);
+  const [yearFilter, setYearFilter] = useState<string>("all");
 
   useEffect(() => {
     if (!lab) return;
@@ -44,18 +46,37 @@ function Page() {
     })();
   }, [lab]);
 
+  const years = useMemo(
+    () => Array.from(new Set(rows.map((r) => r.annee).filter((a): a is number => a != null))).sort((a, b) => b - a),
+    [rows],
+  );
+  const filtered = useMemo(
+    () => yearFilter === "all" ? rows : rows.filter((r) => String(r.annee) === yearFilter),
+    [rows, yearFilter],
+  );
+
   return (
     <div className="space-y-4 max-w-5xl">
       <h2 className="text-2xl font-semibold">Bilans</h2>
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-muted-foreground">Recherche par année :</span>
+        <Select value={yearFilter} onValueChange={setYearFilter}>
+          <SelectTrigger className="w-40"><SelectValue placeholder="Année" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Toutes années</SelectItem>
+            {years.map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}
+          </SelectContent>
+        </Select>
+      </div>
       <Card>
         <Table>
           <TableHeader>
             <TableRow><TableHead>Nom</TableHead><TableHead>Prénom</TableHead><TableHead>Rôle</TableHead><TableHead>Année</TableHead><TableHead>Bilan</TableHead><TableHead>Action</TableHead></TableRow>
           </TableHeader>
           <TableBody>
-            {rows.length === 0 ? (
+            {filtered.length === 0 ? (
               <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">Aucune donnée disponible</TableCell></TableRow>
-            ) : rows.map((r) => (
+            ) : filtered.map((r) => (
               <TableRow key={r.id}>
                 <TableCell>{r.nom}</TableCell><TableCell>{r.prenom}</TableCell>
                 <TableCell className="capitalize">{r.role}</TableCell>
