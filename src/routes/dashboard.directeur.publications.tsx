@@ -26,6 +26,8 @@ interface Pub {
 
 const TYPES = ["article", "conférence", "brevet"] as const;
 
+interface Contributor { id: string; label: string; isDirector?: boolean }
+
 function Page() {
   const { lab } = useDirecteurLab();
   const [rows, setRows] = useState<Pub[]>([]);
@@ -34,7 +36,9 @@ function Page() {
   const [yearFilter, setYearFilter] = useState("all");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Pub | null>(null);
-  const [form, setForm] = useState({ titre: "", auteurs: "", annee: "", type: "article", equipe_id: "" });
+  const [form, setForm] = useState({ titre: "", annee: "", type: "article", equipe_id: "" });
+  const [contributeurs, setContributeurs] = useState<string[]>([]);
+  const [contributorOptions, setContributorOptions] = useState<Contributor[]>([]);
 
   const load = useCallback(async () => {
     if (!lab) return;
@@ -50,6 +54,26 @@ function Page() {
 
   useEffect(() => { void load(); }, [load]);
 
+  // Reload contributor options when the selected équipe changes
+  useEffect(() => {
+    if (!form.equipe_id || !lab?.id) { setContributorOptions([]); return; }
+    void (async () => {
+      const [{ data: dir }, { data: mem }] = await Promise.all([
+        supabase.rpc("get_lab_directeur", { p_lab_id: lab.id }),
+        supabase.rpc("list_membres_by_equipe", { p_equipe_id: form.equipe_id }),
+      ]);
+      const opts: Contributor[] = [];
+      const director = (dir as any[] | null)?.[0];
+      if (director) {
+        opts.push({ id: `dir:${director.id}`, label: `${director.prenom ?? ""} ${director.nom ?? ""}`.trim() + " (Directeur)", isDirector: true });
+      }
+      ((mem as any[]) ?? []).forEach((m: any) => {
+        opts.push({ id: m.id, label: `${m.prenom ?? ""} ${m.nom ?? ""}`.trim() + (m.role ? ` (${m.role})` : "") });
+      });
+      setContributorOptions(opts);
+    })();
+  }, [form.equipe_id, lab?.id]);
+
   const years = useMemo(
     () => Array.from(new Set(rows.map((r) => r.annee).filter((a): a is number => a != null))).sort((a, b) => b - a),
     [rows],
@@ -61,10 +85,11 @@ function Page() {
     return true;
   }), [rows, eqFilter, yearFilter]);
 
-  const openAdd = () => { setEditing(null); setForm({ titre: "", auteurs: "", annee: "", type: "article", equipe_id: "" }); setOpen(true); };
+  const openAdd = () => { setEditing(null); setForm({ titre: "", annee: "", type: "article", equipe_id: "" }); setContributeurs([]); setOpen(true); };
   const openEdit = (p: Pub) => {
     setEditing(p);
-    setForm({ titre: p.titre, auteurs: p.auteurs ?? "", annee: p.annee ? String(p.annee) : "", type: p.type ?? "article", equipe_id: p.equipe_id ?? "" });
+    setForm({ titre: p.titre, annee: p.annee ? String(p.annee) : "", type: p.type ?? "article", equipe_id: p.equipe_id ?? "" });
+    setContributeurs(p.auteurs ? p.auteurs.split(",").map((s) => s.trim()).filter(Boolean) : []);
     setOpen(true);
   };
 
@@ -72,7 +97,7 @@ function Page() {
     if (!lab || !form.titre.trim()) return;
     const payload = {
       titre: form.titre,
-      auteurs: form.auteurs || null,
+      auteurs: contributeurs.length ? contributeurs.join(", ") : null,
       annee: form.annee ? Number(form.annee) : null,
       type: form.type,
       equipe_id: form.equipe_id || null,
@@ -104,7 +129,6 @@ function Page() {
             <DialogHeader><DialogTitle>{editing ? "Modifier" : "Ajouter"} publication</DialogTitle></DialogHeader>
             <div className="space-y-3">
               <div className="space-y-2"><Label>Titre</Label><Input value={form.titre} onChange={(e) => setForm({ ...form, titre: e.target.value })} /></div>
-              <div className="space-y-2"><Label>Auteurs</Label><Input value={form.auteurs} onChange={(e) => setForm({ ...form, auteurs: e.target.value })} /></div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2"><Label>Année</Label><Input type="number" value={form.annee} onChange={(e) => setForm({ ...form, annee: e.target.value })} /></div>
                 <div className="space-y-2">
@@ -121,6 +145,27 @@ function Page() {
                   <SelectTrigger><SelectValue placeholder="Équipe" /></SelectTrigger>
                   <SelectContent>{equipes.map((e) => <SelectItem key={e.id} value={e.id}>{e.nom}</SelectItem>)}</SelectContent>
                 </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Contributeurs</Label>
+                {!form.equipe_id ? (
+                  <p className="text-xs text-muted-foreground">Sélectionnez d'abord une équipe.</p>
+                ) : contributorOptions.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">Aucun contributeur disponible.</p>
+                ) : (
+                  <div className="rounded-md border border-border p-2 max-h-48 overflow-auto space-y-1">
+                    {contributorOptions.map((c) => (
+                      <label key={c.id} className={`flex items-center gap-2 text-sm px-2 py-1 rounded ${c.isDirector ? "bg-muted font-medium" : ""}`}>
+                        <input
+                          type="checkbox"
+                          checked={contributeurs.includes(c.label)}
+                          onChange={() => setContributeurs((prev) => prev.includes(c.label) ? prev.filter((x) => x !== c.label) : [...prev, c.label])}
+                        />
+                        <span>{c.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
             <DialogFooter>
@@ -150,7 +195,7 @@ function Page() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Titre</TableHead><TableHead>Auteurs</TableHead><TableHead>Année</TableHead>
+              <TableHead>Titre</TableHead><TableHead>Contributeurs</TableHead><TableHead>Année</TableHead>
               <TableHead>Type</TableHead><TableHead>Équipe</TableHead><TableHead className="w-32">Actions</TableHead>
             </TableRow>
           </TableHeader>

@@ -38,25 +38,27 @@ export function BilanPage({ includeThese = false }: { includeThese?: boolean }) 
   const [autoProjets, setAutoProjets] = useState<{ titre: string; description: string | null }[]>([]);
 
   useEffect(() => {
-    if (!includeThese || !membre?.laboratoire_id) { setEncadrants([]); return; }
+    if (!includeThese || !membre?.equipe_id) { setEncadrants([]); return; }
     void (async () => {
-      const { data, error } = await supabase.rpc("list_enseignants_by_lab", { p_lab_id: membre.laboratoire_id as string });
+      const { data, error } = await supabase.rpc("list_membres_by_equipe", { p_equipe_id: membre.equipe_id as string });
       if (error) { setEncadrants([]); return; }
-      setEncadrants(((data ?? []) as { id: string; nom: string | null; prenom: string | null }[])
+      setEncadrants(((data ?? []) as { id: string; nom: string | null; prenom: string | null; role: string | null }[])
+        .filter((p) => p.role === "enseignant")
         .map((p) => ({ id: p.id, label: `${p.prenom ?? ""} ${p.nom ?? ""}`.trim() || "—" })));
     })();
-  }, [includeThese, membre?.laboratoire_id]);
+  }, [includeThese, membre?.equipe_id]);
 
-  // Load doctorants from same lab for enseignant-chercheur "Encadrements"
+  // Load doctorants from same équipe for enseignant-chercheur "Encadrements"
   useEffect(() => {
-    if (includeThese || !membre?.laboratoire_id) { setDoctorantsLab([]); return; }
+    if (includeThese || !membre?.equipe_id) { setDoctorantsLab([]); return; }
     void (async () => {
-      const { data, error } = await supabase.rpc("list_doctorants_by_lab", { p_lab_id: membre.laboratoire_id as string });
+      const { data, error } = await supabase.rpc("list_membres_by_equipe", { p_equipe_id: membre.equipe_id as string });
       if (error) { setDoctorantsLab([]); return; }
-      setDoctorantsLab(((data ?? []) as { id: string; nom: string | null; prenom: string | null }[])
+      setDoctorantsLab(((data ?? []) as { id: string; nom: string | null; prenom: string | null; role: string | null }[])
+        .filter((p) => p.role === "doctorant")
         .map((p) => ({ id: p.id, label: `${p.prenom ?? ""} ${p.nom ?? ""}`.trim() || "—" })));
     })();
-  }, [includeThese, membre?.laboratoire_id]);
+  }, [includeThese, membre?.equipe_id]);
 
   // Auto-fetch publications and projets for current year (read-only)
   useEffect(() => {
@@ -208,7 +210,7 @@ export function BilanPage({ includeThese = false }: { includeThese?: boolean }) 
           {includeThese ? (
             <div className="space-y-1"><Label>Encadré par</Label>
               <Select value={encadrements} onValueChange={setEncadrements} disabled={readOnly}>
-                <SelectTrigger><SelectValue placeholder={encadrants.length ? "Sélectionner un enseignant-chercheur du laboratoire" : "Aucun enseignant-chercheur dans votre laboratoire"} /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={encadrants.length ? "Sélectionner un enseignant-chercheur de l'équipe" : "Aucun enseignant-chercheur dans votre équipe"} /></SelectTrigger>
                 <SelectContent>
                   {encadrants.map((e) => (
                     <SelectItem key={e.id} value={e.label}>{e.label}</SelectItem>
@@ -218,10 +220,10 @@ export function BilanPage({ includeThese = false }: { includeThese?: boolean }) 
             </div>
           ) : (
             <div className="space-y-2">
-              <Label>Encadrements (doctorants du laboratoire)</Label>
+              <Label>Encadrements (doctorants de l'équipe)</Label>
               <div className="rounded-md border border-border p-3 space-y-2 max-h-48 overflow-auto">
                 {doctorantsLab.length === 0 ? (
-                  <span className="text-sm text-muted-foreground">Aucun doctorant dans votre laboratoire.</span>
+                  <span className="text-sm text-muted-foreground">Aucun doctorant dans votre équipe.</span>
                 ) : (
                   doctorantsLab.map((d) => (
                     <label key={d.id} className="flex items-center gap-2 text-sm">
