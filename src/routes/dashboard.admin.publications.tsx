@@ -65,7 +65,7 @@ function PublicationsPage() {
           <TableHeader>
             <TableRow>
               <TableHead>Titre</TableHead>
-              <TableHead>Auteurs</TableHead>
+              <TableHead>Contributeurs</TableHead>
               <TableHead>Année</TableHead>
               <TableHead>Type</TableHead>
             </TableRow>
