@@ -38,25 +38,27 @@ export function BilanPage({ includeThese = false }: { includeThese?: boolean }) 
   const [autoProjets, setAutoProjets] = useState<{ titre: string; description: string | null }[]>([]);
 
   useEffect(() => {
-    if (!includeThese || !membre?.laboratoire_id) { setEncadrants([]); return; }
+    if (!includeThese || !membre?.equipe_id) { setEncadrants([]); return; }
     void (async () => {
-      const { data, error } = await supabase.rpc("list_enseignants_by_lab", { p_lab_id: membre.laboratoire_id as string });
+      const { data, error } = await supabase.rpc("list_membres_by_equipe", { p_equipe_id: membre.equipe_id as string });
       if (error) { setEncadrants([]); return; }
-      setEncadrants(((data ?? []) as { id: string; nom: string | null; prenom: string | null }[])
+      setEncadrants(((data ?? []) as { id: string; nom: string | null; prenom: string | null; role: string | null }[])
+        .filter((p) => p.role === "enseignant")
         .map((p) => ({ id: p.id, label: `${p.prenom ?? ""} ${p.nom ?? ""}`.trim() || "—" })));
     })();
-  }, [includeThese, membre?.laboratoire_id]);
+  }, [includeThese, membre?.equipe_id]);
 
-  // Load doctorants from same lab for enseignant-chercheur "Encadrements"
+  // Load doctorants from same équipe for enseignant-chercheur "Encadrements"
   useEffect(() => {
-    if (includeThese || !membre?.laboratoire_id) { setDoctorantsLab([]); return; }
+    if (includeThese || !membre?.equipe_id) { setDoctorantsLab([]); return; }
     void (async () => {
-      const { data, error } = await supabase.rpc("list_doctorants_by_lab", { p_lab_id: membre.laboratoire_id as string });
+      const { data, error } = await supabase.rpc("list_membres_by_equipe", { p_equipe_id: membre.equipe_id as string });
       if (error) { setDoctorantsLab([]); return; }
-      setDoctorantsLab(((data ?? []) as { id: string; nom: string | null; prenom: string | null }[])
+      setDoctorantsLab(((data ?? []) as { id: string; nom: string | null; prenom: string | null; role: string | null }[])
+        .filter((p) => p.role === "doctorant")
         .map((p) => ({ id: p.id, label: `${p.prenom ?? ""} ${p.nom ?? ""}`.trim() || "—" })));
     })();
-  }, [includeThese, membre?.laboratoire_id]);
+  }, [includeThese, membre?.equipe_id]);
 
   // Auto-fetch publications and projets for current year (read-only)
   useEffect(() => {
