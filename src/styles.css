@@ -935,3 +935,18 @@
   size: A4;
   margin: 16mm;
 }
+
+/* ============================================================
+   Force entire sidebar container (incl. wrapper/gap) to sage
+   #8FBC8F so no white gaps appear between segments.
+   ============================================================ */
+@layer base {
+  [data-slot="sidebar-wrapper"],
+  [data-slot="sidebar-container"],
+  [data-slot="sidebar-gap"],
+  [data-slot="sidebar-inner"],
+  [data-sidebar="sidebar"] > div,
+  [data-slot="sidebar"] > div {
+    background-color: #8FBC8F !important;
+  }
+}
