@@ -849,3 +849,89 @@
     color: #FFFFFF !important;
   }
 }
+
+/* ============================================================
+   FINAL overrides:
+   - Landing page top navbar → pure white (#FFFFFF)
+   - Dashboard sidebar (incl. logo area, hover, active) → #8FBC8F
+   - Text/icons remain readable (dark on landing, white on sidebar)
+   ============================================================ */
+@layer base {
+  /* Landing top navigation bar → solid white */
+  header.sticky {
+    background-color: #FFFFFF !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+    color: #0F172A !important;
+  }
+  header.sticky a,
+  header.sticky nav a,
+  header.sticky span,
+  header.sticky svg.lucide {
+    color: #0F172A !important;
+  }
+
+  /* Dashboard sidebar surface → sage green #8FBC8F */
+  [data-sidebar="sidebar"],
+  [data-slot="sidebar"],
+  nav[data-sidebar],
+  aside[data-sidebar],
+  [data-sidebar="header"],
+  [data-slot="sidebar-header"],
+  [data-sidebar="content"],
+  [data-slot="sidebar-content"],
+  [data-sidebar="footer"],
+  [data-slot="sidebar-footer"] {
+    background-color: #8FBC8F !important;
+  }
+  [data-sidebar="header"] img,
+  [data-slot="sidebar-header"] img,
+  [data-sidebar="header"] a,
+  [data-slot="sidebar-header"] a {
+    background-color: #8FBC8F !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+  /* Sidebar text + icons → readable on sage */
+  [data-sidebar] a,
+  [data-sidebar] button,
+  [data-sidebar] span,
+  [data-sidebar] p,
+  [data-sidebar] svg.lucide {
+    color: #0F172A !important;
+  }
+  /* Hover state */
+  [data-sidebar] a:hover,
+  [data-sidebar] button:hover,
+  [data-sidebar] [data-slot="sidebar-menu-button"]:hover {
+    background-color: #7AAB7A !important;
+    color: #0F172A !important;
+  }
+  /* Active state stays sage but a touch deeper for separation */
+  [data-sidebar] [data-active="true"],
+  [data-sidebar] [aria-current="page"],
+  [data-sidebar] a.active,
+  [data-sidebar] [data-state="active"],
+  [data-sidebar="menu-button"][data-active="true"],
+  [data-slot="sidebar-menu-button"][data-active="true"] {
+    background-color: #7AAB7A !important;
+    color: #FFFFFF !important;
+    border-color: #7AAB7A !important;
+  }
+  [data-sidebar] [data-active="true"] span,
+  [data-sidebar] [data-active="true"] svg.lucide,
+  [data-sidebar] [aria-current="page"] span,
+  [data-sidebar] [aria-current="page"] svg.lucide,
+  [data-sidebar] [data-state="active"] span,
+  [data-sidebar] [data-state="active"] svg.lucide {
+    color: #FFFFFF !important;
+  }
+}
+
+/* ============================================================
+   Print page setup — strip browser default headers/footers
+   (URL, page title, date) on the printable Bilan.
+   ============================================================ */
+@page {
+  size: A4;
+  margin: 16mm;
+}

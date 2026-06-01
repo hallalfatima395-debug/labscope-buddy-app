@@ -113,10 +113,8 @@ function Page() {
 
       <div className="print-sheet mx-auto max-w-4xl bg-white p-10 font-serif leading-relaxed" style={{ color: "#000" }}>
         <header className="text-center mb-8">
-          <p className="text-xs uppercase tracking-widest">République Algérienne Démocratique et Populaire</p>
-          <p className="text-xs uppercase tracking-widest mt-1">Ministère de l'Enseignement Supérieur et de la Recherche Scientifique</p>
-          {membre.faculte && <p className="text-sm mt-2">{membre.faculte}</p>}
-          {membre.lab && <p className="text-sm font-semibold mt-1">Laboratoire : {membre.lab}</p>}
+          <p className="text-sm font-semibold">Université Djillali Liabès</p>
+          {membre.lab && <p className="text-sm font-semibold mt-1">{membre.lab}</p>}
           <h1 className="font-display text-2xl font-bold mt-6">Bilan d'activités — Année {bilan.annee}</h1>
         </header>
 
