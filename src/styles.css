@@ -950,3 +950,19 @@
     background-color: #8FBC8F !important;
   }
 }
+
+/* ============================================================
+   Force the entire shadcn sidebar wrapper chain (peer wrapper,
+   gap div, fixed positioning div, inner sidebar div) to sage
+   #8FBC8F so no white gaps remain between segments.
+   ============================================================ */
+@layer base {
+  [data-side="left"],
+  [data-side="right"],
+  [data-side="left"] > div,
+  [data-side="right"] > div,
+  [data-side="left"] > div > div,
+  [data-side="right"] > div > div {
+    background-color: #8FBC8F !important;
+  }
+}
