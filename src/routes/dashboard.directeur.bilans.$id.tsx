@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Printer, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/directeur/bilans/$id")({ component: Page });
 
@@ -105,9 +105,6 @@ function Page() {
       <div className="no-print flex items-center justify-between max-w-4xl mx-auto">
         <Button asChild variant="outline" size="sm">
           <Link to="/dashboard/directeur/bilans"><ArrowLeft className="h-4 w-4 mr-1" /> Retour</Link>
-        </Button>
-        <Button onClick={() => window.print()} size="sm">
-          <Printer className="h-4 w-4 mr-2" /> Exporter en PDF
         </Button>
       </div>
 

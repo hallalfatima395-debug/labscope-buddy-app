@@ -306,6 +306,8 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     if (!f.nom.trim() || !f.prenom.trim()) return toast.error(m.errNom);
+    if (!f.email.trim().toLowerCase().endsWith("@univ-sba.dz"))
+      return toast.error("Please use your university email (@univ-sba.dz) to register.");
     if (f.password.length < 8) return toast.error(m.errPw);
     if (f.password !== f.confirm) return toast.error(m.errPwMatch);
     if (!f.dob || ageFromDob(f.dob) < 18) return toast.error(m.errAge);
