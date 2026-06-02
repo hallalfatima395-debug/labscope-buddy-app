@@ -21,7 +21,7 @@ function Page() {
     if (!lab) return;
     void (async () => {
       const [{ data: membres }, { data: bilans }] = await Promise.all([
-        supabase.from("membres").select("id, profiles:profile_id(nom, prenom, role)").eq("laboratoire_id", lab.id),
+        supabase.from("membres").select("id, profiles:profile_id(nom, prenom, role, statut)").eq("laboratoire_id", lab.id),
         supabase.from("bilans").select("id, membre_id, is_submitted, annee, submitted_at").order("submitted_at", { ascending: false }),
       ]);
       const submittedMap = new Map<string, { id: string; annee: number; submitted_at: string | null }>();
@@ -29,7 +29,7 @@ function Page() {
         if (!submittedMap.has(b.membre_id)) submittedMap.set(b.membre_id, { id: b.id, annee: b.annee, submitted_at: b.submitted_at });
       });
       setRows(((membres as any[]) ?? [])
-        .filter((m) => m.profiles?.role === "enseignant" || m.profiles?.role === "doctorant")
+        .filter((m) => (m.profiles?.role === "enseignant" || m.profiles?.role === "doctorant") && (m.profiles?.statut === "accepte" || m.profiles?.statut === "valide"))
         .map((m) => {
           const s = submittedMap.get(m.id);
           return {
