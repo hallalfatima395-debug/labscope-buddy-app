@@ -25,9 +25,9 @@ function DoctorantsPage() {
     void (async () => {
       const { data } = await supabase
         .from("membres")
-        .select("id, sujet_these, profiles:profile_id(nom, prenom, role), laboratoires:laboratoire_id(nom_fr)");
+        .select("id, sujet_these, profiles:profile_id(nom, prenom, role, statut), laboratoires:laboratoire_id(nom_fr)");
       const mapped: Row[] = ((data as any[]) ?? [])
-        .filter((m) => m.profiles?.role === "doctorant")
+        .filter((m) => m.profiles?.role === "doctorant" && m.profiles?.statut === "accepte")
         .map((m) => ({
           id: m.id,
           nom: m.profiles?.nom ?? "—",

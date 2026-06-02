@@ -40,10 +40,10 @@ function Page() {
     if (!lab) return;
     const { data } = await supabase
       .from("membres")
-      .select("id, grade, specialite, profiles:profile_id(nom, prenom, email, role), equipes:equipe_id(nom)")
+      .select("id, grade, specialite, profiles:profile_id(nom, prenom, email, role, statut), equipes:equipe_id(nom)")
       .eq("laboratoire_id", lab.id);
     const mapped: Row[] = ((data as any[]) ?? [])
-      .filter((m) => m.profiles?.role === "enseignant" || m.profiles?.role === "doctorant")
+      .filter((m) => (m.profiles?.role === "enseignant" || m.profiles?.role === "doctorant") && m.profiles?.statut === "accepte")
       .map((m) => ({
         id: m.id,
         nom: m.profiles?.nom ?? "",
