@@ -19,14 +19,15 @@ function DirecteurHome() {
   useEffect(() => {
     if (!lab) return;
     void (async () => {
-      const [{ count: e }, { count: m }, { count: p }, { count: pb }] = await Promise.all([
+      const [{ count: e }, membresRes, { count: p }, { count: pb }] = await Promise.all([
         supabase.from("equipes").select("*", { count: "exact", head: true }).eq("laboratoire_id", lab.id),
-        supabase.from("membres").select("*", { count: "exact", head: true }).eq("laboratoire_id", lab.id),
+        supabase.from("membres").select("id, profiles:profile_id(statut)").eq("laboratoire_id", lab.id),
         supabase.from("projets").select("*", { count: "exact", head: true }).eq("laboratoire_id", lab.id),
         supabase.from("publications").select("*", { count: "exact", head: true }).eq("laboratoire_id", lab.id),
       ]);
       setEquipes(e ?? 0);
-      setChercheurs(m ?? 0);
+      const acceptedCount = (((membresRes.data as any[]) ?? []).filter((r) => r.profiles?.statut === "accepte")).length;
+      setChercheurs(acceptedCount);
       setProjets(p ?? 0);
       setPublications(pb ?? 0);
     })();
