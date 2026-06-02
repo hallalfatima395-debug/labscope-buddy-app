@@ -966,3 +966,28 @@
     background-color: #8FBC8F !important;
   }
 }
+
+/* ============================================================
+   Final enforcement: sidebar fills full viewport height with
+   zero padding/margin so no white gaps remain.
+   ============================================================ */
+@layer base {
+  [data-slot="sidebar-wrapper"],
+  [data-slot="sidebar-container"],
+  [data-slot="sidebar-inner"],
+  [data-sidebar="sidebar"],
+  [data-slot="sidebar"],
+  nav[data-sidebar],
+  aside[data-sidebar] {
+    background-color: #8FBC8F !important;
+    min-height: 100vh !important;
+    height: 100vh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  [data-slot="sidebar-gap"] {
+    background-color: #8FBC8F !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}

@@ -33,7 +33,7 @@ const M = {
   fr: {
     subtitle: "Université Djillali Liabès — Sidi Bel Abbès",
     connexion: "Connexion", inscription: "Inscription",
-    email: "Email", password: "Mot de passe", emailPh: "votre@email.com",
+    email: "Email", password: "Mot de passe", emailPh: "email@univ-sba.dz",
     login: "Se connecter →", loggingIn: "Connexion…",
     badCreds: "Identifiants invalides", profileMissing: "Profil introuvable",
     pendingAdmin: "Votre compte est en attente de validation par l'Admin Central.",
@@ -65,7 +65,7 @@ const M = {
   ar: {
     subtitle: "جامعة جيلالي اليابس — سيدي بلعباس",
     connexion: "تسجيل الدخول", inscription: "إنشاء حساب",
-    email: "البريد الإلكتروني", password: "كلمة المرور", emailPh: "your@email.com",
+    email: "البريد الإلكتروني", password: "كلمة المرور", emailPh: "email@univ-sba.dz",
     login: "دخول ←", loggingIn: "جارٍ الدخول…",
     badCreds: "بيانات الاعتماد غير صحيحة", profileMissing: "الملف الشخصي غير موجود",
     pendingAdmin: "حسابك في انتظار التحقق من قِبَل المسؤول المركزي.",
