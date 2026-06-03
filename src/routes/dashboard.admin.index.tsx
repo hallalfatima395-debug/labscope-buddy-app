@@ -14,11 +14,12 @@ function AdminDashboardHome() {
 
   useEffect(() => {
     void (async () => {
-      const [{ count: l }, { count: p }] = await Promise.all([
-        supabase.from("laboratoires").select("*", { count: "exact", head: true }),
+      const [labsRes, { count: p }] = await Promise.all([
+        supabase.from("laboratoires").select("id, directeur:directeur_id(statut)"),
         supabase.from("projets").select("*", { count: "exact", head: true }),
       ]);
-      setLabs(l ?? 0);
+      const accepted = (((labsRes.data as any[]) ?? []).filter((l) => l.directeur?.statut === "accepte")).length;
+      setLabs(accepted);
       setProjets(p ?? 0);
     })();
   }, []);
