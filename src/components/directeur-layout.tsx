@@ -44,7 +44,7 @@ export function DirecteurLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
       <div dir={dir} className={`min-h-screen flex w-full bg-background ${isAr ? "font-arabic" : ""}`}>
-        <Sidebar collapsible="icon" side={isAr ? "right" : "left"}>
+        <Sidebar collapsible="icon" side={isAr ? "right" : "left"} className="bg-[#8FBC8F] [&_[data-sidebar=sidebar]]:bg-[#8FBC8F]">
           <SidebarHeader className="px-4 py-4">
             <p className="text-xs uppercase tracking-widest text-sidebar-foreground/60">LabScope</p>
             <p className="text-sm font-semibold">{t("role.directeur")}</p>
