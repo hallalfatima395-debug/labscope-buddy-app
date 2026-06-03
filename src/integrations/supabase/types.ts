@@ -408,6 +408,14 @@ export type Database = {
         Args: { _directeur_id: string; _profile_id: string }
         Returns: boolean
       }
+      list_accepted_labs: {
+        Args: never
+        Returns: {
+          id: string
+          nom_ar: string
+          nom_fr: string
+        }[]
+      }
       list_doctorants_by_lab: {
         Args: { p_lab_id: string }
         Returns: {

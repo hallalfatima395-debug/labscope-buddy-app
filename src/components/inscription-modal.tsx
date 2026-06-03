@@ -284,14 +284,8 @@ function SignupForm({ role, onBack, onDone }: { role: SignupRole; onBack: () => 
   useEffect(() => {
     if (role !== "enseignant" && role !== "doctorant") return;
     void (async () => {
-      const { data } = await supabase
-        .from("laboratoires")
-        .select("id, nom_fr, nom_ar, directeur:directeur_id(statut)")
-        .order("nom_fr");
-      if (data) {
-        const filtered = (data as any[]).filter((l) => l.directeur?.statut === "accepte");
-        setLabs(filtered);
-      }
+      const { data } = await supabase.rpc("list_accepted_labs" as never);
+      if (data) setLabs(data as { id: string; nom_fr: string; nom_ar: string | null }[]);
     })();
   }, [role]);
 
