@@ -869,24 +869,6 @@
   header.sticky svg.lucide {
     color: #0F172A !important;
   }
-
-  /* Dashboard sidebar — sage by default, white only on hover */
-  [data-sidebar="sidebar"],
-  [data-slot="sidebar-inner"] {
-    background-color: #8FBC8F;
-  }
-  [data-sidebar] a,
-  [data-sidebar] button,
-  [data-sidebar] span,
-  [data-sidebar] p,
-  [data-sidebar] svg.lucide {
-    color: #0F172A;
-  }
-  [data-sidebar="menu-button"]:hover,
-  [data-slot="sidebar-menu-button"]:hover {
-    background-color: #FFFFFF;
-    color: #0F172A;
-  }
 }
 
 /* ============================================================
