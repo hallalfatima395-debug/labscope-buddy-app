@@ -211,41 +211,7 @@
     border-color: rgba(15, 23, 42, 0.08) !important;
   }
 
-  /* Sidebars → Deep Slate Blue with crisp white text */
-  nav[data-sidebar],
-  aside[data-sidebar],
-  [data-sidebar="sidebar"],
-  [data-sidebar="menu"],
-  .bg-sidebar,
-  .bg-navy,
-  .bg-slate-900,
-  .bg-slate-800,
-  .bg-gray-900,
-  .bg-neutral-900,
-  .bg-zinc-900 {
-    background-color: #0F172A !important;
-    color: #FFFFFF !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
-  }
-  [data-sidebar] a,
-  [data-sidebar] button,
-  [data-sidebar] span,
-  [data-sidebar] p {
-    color: #FFFFFF !important;
-  }
-  [data-sidebar] a:hover,
-  [data-sidebar] button:hover {
-    background-color: rgba(13, 148, 136, 0.12) !important;
-    color: #FFFFFF !important;
-  }
-  [data-sidebar] [data-active="true"],
-  [data-sidebar] [aria-current="page"],
-  [data-sidebar] a.active,
-  [data-sidebar] [data-state="active"] {
-    background-color: #0D9488 !important;
-    color: #FFFFFF !important;
-    border-color: #0D9488 !important;
-  }
+  /* Sidebar styling is defined later in the sage-palette layer */
 
   /* Text, headings, navigation → Deep Charcoal Slate */
   h1, h2, h3, h4, h5, h6,
@@ -293,13 +259,7 @@
   nav svg.lucide {
     color: #0F172A !important;
   }
-  [data-sidebar] svg.lucide {
-    color: #FFFFFF !important;
-  }
-  [data-sidebar] [data-active="true"] svg.lucide,
-  [data-sidebar] [aria-current="page"] svg.lucide {
-    color: #FFFFFF !important;
-  }
+  /* Sidebar icon colors handled in sage-palette layer */
 
   /* Premium SaaS metrics/data cards: white with thin teal top accent + soft shadow */
   main .rounded-2xl,
@@ -644,44 +604,55 @@
     color: var(--app-ink) !important;
   }
 
-  /* Sidebars — pure white with dark slate text/icons */
-  nav[data-sidebar], aside[data-sidebar],
-  [data-sidebar="sidebar"], [data-sidebar="menu"],
-  .bg-sidebar, .bg-navy,
-  .bg-slate-900, .bg-slate-800,
-  .bg-gray-900, .bg-neutral-900, .bg-zinc-900 {
-    background-color: #FFFFFF !important;
-    color: #1E293B !important;
-    border-color: rgba(15,23,42,0.10) !important;
+  /* Sidebars — Sage Green (#8FBC8F) surface with dark slate text/icons.
+     Scoped to the sidebar via [data-sidebar] so the rest of the app is untouched.
+     No !important: relies on selector specificity and cascade order. */
+  nav[data-sidebar],
+  aside[data-sidebar],
+  [data-sidebar="sidebar"],
+  [data-sidebar="menu"] {
+    background-color: #8FBC8F;
+    color: #1f2d1f;
+    border-color: rgba(31, 45, 31, 0.12);
   }
-  /* Sidebar logo / header area — pure white, no divider */
   [data-sidebar="header"],
   [data-slot="sidebar-header"] {
-    background-color: #FFFFFF !important;
-    border-color: transparent !important;
-    border-bottom: 0 !important;
-    box-shadow: none !important;
+    background-color: #8FBC8F;
+    border-color: transparent;
+    border-bottom: 0;
+    box-shadow: none;
   }
-  [data-sidebar="header"] img,
-  [data-slot="sidebar-header"] img {
-    background-color: #FFFFFF !important;
-    border: 0 !important;
-    box-shadow: none !important;
+  [data-sidebar] a,
+  [data-sidebar] button,
+  [data-sidebar] span,
+  [data-sidebar] p,
+  [data-sidebar] svg.lucide {
+    color: #1f2d1f;
   }
-  [data-sidebar] a, [data-sidebar] button,
-  [data-sidebar] span, [data-sidebar] p,
-  [data-sidebar] svg.lucide { color: #1E293B !important; }
-  [data-sidebar] a:hover, [data-sidebar] button:hover {
-    background-color: rgba(15,23,42,0.06) !important;
-    color: #0F172A !important;
+  /* Hover — slightly darker sage, scoped to sidebar items only */
+  [data-sidebar] a:hover,
+  [data-sidebar] button:hover,
+  [data-sidebar="menu-button"]:hover {
+    background-color: #7AAB7A;
+    color: #ffffff;
   }
+  [data-sidebar] a:hover svg.lucide,
+  [data-sidebar] button:hover svg.lucide {
+    color: #ffffff;
+  }
+  /* Active — distinct deep sage with white text */
   [data-sidebar] [data-active="true"],
   [data-sidebar] [aria-current="page"],
   [data-sidebar] a.active,
   [data-sidebar] [data-state="active"] {
-    background-color: var(--app-accent) !important;
-    color: #0F172A !important;
-    border-color: var(--app-accent-strong) !important;
+    background-color: #4A6B4A;
+    color: #ffffff;
+    border-color: #4A6B4A;
+  }
+  [data-sidebar] [data-active="true"] svg.lucide,
+  [data-sidebar] [aria-current="page"] svg.lucide,
+  [data-sidebar] [data-state="active"] svg.lucide {
+    color: #ffffff;
   }
 
   /* Primary buttons / CTAs / submit — sage green */
