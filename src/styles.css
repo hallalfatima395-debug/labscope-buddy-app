@@ -211,41 +211,7 @@
     border-color: rgba(15, 23, 42, 0.08) !important;
   }
 
-  /* Sidebars → Deep Slate Blue with crisp white text */
-  nav[data-sidebar],
-  aside[data-sidebar],
-  [data-sidebar="sidebar"],
-  [data-sidebar="menu"],
-  .bg-sidebar,
-  .bg-navy,
-  .bg-slate-900,
-  .bg-slate-800,
-  .bg-gray-900,
-  .bg-neutral-900,
-  .bg-zinc-900 {
-    background-color: #0F172A !important;
-    color: #FFFFFF !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
-  }
-  [data-sidebar] a,
-  [data-sidebar] button,
-  [data-sidebar] span,
-  [data-sidebar] p {
-    color: #FFFFFF !important;
-  }
-  [data-sidebar] a:hover,
-  [data-sidebar] button:hover {
-    background-color: rgba(13, 148, 136, 0.12) !important;
-    color: #FFFFFF !important;
-  }
-  [data-sidebar] [data-active="true"],
-  [data-sidebar] [aria-current="page"],
-  [data-sidebar] a.active,
-  [data-sidebar] [data-state="active"] {
-    background-color: #0D9488 !important;
-    color: #FFFFFF !important;
-    border-color: #0D9488 !important;
-  }
+  /* Sidebar styling is defined later in the sage-palette layer */
 
   /* Text, headings, navigation → Deep Charcoal Slate */
   h1, h2, h3, h4, h5, h6,
@@ -293,13 +259,7 @@
   nav svg.lucide {
     color: #0F172A !important;
   }
-  [data-sidebar] svg.lucide {
-    color: #FFFFFF !important;
-  }
-  [data-sidebar] [data-active="true"] svg.lucide,
-  [data-sidebar] [aria-current="page"] svg.lucide {
-    color: #FFFFFF !important;
-  }
+  /* Sidebar icon colors handled in sage-palette layer */
 
   /* Premium SaaS metrics/data cards: white with thin teal top accent + soft shadow */
   main .rounded-2xl,
